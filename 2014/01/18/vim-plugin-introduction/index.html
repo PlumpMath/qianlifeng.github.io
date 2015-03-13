@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vim插件推荐 | 猫猫二次元</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="陆陆续续使用Vim也差不多快一年多了，从一开始的几次放弃到现在越用越习惯。在这当中也折腾了许久，最主要的就是Vim中各种各样的插件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim插件推荐">
+<meta property="og:url" content="http://qianlifeng.github.io/2014/01/18/vim-plugin-introduction/index.html">
+<meta property="og:site_name" content="猫猫二次元">
+<meta property="og:description" content="陆陆续续使用Vim也差不多快一年多了，从一开始的几次放弃到现在越用越习惯。在这当中也折腾了许久，最主要的就是Vim中各种各样的插件。">
+<meta property="og:image" content="/Images/vimplugin-photo/ctrlp.png">
+<meta property="og:image" content="/Images/vimplugin-photo/nerdtree.png">
+<meta property="og:image" content="/Images/vimplugin-photo/tagbar.png">
+<meta property="og:image" content="https://github-camo.global.ssl.fastly.net/63f9947cac196ec7e6e3d790fd3cd1e1463a7b9b/687474703a2f2f692e696d6775722e636f6d2f4d737549422e706e67">
+<meta property="og:image" content="https://raw.github.com/scrooloose/syntastic/master/_assets/screenshot_1.png">
+<meta property="og:image" content="/Images/vimplugin-photo/surround.gif">
+<meta property="og:image" content="/Images/vimplugin-photo/vim-numbertoggle.png">
+<meta property="og:image" content="/Images/vimplugin-photo/rainbow_parentheses.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim插件推荐">
+<meta name="twitter:description" content="陆陆续续使用Vim也差不多快一年多了，从一开始的几次放弃到现在越用越习惯。在这当中也折腾了许久，最主要的就是Vim中各种各样的插件。">
+  
+    <link rel="alternative" href="/atom.xml" title="猫猫二次元" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">猫猫二次元</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://qianlifeng.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-vim-plugin-introduction" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/01/18/vim-plugin-introduction/" class="article-date">
+  <time datetime="2014-01-18T08:22:17.000Z" itemprop="datePublished">2014-01-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/软件/">软件</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vim插件推荐
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>陆陆续续使用Vim也差不多快一年多了，从一开始的几次放弃到现在越用越习惯。在这当中也折腾了许久，最主要的就是Vim中各种各样的插件。<br><a id="more"></a></p>
+<p>对于软件，我<a href="http://blog.youxu.info/2012/02/02/software-tools-1/" target="_blank" rel="external">在这里</a>看到一种观点比较有趣。作者把好的软件大致分为两类：<strong>瑞士军刀</strong>和<strong>工具链</strong>。所谓瑞士军刀指的是那些在某些特定领域做的很强大的软件。这类软件不需要折腾又需要折腾。所谓不需要折腾是因为一般这类软件在此领域中都很强悍，你折腾来折腾去最终一定会折腾到这个软件上面，一旦熟练使用了此软件那么其他的类似软件已经完全不需要折腾了。而所谓需要折腾是指通常这类软件都有一个比较陡峭的学习曲线，从不会不习惯到熟练使用的过程就是一个折腾与磨合的过程。</p>
+<p>大概Vim就是这样的一个软件，而我磨合的结果就是下面列出的插件。</p>
+<h1 id="vundle"><a href="https://github.com/gmarik/vundle" target="_blank" rel="external">vundle</a></h1><hr>
+<p>推荐星级：★★★★★</p>
+<p>Vim插件管理工具。使用此工具后安装Vim插件会变成一件很简单的事。只需要在vimrc中声明一行类似于这样的代码：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Bundle</span> <span class="string">'kien/ctrlp.vim'</span></span><br></pre></td></tr></table></figure></p>
+<p>然后使用命令：<code>BundleInstall</code>。此时vundle会自动安装声明的插件，简单方便。我下面介绍的插件都是使用这种方式安装的。</p>
+<h1 id="ctrlp-vim"><a href="https://github.com/kien/ctrlp.vim" target="_blank" rel="external">ctrlp.vim</a></h1><hr>
+<p>推荐星级：★★★★★</p>
+<p><img src="/Images/vimplugin-photo/ctrlp.png"><br>这是一款用于模糊查找文件的插件。它可以搜索文件，buffer列表等。我最喜欢的功能是打开MRU列表，即我最近经常使用的文件列表。下面是我对于它的一些配置文件，主要是把快捷键换成F2了。<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Bundle <span class="string">'kien/ctrlp.vim'</span></span><br><span class="line"><span class="string">"MRU default </span><br><span class="line"></span><span class="keyword">let</span> <span class="variable">g:ctrlp_map</span> = <span class="string">'&lt;F2&gt;'</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ctrlp_regexp</span> = <span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ctrlp_cmd</span> = <span class="string">'CtrlPMRU'</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ctrlp_custom_ignore</span> = <span class="string">'\.git$\|\.hg$\|\.svn$\|.rvm$'</span></span><br><span class="line"><span class="string">"let g:ctrlp_working_path_mode=0</span><br><span class="line"></span><span class="keyword">let</span> <span class="variable">g:ctrlp_match_window_bottom</span>=<span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ctrlp_max_height</span>=<span class="number">15</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ctrlp_match_window_reversed</span>=<span class="number">0</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ctrlp_mruf_max</span>=<span class="number">500</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ctrlp_follow_symlinks</span>=<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="The-NERD-Commenter"><a href="https://github.com/vim-scripts/The-NERD-Commenter" target="_blank" rel="external">The-NERD-Commenter</a></h1><hr>
+<p>推荐星级：★★★★★</p>
+<p>代码注释插件。这款插件很强大，基本不用考虑你目前编辑的代码语言，它会自动找到符合该语言的注释方式。我目前使用的c#,python,css,html,js等无一例外。<br>配置文件：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">" 这里使用的绑定快捷键同VS</span><br><span class="line">Bundle 'The-NERD-Commenter'</span><br><span class="line">:nmap <span class="tag">&lt;<span class="title">C-K</span>&gt;</span><span class="tag">&lt;<span class="title">C-C</span>&gt;</span> <span class="tag">&lt;<span class="title">leader</span>&gt;</span>c<span class="tag">&lt;<span class="title">space</span>&gt;</span></span><br><span class="line">:imap <span class="tag">&lt;<span class="title">C-K</span>&gt;</span><span class="tag">&lt;<span class="title">C-C</span>&gt;</span> <span class="tag">&lt;<span class="title">Esc</span>&gt;</span><span class="tag">&lt;<span class="title">leader</span>&gt;</span>c<span class="tag">&lt;<span class="title">space</span>&gt;</span>i</span><br><span class="line">:nmap <span class="tag">&lt;<span class="title">C-K</span>&gt;</span><span class="tag">&lt;<span class="title">C-U</span>&gt;</span> <span class="tag">&lt;<span class="title">leader</span>&gt;</span>c<span class="tag">&lt;<span class="title">space</span>&gt;</span></span><br><span class="line">:imap <span class="tag">&lt;<span class="title">C-K</span>&gt;</span><span class="tag">&lt;<span class="title">C-U</span>&gt;</span> <span class="tag">&lt;<span class="title">Esc</span>&gt;</span><span class="tag">&lt;<span class="title">leader</span>&gt;</span>c<span class="tag">&lt;<span class="title">space</span>&gt;</span>i</span><br></pre></td></tr></table></figure></p>
+<h1 id="The-NERD-tree"><a href="https://github.com/scrooloose/nerdtree" target="_blank" rel="external">The-NERD-tree</a></h1><hr>
+<p>推荐星级：★★★★★</p>
+<p>树形文件浏览插件。应该是很出名的一个插件了，在文件目录浏览的时候很有用。<br><img src="/Images/vimplugin-photo/nerdtree.png"><br>配置文件：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Bundle <span class="string">'The-NERD-tree'</span></span><br><span class="line">function! <span class="function"><span class="title">NTFinderP</span><span class="params">()</span></span></span><br><span class="line">    <span class="string">""</span> Check <span class="keyword">if</span> NERDTree is open</span><br><span class="line">    <span class="keyword">if</span> <span class="function"><span class="title">exists</span><span class="params">(<span class="string">"t:NERDTreeBufName"</span>)</span></span></span><br><span class="line">        let s:ntree = <span class="function"><span class="title">bufwinnr</span><span class="params">(t:NERDTreeBufName)</span></span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        let s:ntree = -<span class="number">1</span></span><br><span class="line">    endif</span><br><span class="line">    <span class="keyword">if</span> (s:ntree != -<span class="number">1</span>)</span><br><span class="line">        <span class="string">""</span> If NERDTree is open, close it.</span><br><span class="line">        :NERDTreeClose</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="string">""</span> Try to open <span class="tag">a</span> :Rtree <span class="keyword">for</span> the rails project</span><br><span class="line">        <span class="keyword">if</span> <span class="function"><span class="title">exists</span><span class="params">(<span class="string">":Rtree"</span>)</span></span></span><br><span class="line">            <span class="string">""</span> Open Rtree (using rails plugin, it opens <span class="keyword">in</span> project dir)</span><br><span class="line">            :Rtree</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="string">""</span> Open NERDTree <span class="keyword">in</span> the file path</span><br><span class="line">            :NERDTreeFind</span><br><span class="line">        endif</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line">map &lt;silent&gt; &lt;F11&gt; :call <span class="function"><span class="title">NTFinderP</span><span class="params">()</span></span>&lt;CR&gt;</span><br></pre></td></tr></table></figure></p>
+<h1 id="neocomplcache-vim"><a href="https://github.com/Shougo/neocomplcache.vim" target="_blank" rel="external">neocomplcache.vim</a></h1><hr>
+<p>推荐星级：★★★★★</p>
+<p>自动补全插件。我前前后后试过很多补全插件，这款用的时间最长。支持很多种补全方式。具体的截图大家可以去官网看。下面是我的配置：<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">Bundle 'Shougo/neocomplcache.vim'</span><br><span class="line">"自动完成映射为Ctrl+<span class="literal">J</span></span><br><span class="line">imap &lt;C-J&gt; &lt;C-X&gt;&lt;C-<span class="keyword">u</span>&gt;</span><br><span class="line">" <span class="keyword">Use</span> neocomplcache.</span><br><span class="line">let <span class="keyword">g</span>:neocomplcache_enable_at_startup = 1</span><br><span class="line">let <span class="keyword">g</span>:neocomplcache_enable_smart_case = 1</span><br><span class="line">" <span class="keyword">Use</span> camel case completion.</span><br><span class="line">let <span class="keyword">g</span>:neocomplcache_enable_camel_case_completion = 1</span><br><span class="line">" <span class="keyword">Use</span> underscore completion.</span><br><span class="line">let <span class="keyword">g</span>:neocomplcache_enable_underbar_completion = 1</span><br><span class="line">" Sets minimum <span class="keyword">char</span> length of <span class="keyword">syntax</span> keyword.</span><br><span class="line">let <span class="keyword">g</span>:neocomplcache_min_syntax_length = 1</span><br><span class="line">let <span class="keyword">g</span>:neocomplcache_enable_auto_close_preview = 0</span><br><span class="line">"let <span class="keyword">g</span>:neocomplcache_force_overwrite_completefunc = 1</span><br><span class="line">" AutoComplPop like behavior.</span><br><span class="line">let <span class="keyword">g</span>:neocomplcache_enable_auto_select = 1</span><br><span class="line">" &lt;CR&gt;: <span class="keyword">close</span> popup and <span class="keyword">save</span> indent.</span><br><span class="line">inoremap &lt;expr&gt;&lt;CR&gt; pumvisible() ? neocomplcache#close_popup() : <span class="string">"\&lt;CR&gt;"</span></span><br><span class="line">inoremap &lt;expr&gt;.  neocomplcache#close_popup() . <span class="string">"."</span></span><br><span class="line">inoremap &lt;expr&gt;(  neocomplcache#close_popup() . <span class="string">"("</span></span><br><span class="line">inoremap &lt;expr&gt;)  neocomplcache#close_popup() . <span class="string">")"</span></span><br><span class="line">inoremap &lt;expr&gt;&lt;space&gt;  neocomplcache#close_popup() . <span class="string">" "</span></span><br><span class="line">inoremap &lt;expr&gt;;  neocomplcache#close_popup() . <span class="string">";"</span></span><br><span class="line">" &lt;<span class="keyword">TAB</span>&gt;: completion.</span><br><span class="line">inoremap &lt;expr&gt;&lt;<span class="keyword">TAB</span>&gt;  pumvisible() ? <span class="string">"\&lt;C-n&gt;" : "\&lt;TAB&gt;"</span></span><br><span class="line">" &lt;C-<span class="keyword">h</span>&gt;, &lt;<span class="keyword">BS</span>&gt;: <span class="keyword">close</span> popup and delete backword <span class="keyword">char</span>.</span><br><span class="line">inoremap &lt;expr&gt;&lt;C-<span class="keyword">h</span>&gt; neocomplcache#smart_close_popup().<span class="string">"\&lt;C-h&gt;"</span></span><br><span class="line">inoremap &lt;expr&gt;&lt;<span class="keyword">BS</span>&gt; neocomplcache#smart_close_popup().<span class="string">"\&lt;C-h&gt;"</span></span><br><span class="line">inoremap &lt;expr&gt;&lt;C-y&gt;  neocomplcache#close_popup()</span><br><span class="line">inoremap &lt;expr&gt;&lt;C-<span class="keyword">e</span>&gt;  neocomplcache#cancel_popup()</span><br><span class="line">inoremap &lt;expr&gt;&lt;ESC&gt; pumvisible() ? neocomplcache#cancel_popup() : <span class="string">"\&lt;esc&gt;"</span></span><br><span class="line"></span><br><span class="line">autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS</span><br><span class="line">autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags</span><br><span class="line">autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS</span><br><span class="line">autocmd FileType python setlocal omnifunc=pythoncomplete#Complete</span><br><span class="line">autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags</span><br><span class="line">" Enable heavy omni completion, <span class="keyword">which</span> require computational power and may stall the vim. </span><br><span class="line"><span class="keyword">if</span> !exists('<span class="keyword">g</span>:neocomplcache_omni_patterns')</span><br><span class="line">  let <span class="keyword">g</span>:neocomplcache_omni_patterns = &#123;&#125;</span><br><span class="line">endif</span><br><span class="line">let <span class="keyword">g</span>:neocomplcache_omni_patterns.<span class="keyword">cs</span> = '.*'</span><br></pre></td></tr></table></figure></p>
+<h1 id="tagbar"><a href="https://github.com/majutsushi/tagbar" target="_blank" rel="external">tagbar</a></h1><hr>
+<p>推荐星级：★★★★</p>
+<p>浏览代码tag的插件。所谓tag指的是那些方法名，类名的定义。有人可能觉得应该评5星，但是我在实际使用的过程中并不是十分依赖他，基本都喜欢ctrl+F搜索解决了。<br><img src="/Images/vimplugin-photo/tagbar.png"><br>配置文件：<br> <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Bundle</span> <span class="string">'majutsushi/tagbar'</span></span><br><span class="line"><span class="string">"js support:</span><br><span class="line">"</span>   <span class="number">1</span>. git clone --recursive <span class="url">https://github.com/mozilla/doctorjs.github</span></span><br><span class="line"><span class="string">"   2. add tool/jsctags.bat to path (need to change some variables inside it)</span><br><span class="line">nmap &lt;silent&gt;&lt;F10&gt; :TagbarToggle&lt;CR&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="vim-powerline"><a href="https://github.com/Lokaltog/vim-powerline" target="_blank" rel="external">vim-powerline</a></h1><hr>
+<p>推荐星级：★★★★</p>
+<p>状态栏美化插件。使用此插件后B格立马提升，推荐使用。需要注意的是为了一些特殊字体的显示，需要安装补丁字体，可以到这边<a href="https://github.com/qianlifeng/SQVIM/tree/master/Tools" target="_blank" rel="external">下载安装</a>。<br><img src="https://github-camo.global.ssl.fastly.net/63f9947cac196ec7e6e3d790fd3cd1e1463a7b9b/687474703a2f2f692e696d6775722e636f6d2f4d737549422e706e67"><br>配置文件：<br><figure class="highlight mizar"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Bundle 'Lokaltog/vim-powerline'</span><br><span class="line">Bundle 'eugeneching/consolas-powerline-vim'</span><br><span class="line">"字体设置,先到到tool下安装consolas字体</span><br><span class="line"><span class="keyword">set</span> guifont=Consolas\ <span class="keyword">for</span>\ Powerline\ FixedD:h11</span><br><span class="line"><span class="keyword">set</span> laststatus=2</span><br><span class="line"><span class="keyword">set</span> encoding=utf-8</span><br><span class="line"><span class="keyword">set</span> t_Co=256</span><br><span class="line"><span class="keyword">let</span> g:Powerline_symbols = 'fancy'</span><br></pre></td></tr></table></figure></p>
+<h1 id="syntastic"><a href="https://github.com/scrooloose/syntastic" target="_blank" rel="external">syntastic</a></h1><hr>
+<p>推荐星级：★★★★</p>
+<p><img src="https://raw.github.com/scrooloose/syntastic/master/_assets/screenshot_1.png"><br>实时语法检查插件。支持包括python,css,javascript等等各种语言了。安装此插件后，vim有可能变慢。各位酌情使用。</p>
+<h1 id="matchit-zip"><a href="https://github.com/vim-scripts/matchit.zip" target="_blank" rel="external">matchit.zip</a></h1><hr>
+<p>推荐星级：★★★</p>
+<p>这个插件是用来匹配成对出现的标签的插件。举个例子，html代码中经常有成对出现的代码，html，body等等标签都是成对出现的。安装此插件后，在<html>上按%后会自动跳转到</html>上面。当然括号匹配也不在话下。</p>
+<h1 id="surround-vim"><a href="https://github.com/tpope/vim-surround" target="_blank" rel="external">surround.vim</a></h1><hr>
+<p>推荐星级：★★★</p>
+<p><img src="/Images/vimplugin-photo/surround.gif"><br>这个插件是用来匹配成对出现的标签的插件。举个例子，html代码中经常有成对出现的代码，html，body等等标签都是成对出现的。安装此插件后，在<code>&lt;html&gt;</code>上按%后会自动跳转到<code>&lt;/html&gt;</code>上面。当然括号匹配也不在话下。</p>
+<h1 id="vim-numbertoggle"><a href="https://github.com/jeffkreeftmeijer/vim-numbertoggle" target="_blank" rel="external">vim-numbertoggle</a></h1><hr>
+<p>推荐星级：★★★</p>
+<p><img src="/Images/vimplugin-photo/vim-numbertoggle.png"><br>相对行号插件。Vim中的相对行号在上下跳转的时候非常有用，免去了计算的麻烦。而这款插件可以在插入模式的时候显示绝对行号，而正常模式的时候显示相对行号。</p>
+<h1 id="rainbow_parentheses-vim"><a href="https://github.com/kien/rainbow_parentheses.vim" target="_blank" rel="external">rainbow_parentheses.vim</a></h1><hr>
+<p>推荐星级：★★★</p>
+<p>彩虹括号。这个名字很有意思啊，安装此插件后所有的括号都会使用不同的颜色来显示。效果图：<br><img src="/Images/vimplugin-photo/rainbow_parentheses.png"><br>配置文件：<br><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Bundle <span class="string">'kien/rainbow_parentheses.vim'</span></span><br><span class="line"><span class="keyword">let</span> <span class="attribute">g</span>:rbpt_colorpairs = [</span><br><span class="line">            <span class="string">\</span> [<span class="string">'brown'</span>,       <span class="string">'RoyalBlue3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'Darkblue'</span>,    <span class="string">'SeaGreen3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkgray'</span>,    <span class="string">'DarkOrchid3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkgreen'</span>,   <span class="string">'firebrick3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkcyan'</span>,    <span class="string">'RoyalBlue3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkred'</span>,     <span class="string">'SeaGreen3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkmagenta'</span>, <span class="string">'DarkOrchid3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'brown'</span>,       <span class="string">'firebrick3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'gray'</span>,        <span class="string">'RoyalBlue3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'black'</span>,       <span class="string">'SeaGreen3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkmagenta'</span>, <span class="string">'DarkOrchid3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'Darkblue'</span>,    <span class="string">'firebrick3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkgreen'</span>,   <span class="string">'RoyalBlue3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkcyan'</span>,    <span class="string">'SeaGreen3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'darkred'</span>,     <span class="string">'DarkOrchid3'</span>],</span><br><span class="line">            <span class="string">\</span> [<span class="string">'red'</span>,         <span class="string">'firebrick3'</span>],</span><br><span class="line">            <span class="string">\</span> ]</span><br><span class="line"><span class="keyword">let</span> <span class="attribute">g</span>:rbpt_max = <span class="number">16</span></span><br><span class="line"><span class="keyword">let</span> <span class="attribute">g</span>:rbpt_loadcmd_toggle = <span class="number">0</span></span><br><span class="line">au VimEnter * RainbowParenthesesToggle</span><br><span class="line">au Syntax   * RainbowParenthesesLoadRound</span><br><span class="line">au Syntax   * RainbowParenthesesLoadSquare</span><br><span class="line">au Syntax   * RainbowParenthesesLoadBraces</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2014/01/18/vim-plugin-introduction/" data-id="ci76wxax4000360kwglfi7jzk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vim/">vim</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/03/03/nodejs-crawler-start/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nodejs写一个简单爬虫
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/01/14/deploy-falsk-with-nginx/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在nginx上配置flask网站</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSharp/">CSharp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Vision/">Computer Vision</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web开发/">Web开发</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a><a href="/tags/hexo/" style="font-size: 10px;">hexo</a><a href="/tags/mysql/" style="font-size: 10px;">mysql</a><a href="/tags/nginx/" style="font-size: 20px;">nginx</a><a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a><a href="/tags/vim/" style="font-size: 10px;">vim</a><a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/03/13/hangzhou-photo/">杭州西湖照片2张</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/29/wox/">快速启动器Wox</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/20/install_Python_windows_packages_into_virtualenvs/">安装python三方包到virtualenv</a>
+          </li>
+        
+          <li>
+            <a href="/2014/07/25/start-django-with-supervisor/">使用Supervisor管理程序</a>
+          </li>
+        
+          <li>
+            <a href="/2014/06/29/captcha-recognition-using-opencv/">使用OpenCV进行简单验证码识别</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 qianlifeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

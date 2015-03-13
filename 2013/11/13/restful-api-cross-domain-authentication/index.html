@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RESTful api跨域认证 | 猫猫二次元</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文主要介绍了RESTful api跨域认证的一些知识。包括了什么是跨域，跨域的危害，如何进行合理的跨域认证等。另文中如有不对的地方，欢迎指正.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RESTful api跨域认证">
+<meta property="og:url" content="http://qianlifeng.github.io/2013/11/13/restful-api-cross-domain-authentication/index.html">
+<meta property="og:site_name" content="猫猫二次元">
+<meta property="og:description" content="本文主要介绍了RESTful api跨域认证的一些知识。包括了什么是跨域，跨域的危害，如何进行合理的跨域认证等。另文中如有不对的地方，欢迎指正.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RESTful api跨域认证">
+<meta name="twitter:description" content="本文主要介绍了RESTful api跨域认证的一些知识。包括了什么是跨域，跨域的危害，如何进行合理的跨域认证等。另文中如有不对的地方，欢迎指正.">
+  
+    <link rel="alternative" href="/atom.xml" title="猫猫二次元" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">猫猫二次元</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://qianlifeng.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-restful-api-cross-domain-authentication" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/11/13/restful-api-cross-domain-authentication/" class="article-date">
+  <time datetime="2013-11-13T08:24:17.000Z" itemprop="datePublished">2013-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web开发/">Web开发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RESTful api跨域认证
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要介绍了RESTful api跨域认证的一些知识。包括了什么是跨域，跨域的危害，如何进行合理的跨域认证等。另文中如有不对的地方，欢迎指正.</p>
+<a id="more"></a>
+<ul>
+<li><a href="#intro">前言</a></li>
+<li>跨域    <ul>
+<li><a href="#what-is-cross-domain">什么是跨域</a>     </li>
+<li><a href="#damage">跨域的危害</a>  </li>
+<li><a href="#how-to-cors">如何进行跨域请求</a>  </li>
+</ul>
+</li>
+<li>RESTful api 认证  <ul>
+<li><a href="#why-normal-authentication-failed">为什么传统认证方式不行</a>  </li>
+<li><a href="#how-to-authentication">如何进行跨域认证</a>  </li>
+</ul>
+</li>
+</ul>
+<p><a name="intro"></a></p>
+<h2 id="前言">前言</h2><hr>
+<p>在正式介绍Web Api跨域认证之前，我想先举一个web api跨域认证的例子，就算是需求吧，也有利于后面讲解的时候有例子可说。</p>
+<p>假设现在有两台服务器：<i class="fa fa-windows"></i> Server A和 <i class="fa fa-windows"></i> Server B。 <i class="fa fa-windows"></i> Server A(域名：<a href="https://www.serverA.com/api/" target="_blank" rel="external">https://www.serverA.com/api/</a>) 上面运行着一个提供Web Api的程序，此程序中的api都需要用户登录以后才能操作。<i class="fa fa-windows"></i> Server B(域名：<a href="http://www.serverB.com" target="_blank" rel="external">http://www.serverB.com</a>) 也有一个程序，专门用来消费这些Web PI 。  </p>
+<p>ServerB上面有一个登录操作，此操作会去请求ServerA上面的某个用户认证api。要求:  </p>
+<pre><code><span class="bullet">1. </span>成功请求此api
+<span class="bullet">2. </span>持久化用户的此次认证，以便用户的后续请求。
+</code></pre><p><br><br><a name="what-is-cross-domain"></a></p>
+<h2 id="什么是跨域">什么是跨域</h2><hr>
+<p>对于上面的要求，如果你直接通过ajax请求此认证api显然是不行的。为什么？因为这个请求跨域了。那么什么请求才是跨域请求？  </p>
+<pre><code>所谓跨域请求是指请求一个与当前url协议不同,或者域名不同,或者端口不同的链接资源。
+</code></pre><p>下面这个表格可以帮助理解什么样的请求是跨域请求。  </p>
+<table class="table table-bordered table-striped"><tr><th>URL</th><th>是否跨域</th><th>说明</th></tr> <tr><td> <a href="http://www.scottqian.com/folder1/a.html" target="_blank" rel="external">http://www.scottqian.com/folder1/a.html</a><br><a href="http://www.scottqian.com/folder2/b.html" target="_blank" rel="external">http://www.scottqian.com/folder2/b.html</a> </td><td>否</td><td>协议，域名，端口都相同</td></tr> <tr><td> <a href="http://www.scottqian.com:8000/folder1/a.html" target="_blank" rel="external">http://www.scottqian.com:8000/folder1/a.html</a><br><a href="http://www.scottqian.com/folder2/b.html" target="_blank" rel="external">http://www.scottqian.com/folder2/b.html</a> </td><td>是</td><td>端口不同</td></tr> <tr><td> <a href="https://www.scottqian.com/folder1/a.html" target="_blank" rel="external">https://www.scottqian.com/folder1/a.html</a><br><a href="http://www.scottqian.com/folder2/b.html" target="_blank" rel="external">http://www.scottqian.com/folder2/b.html</a> </td><td>是</td><td>协议不同</td></tr> <tr><td> <a href="http://www.domain.com/folder1/a.html" target="_blank" rel="external">http://www.domain.com/folder1/a.html</a><br><a href="http://www.scottqian.com/folder2/b.html" target="_blank" rel="external">http://www.scottqian.com/folder2/b.html</a> </td><td>是</td><td>域名不同</td></tr> <tr><td> <a href="http://blog.scottqian.com/folder1/a.html" target="_blank" rel="external">http://blog.scottqian.com/folder1/a.html</a><br><a href="http://www.scottqian.com/folder2/b.html" target="_blank" rel="external">http://www.scottqian.com/folder2/b.html</a> </td><td>是</td><td>主域相同，但是子域不同</td></tr> </table>
+
+<p>这种不能跨域请求的限制又称为：“<a href="http://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">Same-Origin Policy</a>”（同源策略）。值得注意的是<strong>这种安全限制是Javascript保证的</strong>，也就是说以后如果出来个新的浏览器端语言不带这种限制，那么你就可以随便请求不同域的资源。还有一个例子可以佐证，你直接使用wget命令请求RESTful api认证的页面同样会有结果返回。因为此处的请求不是由javascript发出，已经没有了同源策略的限制了。</p>
+<p><br><br><a name="damage"></a></p>
+<h2 id="跨域的危害">跨域的危害</h2><hr>
+<p>为什么要采用这种同源策略的限制呢？我们来模拟一下攻击场景。比如说某网站A有个api<code>http://localhost:5000/api/getuser</code>，此API用来获得当前用户的登陆信息 [ 假设此API不需要认证操作 ] 。碰巧的是用户同时在一个新的标签页打开了网站B。网站B下面有这么一段代码：</p>
+<pre><code class="html"><span class="doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://codeorigin.jquery.com/jquery-2.0.3.min.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"button"</span> <span class="attribute">id</span>=<span class="value">"btnGetInfo"</span> <span class="attribute">value</span>=<span class="value">"Get"</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span> 
+
+
+        <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
+            $(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{
+                    $(<span class="string">"#btnGetInfo"</span>).click(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{
+                        $.get(<span class="string">"http://localhost:5000/api/getuser/1"</span>)
+                            .success(<span class="function"><span class="keyword">function</span><span class="params">(d)</span></span>{
+                                alert(d);     
+                            });        
+                    });           
+            });
+        </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre>
+<p>如果没有同源策略的限制，那么用户打开网站B的同时，网站B就可以悄悄获得用户在网站A的信息了。如果这个请求换成某个删除API，那就是大问题了。</p>
+<p><br><br><a name="how-to-cors"></a></p>
+<h2 id="如何进行跨域请求">如何进行跨域请求</h2><hr>
+<p><a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="external">RESTful</a> api大行其道的今天，我们需要跨域请求的需求也越来越多。如何进行安全的跨域请求呢？这里介绍几种方法：<br><strong>1. JSONP</strong>  </p>
+<pre><code>JSONP依赖于这样一个事实：带有src属性的标签具有跨域的能力。  
+</code></pre><p>比如大家经常看到的各种CDN加速就不存在跨域的问题。JSONP是通过JS动态构造这么一个带有src属性的标签，比如说script，src的链接请求远程的跨域URL。然后服务器端返回JSON格式的数据，而又那么巧JS对JSON格式原生就支持，所以返回的JSON数据拿过来就能用了。Jquery已经对JSONP提供了封装，使用起来和一般的ajax请求没多大区别，具体用法大家去搜索一下就是，一大把。  </p>
+<p>JSON有一个缺点就是不能进行POST操作，从上面JSONP的原理我们很容易得出这个结论。如果你想进行POST，可以使用下面一种方法。  </p>
+<p><strong>2. <a href="http://www.w3.org/TR/cors/" target="_blank" rel="external">CORS</a>[Cross-Origin Resource Sharing]</strong>  </p>
+<p>CORS和JSONP不一样，JSONP有点用了little trick的意思，而CORS则显得更加正式一些。一旦服务器允许了CORS，那么客户端代码并不需要特殊的处理。同样还支持GET,POST等等方法。  </p>
+<p>CORS的流程是这样的：  </p>
+<ol>
+<li><p>通过ajax请求跨域资源  </p>
+</li>
+<li><p>浏览器检测到跨域请求，此时浏览器会发送一个OPTION类型的请求到服务器。该请求是个试探性的请求，意在告诉服务器端有一个跨域请求正在请求，此时服务器端会得到这个请求的信息（请求方法，源请求地址等）。  </p>
+</li>
+<li><p>服务器判断是否允许该请求。如果允许，则服务器端在响应头中添加:<code>Access-Control-Allow-Origin</code>标志。 </p>
+</li>
+<li><p>客户端接受到服务器端返回，如果成功则正式发起这个跨域请求，此时请求会成功。否则，如果服务端返回不允许，那么客户端的代码也不会被执行。  </p>
+</li>
+</ol>
+<p>整个过程就是浏览器与服务器端的一个协商过程，这个过程是透明的，不需要我们写额外的代码。唯一需要我们做的就是在服务器端设置返回<code>Access-Control-Allow-Origin</code>标志。<br>关于如何在不同的服务器上设置这个标志，有个专门的网站已经写了专门的教程了。<a href="http://enable-cors.org" target="_blank" rel="external">http://enable-cors.org</a>  </p>
+<p><strong>3. Flash</strong>  </p>
+<p>你也可以把跨域请求放在Flash里面，这样就不用受同源策略的限制了。此方法我没用过，只是提一下。  </p>
+<p><br><br><a name="why-normal-authentication-failed"></a></p>
+<h2 id="为什么传统认证方式不行">为什么传统认证方式不行</h2><hr>
+<p>解决了跨域问题，RESTful api跨域认证就完成了一半了。认证的方式有很多很多，我这里说的传统认证方式是指通过Cookie来协助认证的方式，比如ASP.net里面的Form认证。这类认证大多是通过在Cookie写入登陆信息，然后浏览器发送请求后服务端再去验证Cookie是否存在，从而达到认证用户的目的。但是我们现在涉及到一个跨域的问题，而<code>Cookie是不能跨站共享的</code>。即使RESTful那边设置了cookie，也不会到当前请求的域下面。到了第二次请求的时候，还是得不到认证信息。  </p>
+<p><br><br><a name="how-to-authentication"></a></p>
+<h2 id="如何进行跨域认证">如何进行跨域认证</h2><hr>
+<p><strong>1. <a href="http://zh.wikipedia.org/wiki/HTTP%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81" target="_blank" rel="external">HTTP基本认证</a></strong></p>
+<blockquote>
+<p>在HTTP中，基本认证是一种用来允许Web浏览器或其他客户端程序在请求时提供用户名和口令形式的身份凭证的一种登录验证方式。<br>在发送之前是以用户名追加一个冒号然后串接上口令，并将得出的结果字符串再用Base64算法编码。例如，提供的用户名是Aladdin、口令是open sesame，则拼接后的结果就是Aladdin:open sesame，然后再将其用Base64编码，得到QWxhZGRpbjpvcGVuIHNlc2FtZQ==。最终将Base64编码的字符串发送出去，由接收者解码得到一个由冒号分隔的用户名和口令的字符串。  </p>
+</blockquote>
+<p>HTTP的好处就是基本所有的浏览器都支持。缺点就是也太基本了，它假设的前提是客户端和服务端的通信是建立在可信的通信上面的。不然用户的登录信息很容易被获取。如果加上SSL，那么或许是一种简单可靠的方式。  </p>
+<p><strong>2. OAUTH</strong></p>
+<blockquote>
+<p>OAuth（开放授权）是一个开放标准，允许用户让第三方应用访问该用户在某一网站上存储的私密的资源（如照片，视频，联系人列表），而无需将用户名和密码提供给第三方应用。<br>OAuth允许用户提供一个令牌，而不是用户名和密码来访问他们存放在特定服务提供者的数据。每一个令牌授权一个特定的网站（例如，视频编辑网站)在特定的时段（例如，接下来的2小时内）内访问特定的资源（例如仅仅是某一相册中的视频）。这样，OAuth让用户可以授权第三方网站访问他们存储在另外服务提供者的某些特定信息，而非所有内容。</p>
+</blockquote>
+<p>现在使用OAUTH认证的网站很多，很多都是使用了新浪微博，QQ的AUTH服务认证。使用OAUTH之所以安全，是因为他把登录的风险转移到了认证服务上。当前网站拿到的是一串token，服务端只认token进行授权就行了。<br>如果你开发的应用只是在小范围内使用，比如公司内部，那么其实此应用并不适合OAUTH。如果你不是用现有的认证服务商，就要自己搭建一个认证服务。略显重量级了。</p>
+<p><strong>3. 自定义认证</strong>   </p>
+<p>还有一种方法是自己定义认证。既然Cookie行不通，那么还有什么东西客户端能够拿得到的。响应头信息！前面提到的<code>Access-Control-Allow-Origin</code>就是一种响应头。如果我们将用户认证成功后的标志放到响应头然后传到客户端，客户端在第二次请求的时候将这个标志再放到响应头中传到服务器，服务器验证通过后再返回带有这种响应头的数据便可。总体和HTTP基本认证有些类似。也有不一样。主要是加密过程不再使用简单的BASE64。  </p>
+<p>我目前使用的便是这种方式，代码是asp.net mvc。上点干活。</p>
+<pre><code class="c#">public class TokenInspector : DelegatingHandler&#10;{&#10;    protected override Task&#60;HttpResponseMessage&#62; SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)&#10;    {&#10;        const string TOKEN_NAME = &#34;X-JWT-Token&#34;;&#10;        if (request.RequestUri.AbsolutePath == &#34;/user/validate&#34;) return base.SendAsync(request, cancellationToken);&#10;        if (request.Method == HttpMethod.Options) return base.SendAsync(request, cancellationToken);&#10;&#10;        if (request.Headers.Contains(TOKEN_NAME))&#10;        {&#10;            string encryptedToken = request.Headers.GetValues(TOKEN_NAME).First();&#10;            try&#10;            {&#10;                AuthToken token = AuthToken.Decrypt(encryptedToken);&#10;                //bool isValidUserId = IdentityStore.IsValidUserId(token.UserId);&#10;                bool requestIPMatchesTokenIP = token.IP.Equals(request.GetClientIP());&#10;&#10;                if (!requestIPMatchesTokenIP)&#10;                {&#10;                    HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &#34;Invalid identity or client machine.&#34;);&#10;                    return Task.FromResult(reply);&#10;                }&#10;            }&#10;            catch (Exception ex)&#10;            {&#10;                HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &#34;Invalid token.&#34;);&#10;                return Task.FromResult(reply);&#10;            }&#10;        }&#10;        else&#10;        {&#10;            HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &#34;Request is missing authorization token.&#34;);&#10;            return Task.FromResult(reply);&#10;        }&#10;&#10;        return base.SendAsync(request, cancellationToken);&#10;    }&#10;&#10;}
+</code></pre>
+<p>DelegatingHandler这个类用来拦截HTTP消息的，有点类似于HTTPModule的作用，不过HTTPModule是IIS的东西。而这个DelegatingHandler是属于asp.net mvc里面的。可以看到我们在每个请求的时候，都会去检查一下请求头中是否存在特定的头。如果没有或者认证失败，就返回认证失败。<br>在用户认证的时候，我们只需要在响应头中添加特定的头信息进去，然后让客户端每次请求的时候附上此头信息即可。（通过jquery的全部ajax设定可以很容易做到）</p>
+<pre><code class="c#">AuthToken token = new AuthToken(user.UserName, HttpContext.Current.Request.UserHostAddress,DateTime.Now);&#10;HttpContext.Current.Response.AddHeader(&#34;X-JWT-Token&#34;, token.Encrypt());&#10;// must set this, otherwise jquery can&#39;t access X-JWT-Token header&#10;HttpContext.Current.Response.AddHeader(&#34;Access-Control-Expose-Headers&#34;, &#34;X-JWT-Token&#34;);
+</code></pre>
+<p>使用自定义的方式，我们还要考虑这个头的时效性问题，如何防止中间人攻击等等问题。不过已经不属于这次的内容了，基本的跨域认证已经可以完成了。  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2013/11/13/restful-api-cross-domain-authentication/" data-id="ci76wxaxl000k60kw756p2cn6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/11/22/enable-remote-mysql/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          开启unbuntu上3306远程连接
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/11/08/nginx-subdomain-config/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">nginx二级域名配置小结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSharp/">CSharp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Vision/">Computer Vision</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web开发/">Web开发</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a><a href="/tags/hexo/" style="font-size: 10px;">hexo</a><a href="/tags/mysql/" style="font-size: 10px;">mysql</a><a href="/tags/nginx/" style="font-size: 20px;">nginx</a><a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a><a href="/tags/vim/" style="font-size: 10px;">vim</a><a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/03/13/hangzhou-photo/">杭州西湖照片2张</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/29/wox/">快速启动器Wox</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/20/install_Python_windows_packages_into_virtualenvs/">安装python三方包到virtualenv</a>
+          </li>
+        
+          <li>
+            <a href="/2014/07/25/start-django-with-supervisor/">使用Supervisor管理程序</a>
+          </li>
+        
+          <li>
+            <a href="/2014/06/29/captcha-recognition-using-opencv/">使用OpenCV进行简单验证码识别</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 qianlifeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

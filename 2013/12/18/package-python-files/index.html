@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>打包python使其成为单文件可执行程序 | 猫猫二次元</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文介绍了如何使用pyinstaller打包python程序，使其成为window下的单个可执行exe文件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="打包python使其成为单文件可执行程序">
+<meta property="og:url" content="http://qianlifeng.github.io/2013/12/18/package-python-files/index.html">
+<meta property="og:site_name" content="猫猫二次元">
+<meta property="og:description" content="本文介绍了如何使用pyinstaller打包python程序，使其成为window下的单个可执行exe文件。">
+<meta property="og:image" content="/Images/pyinstaller-photo/install.png">
+<meta property="og:image" content="/Images/pyinstaller-photo/EnigmaVirtualBox.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="打包python使其成为单文件可执行程序">
+<meta name="twitter:description" content="本文介绍了如何使用pyinstaller打包python程序，使其成为window下的单个可执行exe文件。">
+  
+    <link rel="alternative" href="/atom.xml" title="猫猫二次元" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">猫猫二次元</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://qianlifeng.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-package-python-files" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/12/18/package-python-files/" class="article-date">
+  <time datetime="2013-12-18T10:15:17.000Z" itemprop="datePublished">2013-12-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      打包python使其成为单文件可执行程序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文介绍了如何使用pyinstaller打包python程序，使其成为window下的单个可执行exe文件。</p>
+<a id="more"></a>
+<h2 id="准备工作">准备工作</h2><hr>
+<ol>
+<li><p>安装<a href="http://www.pyinstaller.org/" target="_blank" rel="external">PyInstaller</a> <code>pip install PyInstaller</code>，具体打包方法后面会提到。</p>
+</li>
+<li><p>下载<a href="http://upx.sourceforge.net/" target="_blank" rel="external">UPX</a>，此程序用来压缩程序，效果蛮大。我试验的结果可以缩小一倍的程序体积。<br>下载完成解压后，将其加入到环境变量中。这样PyInstaller在执行的时候可以自动调用这个程序进行压缩。</p>
+</li>
+<li><p>下载安装<a href="http://enigmaprotector.com/en/downloads.html" target="_blank" rel="external">Enigma Virtual Box</a>。正常情况下，使用PyInstaller打包的文件会有许多依赖文件，<br>此程序的作用是将这些依赖和主程序进行合并，最后生成一个exe程序。</p>
+</li>
+</ol>
+<h2 id="打包">打包</h2><hr>
+<p>假设现在要打包p4p.py文件。直接在命令行下执行：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">PyInstaller</span> p4p.py</span><br></pre></td></tr></table></figure></p>
+<p>相比于以前的PyInstaller，2.0以后的版本好用了不少。执行上面的命令之后，应该会出现如图一连串的信息:<br><img src="/Images/pyinstaller-photo/install.png"></p>
+<p>注意，如果中间出现<br><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">INFO</span>: <span class="string">Executing - upx --lzma -q</span></span><br></pre></td></tr></table></figure></p>
+<p>类似的信息，那么就说明上面提到的UPX压缩程序起作用了。生成以后会在同目录下多一个dist的文件夹出来，里面就有我们需要的所有文件了，包括一个exe的可执行文件。</p>
+<p>但是到了这儿还没完。因为我们的目标是单个执行程序，所以我们祭出前面介绍的<code>Enigma Virtual Box</code>。<br><img src="/Images/pyinstaller-photo/EnigmaVirtualBox.png"><br>简单的实在是没什么可以说的，大家看图吧。<br>有一点需要注意的是右下角有个<code>文件选项</code>，点开之后可以把<code>压缩文件</code>和<code>退出删除</code>都选上，这样体积又能进一步压缩了。我最后打包的单个文件大概6M多一点，说大不大说小不小，反正还可以承受。</p>
+<p><span style="color:red;font-weight:bold;">2013-12-19 Update:</span><br>刚刚发现其实PyInstaller已经自带了类似于<code>Enigma Virtual Box</code>的功能。只需要在执行的时候加一个参数即可：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PyInstaller p4p<span class="class">.Py</span> --onefile</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2013/12/18/package-python-files/" data-id="ci76wxaxo000n60kw5ui4u4l9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/01/14/deploy-falsk-with-nginx/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          在nginx上配置flask网站
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/12/03/useful-linux-commands/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">一个Linux命令学习网站</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSharp/">CSharp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Vision/">Computer Vision</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web开发/">Web开发</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/摄影/">摄影</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a><a href="/tags/hexo/" style="font-size: 10px;">hexo</a><a href="/tags/mysql/" style="font-size: 10px;">mysql</a><a href="/tags/nginx/" style="font-size: 20px;">nginx</a><a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a><a href="/tags/vim/" style="font-size: 10px;">vim</a><a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/03/13/hangzhou-photo/">杭州西湖照片2张</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/29/wox/">快速启动器Wox</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/20/install_Python_windows_packages_into_virtualenvs/">安装python三方包到virtualenv</a>
+          </li>
+        
+          <li>
+            <a href="/2014/07/25/start-django-with-supervisor/">使用Supervisor管理程序</a>
+          </li>
+        
+          <li>
+            <a href="/2014/06/29/captcha-recognition-using-opencv/">使用OpenCV进行简单验证码识别</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 qianlifeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
