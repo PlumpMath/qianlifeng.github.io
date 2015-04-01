@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>跟我学做c#皮肤美化（二） | 猫猫二次元</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这篇介绍Button控件的制作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟我学做c#皮肤美化（二）">
+<meta property="og:url" content="http://qianlifeng.github.io/2010/04/13/charp-winform-skin-2/index.html">
+<meta property="og:site_name" content="猫猫二次元">
+<meta property="og:description" content="这篇介绍Button控件的制作">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx1xew8pqj20aa01i0sm.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/5d7c1fa4gw1elx1y3bnlaj20sd0izwic.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2dq5591j20co0dggmq.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/5d7c1fa4gw1elx2ea9cuzj20cm0dd75e.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2eosdpaj20cl0db0tt.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2fic2y5j20gl0aw74r.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟我学做c#皮肤美化（二）">
+<meta name="twitter:description" content="这篇介绍Button控件的制作">
+<meta name="twitter:creator" content="@scottqian2012">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">猫猫二次元</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="http://www.github.com/qianlifeng">Github</a>
+        
+          <a class="main-nav-link" href="http://www.cnblogs.com/qianlifeng">博客园</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://qianlifeng.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-charp-winform-skin-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/04/13/charp-winform-skin-2/" class="article-date">
+  <time datetime="2010-04-13T10:22:17.000Z" itemprop="datePublished">2010-04-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      跟我学做c#皮肤美化（二）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这篇介绍Button控件的制作</p>
+<a id="more"></a>
+<p>先来看看我们最终要做的效果图（分别对应普通、悬停、按下时的状态）：  </p>
+<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx1xew8pqj20aa01i0sm.jpg" alt=""></p>
+<p>下面就开始正式做。首先让我们新建一个控件库项目，命名为QLFUI。如图：</p>
+<p><img src="http://ww4.sinaimg.cn/large/5d7c1fa4gw1elx1y3bnlaj20sd0izwic.jpg" alt=""></p>
+<p>然后将默认的UserControl1重命名为 Button。接下来，我们就要在这上面来做文章了。先来稍稍设置一下，让这个用户控件看起来更像一个按钮吧！  </p>
+<p>Button的<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">Size:</span> <span class="number">78</span>,<span class="number">30</span></span><br><span class="line"><span class="label">BackgroundImageLayout:</span>Stretch</span><br></pre></td></tr></table></figure></p>
+<p>然后拖一个label控件到这个用户控件上，并设置label1的属性为<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">AutoSize:</span><span class="literal">false</span> ,  </span><br><span class="line"><span class="string">Dock:</span>fill,   </span><br><span class="line"><span class="string">TextAlign:</span>MiddleCenter,    </span><br><span class="line"><span class="string">BackColor:</span> Transparent,     </span><br><span class="line"><span class="string">Font:</span> 宋体, <span class="number">9</span>pt</span><br></pre></td></tr></table></figure></p>
+<p>这几个属性。好了，是不是开始像一个按钮了呢？  </p>
+<p>哦，差点忘了最后还要将整个控件（BUTTON）的背景色设置为Trasparent透明色。因为如果不设置成透明色那么透明的图片下面就会显示出button的背景色（默认灰色），不好看。好了，现在样子的已经大概有了，接下来就是编程了。先贴代码，然后我一个一个解释：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line">代码</span><br><span class="line"></span><br><span class="line"> [DefaultEvent(<span class="string">"Click"</span>)]</span><br><span class="line">   <span class="keyword">public</span> partialclass Button: UserControl</span><br><span class="line">   &#123;</span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 变量</span></span><br><span class="line"> </span><br><span class="line">       <span class="comment">//三种不同状态下的图片</span></span><br><span class="line">       Image _normalImage =<span class="keyword">null</span>;</span><br><span class="line">       Image _moveImage =<span class="keyword">null</span>;</span><br><span class="line">       Image _downImage =<span class="keyword">null</span>;</span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 属性</span></span><br><span class="line"> </span><br><span class="line">       [Category(<span class="string">"QLFSkinDll"</span>)]</span><br><span class="line">       <span class="keyword">public</span> ImageNormalImage</span><br><span class="line">       &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                return_normalImage;</span><br><span class="line"> </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">set</span></span><br><span class="line">            &#123;</span><br><span class="line">                _normalImage = <span class="keyword">value</span>;</span><br><span class="line">            &#125;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">       [Category(<span class="string">"QLFSkinDll"</span>)]</span><br><span class="line">       <span class="keyword">public</span> ImageDownImage</span><br><span class="line">       &#123;</span><br><span class="line">            <span class="keyword">get</span>&#123; <span class="keyword">return</span> _downImage; &#125;</span><br><span class="line">            <span class="keyword">set</span></span><br><span class="line">            &#123;</span><br><span class="line">                _downImage = <span class="keyword">value</span>;</span><br><span class="line">            &#125;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">       [Category(<span class="string">"QLFSkinDll"</span>)]</span><br><span class="line">       <span class="keyword">public</span> ImageMoveImage</span><br><span class="line">       &#123;</span><br><span class="line">            <span class="keyword">get</span>&#123; <span class="keyword">return</span> _moveImage; &#125;</span><br><span class="line">            <span class="keyword">set</span></span><br><span class="line">            &#123;</span><br><span class="line">                _moveImage = <span class="keyword">value</span>;</span><br><span class="line">            &#125;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">       [Category(<span class="string">"QLFSkinDll"</span>)]</span><br><span class="line">       <span class="keyword">public</span> stringCaption</span><br><span class="line">       &#123;</span><br><span class="line">            <span class="keyword">get</span>&#123; returnthis.label1.Text;&#125;   <span class="comment">//控件运行时会自动运行get方法得到值</span></span><br><span class="line"><span class="keyword">set</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">this</span>.label1.Text= <span class="keyword">value</span>;</span><br><span class="line">            &#125;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 构造函数</span></span><br><span class="line"> </span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">Button</span><span class="params">()</span></span><br><span class="line">       </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, <span class="keyword">true</span>);</span><br><span class="line">            <span class="comment">//默认的是自带的图片样式，如果使用该按钮则必须手工指定当前按钮你想要的背景图片</span></span><br><span class="line">            _normalImage = Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(<span class="string">@"QLFUI.Res.button.btnnomal.bmp"</span>));</span><br><span class="line">            _moveImage = Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(<span class="string">@"QLFUI.Res.button.btnfore.bmp"</span>));</span><br><span class="line">            _downImage = Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(<span class="string">@"QLFUI.Res.button.btndown.bmp"</span>));</span><br><span class="line">            MakeTransparent(_normalImage);</span><br><span class="line">            MakeTransparent(_moveImage);</span><br><span class="line">            MakeTransparent(_downImage);</span><br><span class="line">            InitializeComponent();</span><br><span class="line">            <span class="keyword">this</span>.BackgroundImage= _normalImage;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 辅助函数</span></span><br><span class="line"> </span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="title">voidMakeTransparent</span><span class="params">(Image image)</span></span><br><span class="line">       </span>&#123;</span><br><span class="line">            Bitmapbitmap = image <span class="keyword">as</span> Bitmap;</span><br><span class="line">            bitmap.MakeTransparent(Color.FromArgb(<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>));</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 事件</span></span><br><span class="line"> </span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="title">voidlabel1_MouseEnter</span><span class="params">(<span class="keyword">object</span> sender, EventArgs e)</span></span><br><span class="line">       </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.BackgroundImage= _moveImage;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="title">voidlabel1_MouseDown</span><span class="params">(<span class="keyword">object</span> sender, MouseEventArgs e)</span></span><br><span class="line">       </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.BackgroundImage= _downImage;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="title">voidlabel1_MouseLeave</span><span class="params">(<span class="keyword">object</span> sender, EventArgs e)</span></span><br><span class="line">       </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.BackgroundImage= _normalImage;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="title">voidlabel1_MouseUp</span><span class="params">(<span class="keyword">object</span> sender, MouseEventArgs e)</span></span><br><span class="line">       </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.BackgroundImage= _normalImage;</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="title">voidlabel1_Click</span><span class="params">(<span class="keyword">object</span> sender, EventArgs e)</span></span><br><span class="line">       </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.OnClick(e);</span><br><span class="line">       &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">**先看第一句：**`[DefaultEvent(<span class="string">"Click"</span>)]`，这句话是什么意思呢？我们知道平常我们拖一个按钮后，在设计模式下双击这个按钮就会自动产生这个按钮的Click事件。这个默认的Click事件从哪里来的呢，毫无疑问就是`[DefaultEvent(<span class="string">"Click"</span>`)]这一句来设置的啦！这里默认的是Click事件，如果写成`[DefaultEvent(<span class="string">"MouseEnter"</span>)]`就是MouseEnter事件啦！  </span><br><span class="line"></span><br><span class="line">接下来的四句分别定义了按钮三种不同状态下的bitmap。  </span><br><span class="line"></span><br><span class="line">下面的四个属性分别是三种不同状态下Image的属性和按钮的文字属性Caption,大家一看应该就明白。具体要解释的就是`[Category(<span class="string">"QLFSkinDll"</span>)]`。这句话的意思是将这些属性分类，看个图片大家就都明白了:以后在项目中设置属性时，我们定义的属性就自动分类在QLFSkinDll下面了。   </span><br><span class="line"></span><br><span class="line">**接下来是构造函数**：<span class="function"><span class="keyword">public</span> <span class="title">Button</span><span class="params">()</span></span>&#123;&#125;中的内容。  </span><br><span class="line"></span><br><span class="line">第一句是开始了窗体的双缓冲。双缓冲的意思就是现在内容中将图像画好了然后再显示到界面上去。在c<span class="preprocessor">#中图像一多最怕的就是图像闪烁的问题，开启了双缓冲虽说不能完全避免图像闪烁，但起码也能有一定的效果，我们就先开着吧^ ^！  </span></span><br><span class="line"></span><br><span class="line">接下来的三句就是给三个状态的图像赋值了，这里我是把图像嵌入进来了，并没有放置在外部。要应用嵌入的资源分两步走：第一步在项目中点击图片的属性，然后将“生成操作”改为嵌入的资源。  </span><br><span class="line"></span><br><span class="line">![](http:<span class="comment">//ww3.sinaimg.cn/large/5d7c1fa4gw1elx2c1rs6zj207q0ietao.jpg)</span></span><br><span class="line"></span><br><span class="line">第二步应用就是我们用到的代码啦：</span><br></pre></td></tr></table></figure></p>
+<p>Assembly.GetExecutingAssembly().GetManifestResourceStream(@”QLFUI.Res.button.btnnomal.bmp”)<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这句话前面的照写，后面的路径规则是“命名空间+文件夹名+你的文件名+文件名后缀”，当然如果你的文件直接放在项目下就没有文件夹名了。聪明的大家应该明白吧？呵呵！其中我们要用到的文件大家可以从我给的项目例子中复制。接下来的</span><br></pre></td></tr></table></figure></p>
+<p>MakeTransparent(_normalImage);<br>MakeTransparent(_moveImage);<br>MakeTransparent(_downImage);<br>```<br>三句先不看，可以注释掉，下面会讲解它的作用的。</p>
+<p>第八句<code>InitializeComponent()</code>是系统自带的初始化控件一些代码，我们不用去管它。最后一句<code>this.BackgroundImage =_normalImage;</code>就是设置按钮的其实的图片的样子啦！  </p>
+<p>好啦，写了这么久，咱们还是先来看看能运行出个什么样子出来吧！看看目前的状态下，它离我们的目标还差多远！见图：  </p>
+<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2dq5591j20co0dggmq.jpg" alt=""></p>
+<p>从图中我们可以看到明显的一个问题，就是按钮的边缘有粉红色。而且如果你也正好做到这里也会发现鼠标经过按钮时，按钮没有任何反应（废话，我们还什么都没做呢）。</p>
+<p><strong>好了，接下来就有目标了，解决这两个问题我们这个按钮美化的就差不多了！</strong>  </p>
+<p>先来解决第一个问题，去掉粉红色。我们需要用到Bitmap的一个函数MakeTransparent(Color),这个函数的作用是使指定的颜色对 Bitmap 透明。也就是说我们只要将这个函数的Color设置为我们需要去掉的粉红色不就行了?!  </p>
+<p>继续看代码，我们先写一个函数private void MakeTransparent(Imageimage)，这个函数的作用就是将传进来的图片的指定的颜色进行透明处理。函数里就两句话，第一句话先将Image转为Bitmap。第二句话就是进行透明处理，这里的Color.FromArgb(255, 0, 255)就是我们要去的粉红色啦。那什么时候进行去色呢？毫无疑问，当然是在给三种状态赋值后紧接着就去色啦！所以我们在构造函数中的5,6,7句加上透明处理。(倒过来讲这个作用，大家习惯不习惯呢？)好了，现在我们再来运行一下：看图：  </p>
+<p><img src="http://ww2.sinaimg.cn/large/5d7c1fa4gw1elx2ea9cuzj20cm0dd75e.jpg" alt=""> </p>
+<p>呵呵，正如预料的那样，粉红色没有了（图中的灰色其实是透明的，只要在另外一个项目中引用一下就知道了），第一个问题解决！  </p>
+<p>再来看第二个问题，要实现按钮的变色肯定是跟鼠标的事件相关啦，比如说鼠标一进入按钮的范围之内我们就让按钮的背景改变，按下和离开按钮的时候也响应的改变背景。所以我们用到这四个事件（注意，事件都是label1的事件，因为我们将label覆盖在按钮上，所以我们点击的其实是label1）：MouseEnter，MouseDown, MouseLeave, MouseUp。具体的事件里面执行的代码也很简单，就是更换按钮的背景图片。好了，让我们再运行一下看看效果：  </p>
+<p><img src="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2eosdpaj20cl0db0tt.jpg" alt=""></p>
+<p>OK!两个问题都解决了，我们的按钮运行的好像也很正常！鼠标进入，移出，按下的时候也会变换背景！但是，如果你另外建一个项目，并双击产生点击事件并编写相应代码时就会发现点击事件没作用了。多么郁闷的一件事情啊，点击事件都没作用了，我们还要这个按钮干嘛啊！别急，让我们来解决它。首先要明白的就是我们在其他项目中引用的这个的button控件的点击事件是整个用户控件的点击事件（还记得我们在整个button类的上方设置了默认的点击事件吗？），而当我们去点击按钮时我们实际点击的只是label1。问题很明了了，我们点击的是label1，设置的却是整个用户控件的事件，当然触发不了事件了。既然问题已经搞明白了，下面就去解决它。继续看代码：  </p>
+<p>既然我们点击的是label1那么我们就在label1的点击事件中做文章，如代码所示，我们在label1的点击事件中触发了整个类（this）的onclick事件，然后这个onclick会去找相应的类的click事件，就是我们在其他项目中直接双击的那个事件啦！</p>
+<p>OK，至此这个按钮空间的美化就做好了看看效果吧！</p>
+<p><img src="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2fic2y5j20gl0aw74r.jpg" alt="">  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2010/04/13/charp-winform-skin-2/" data-id="ci7yqhtnf001twgav4kvwfcn1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DotNet/">DotNet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/皮肤/">皮肤</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2010/04/15/charp-winform-skin-3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          跟我学做c#皮肤美化（三）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2010/04/13/charp-winform-skin/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">跟我学做c#皮肤美化（一）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a><a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a><a href="/tags/linux/" style="font-size: 15px;">linux</a><a href="/tags/mysql/" style="font-size: 10px;">mysql</a><a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a><a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a><a href="/tags/python/" style="font-size: 12.5px;">python</a><a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a><a href="/tags/vim/" style="font-size: 10px;">vim</a><a href="/tags/web/" style="font-size: 10px;">web</a><a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a><a href="/tags/树莓派/" style="font-size: 12.5px;">树莓派</a><a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a><a href="/tags/软件/" style="font-size: 12.5px;">软件</a><a href="/tags/随笔/" style="font-size: 15px;">随笔</a><a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">二月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">一月 2010</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/03/22/aria2/">利用aria2实现在树莓派上的远程下载</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/13/raspberrypi2/">树莓派2</a>
+          </li>
+        
+          <li>
+            <a href="/2014/11/02/refuse-malicious-scanning/">拒绝恶意扫描登陆</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/29/wox/">快速启动器Wox</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/20/install_Python_windows_packages_into_virtualenvs/">安装python三方包到virtualenv</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 qianlifeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="http://www.github.com/qianlifeng" class="mobile-nav-link">Github</a>
+  
+    <a href="http://www.cnblogs.com/qianlifeng" class="mobile-nav-link">博客园</a>
+  
+</nav>
+    
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script type='text/javascript'>
+(function() {
+    var c = document.createElement('script'); 
+    c.type = 'text/javascript';
+    c.async = true;
+    c.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.clicki.cn/boot/50087';
+    var h = document.getElementsByTagName('script')[0];
+    h.parentNode.insertBefore(c, h);
+})();
+</script>
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

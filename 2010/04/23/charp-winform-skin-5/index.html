@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>跟我学做c#皮肤美化（五） | 猫猫二次元</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本篇主要解决上篇遗留的一些问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟我学做c#皮肤美化（五）">
+<meta property="og:url" content="http://qianlifeng.github.io/2010/04/23/charp-winform-skin-5/index.html">
+<meta property="og:site_name" content="猫猫二次元">
+<meta property="og:description" content="本篇主要解决上篇遗留的一些问题">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx3bkb41uj20p00emjtb.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/5d7c1fa4gw1elx3cf4dgrj208w08smx7.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟我学做c#皮肤美化（五）">
+<meta name="twitter:description" content="本篇主要解决上篇遗留的一些问题">
+<meta name="twitter:creator" content="@scottqian2012">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">猫猫二次元</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="http://www.github.com/qianlifeng">Github</a>
+        
+          <a class="main-nav-link" href="http://www.cnblogs.com/qianlifeng">博客园</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://qianlifeng.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-charp-winform-skin-5" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/04/23/charp-winform-skin-5/" class="article-date">
+  <time datetime="2010-04-23T09:56:17.000Z" itemprop="datePublished">2010-04-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      跟我学做c#皮肤美化（五）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本篇主要解决上篇遗留的一些问题</p>
+<a id="more"></a>
+<p>先来回顾一下我们上次遗留的问题</p>
+<ol>
+<li>消除图中不透明的地方</li>
+<li>实现标题栏的拖动</li>
+<li>实现窗体的最大化，最小化，关闭功能。  </li>
+</ol>
+<p>下面就来一个一个解决。  </p>
+<p><strong>解决不透明的问题</strong>  </p>
+<p>  首先为什么会有灰色的出现呢。不难想到这些灰色就是Picturebox的背景色。边角上的图片对粉红色透明了，但却露出了背景的颜色。知道了原因就好了解决了，就是我们需要将这一块的背景色给透明掉。有人说可以讲picturebox的背景色设置为透明的啊。不错，是可以，但整个窗体的背景色呢？picturebox下面不还是有整个被覆盖的窗体的嘛！窗体是不能像用户控件那样背景色设置为透明的，不过却有一个属性TransparencyKey可以间接的为我们解决这个问题。这个属性的作用是这样的，当这个属性设置为某一种颜色后，那该窗体上的所有的这种颜色将都变为透明色。</p>
+<p>  所以我们只需将TransparencyKey的颜色和窗体的背景色设置成一样，那么背景色不就自动透明了嘛！在这里我们将所有控件的背景色和TransparencyKey都设置成系统里面的Info颜色（这个颜色你可以自己指定，不过不建议是原来的Control色，因为这样后你再添加一个普通的控件，那么这个控件的一部分也会被透明掉）</p>
+<p><strong>实现标题栏的拖动</strong>  </p>
+<p>  因为我们的窗体是没有状态栏的，所以当我们想移动窗口的时候发现怎么也”移不动”(不是有个笑话的嘛“中国移不动“,呵呵)。要解决这个问题还是需要借助API来完成。那如何知道别人需要移动窗体呢？这里我们就通过MouseDown这个事件来判断。即如果用户在特定的区域内按下了鼠标左键，那么我们就认为用户需要移动客户端了。这个时候我们调用相应的API向系统通知（SendMessage）让系统做出响应。为了效果好一点，我们将状态栏那一行的所有的MouseDown事件都用这个方法。于是现在我们运行一下看看能否移动窗体。</p>
+<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx3bkb41uj20p00emjtb.jpg" alt=""></p>
+<p>  很不错嘛！又是一个问题解决了，现在只要将右上方的三个按钮的功能完成那这个窗体就算基本完成了啦。好了，我们继续。  </p>
+<p>  要处理按钮的事件，毫无疑问我们在设计模式中双击对应的按钮，然后处理。这里还要提一下的就是我们需要在这些事件的每个方法钱加一个virtual让这些个方法可以被重写。道理很简单，假如我按关闭按钮的时候不想其直接关闭而是先弹出对话框提醒一下用户怎么办呢？总不能让用这个控件的人再去修改这个皮肤控件吧，最好的办法就是可以让他们重写按钮的click事件，他们想干嘛干嘛，不想有其他的功能只要不重写就是了。    </p>
+<p><strong>好了开始说最小化功能吧</strong>  </p>
+<p>很简单，一句话搞定：this.WindowState = FormWindowState.Minimized;然后是关闭按钮，还是一句话的事情：this.close();呵呵貌似这两个功能真简单那！原本最大化也不复杂的，可是遇到了前面说到的那个问题，我们就知道想点儿其他的办法啦。看代码：</p>
+<p>当用户点击最大化按钮的时候我们先将最大化按钮上移隐藏，然后将还原按钮降下（还记得我们一开始给他设置的位置是-30吗？），然后我们最大化之前就先记录窗体的大小和位置（就是最开始赋值的那四句话）信息便于后面的还原。接下来的四句就是咱们手动来制造一种窗体最大化的状态啦，首先位置肯定在左上角。然后大小应该就是用户电脑屏幕客户区的大小，这个大小我是用Screen.PrimaryScreen.WorkingArea这个函数得到的。状态设置完了我们只要改一下窗体的状态标识st为stat.Max。然后当用户想还原的时候我们只要在btres的click的点击事件中做一下刚才那个动作的反就行了。怎么样,是不是也不难啊！Ok，最后看一下运行效果：</p>
+<p><img src="http://ww2.sinaimg.cn/large/5d7c1fa4gw1elx3cf4dgrj208w08smx7.jpg" alt=""> </p>
+<p>发现问题：  </p>
+<p>终于是做好了。不过假如你也实际跟我动手做出了一个，你或许会发现以下一些问题：  </p>
+<ol>
+<li>点击最大化的时候反应好像有点慢，意思就是大概要过个这个半秒钟才会最大化。</li>
+<li>还有一个问题就是从最小化状态下恢复到最大化状态，窗体左上角会有闪烁现象(闪的实在太快了，没办法截图啊，大家可以应用下我下面上传的DLL运行下就知道了)。我们本来就是想美化窗口，但是如果这些个问题一来实在是给人感觉不好，甚至还不如不美化。在下一篇中我将会带领大家解决这个问题。</li>
+<li>我们的窗体位置虽然能移动了，不过大小还不能拖动。  </li>
+</ol>
+<p>在下一篇中我会带领大家解决这些问题，敬请期待！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2010/04/23/charp-winform-skin-5/" data-id="ci7yqhtn7001kwgavhar88d54" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DotNet/">DotNet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/皮肤/">皮肤</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2010/06/13/qzone-spirit/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          QQ空间小精灵
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2010/04/23/a-httpwebrequest-demo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">一个httpwebrequest异步下载的例子</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a><a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a><a href="/tags/linux/" style="font-size: 15px;">linux</a><a href="/tags/mysql/" style="font-size: 10px;">mysql</a><a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a><a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a><a href="/tags/python/" style="font-size: 12.5px;">python</a><a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a><a href="/tags/vim/" style="font-size: 10px;">vim</a><a href="/tags/web/" style="font-size: 10px;">web</a><a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a><a href="/tags/树莓派/" style="font-size: 12.5px;">树莓派</a><a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a><a href="/tags/软件/" style="font-size: 12.5px;">软件</a><a href="/tags/随笔/" style="font-size: 15px;">随笔</a><a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">二月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">一月 2010</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/03/22/aria2/">利用aria2实现在树莓派上的远程下载</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/13/raspberrypi2/">树莓派2</a>
+          </li>
+        
+          <li>
+            <a href="/2014/11/02/refuse-malicious-scanning/">拒绝恶意扫描登陆</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/29/wox/">快速启动器Wox</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/20/install_Python_windows_packages_into_virtualenvs/">安装python三方包到virtualenv</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 qianlifeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="http://www.github.com/qianlifeng" class="mobile-nav-link">Github</a>
+  
+    <a href="http://www.cnblogs.com/qianlifeng" class="mobile-nav-link">博客园</a>
+  
+</nav>
+    
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script type='text/javascript'>
+(function() {
+    var c = document.createElement('script'); 
+    c.type = 'text/javascript';
+    c.async = true;
+    c.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.clicki.cn/boot/50087';
+    var h = document.getElementsByTagName('script')[0];
+    h.parentNode.insertBefore(c, h);
+})();
+</script>
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>跟我学做c#皮肤美化（三） | 猫猫二次元</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这篇介绍Checkbox控件的制作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟我学做c#皮肤美化（三）">
+<meta property="og:url" content="http://qianlifeng.github.io/2010/04/15/charp-winform-skin-3/index.html">
+<meta property="og:site_name" content="猫猫二次元">
+<meta property="og:description" content="这篇介绍Checkbox控件的制作">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2mfcjrdj208i08zglq.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2n1f8t4j208k093aa1.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2n97kc6j20j20hwdj6.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2o2jwlbj204f015gle.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/5d7c1fa4gw1elx2p90ba0j20cm0dgab8.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2pn1agoj206h03adfp.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2q7wwo1j20cn0dcq44.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟我学做c#皮肤美化（三）">
+<meta name="twitter:description" content="这篇介绍Checkbox控件的制作">
+<meta name="twitter:creator" content="@scottqian2012">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">猫猫二次元</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="http://www.github.com/qianlifeng">Github</a>
+        
+          <a class="main-nav-link" href="http://www.cnblogs.com/qianlifeng">博客园</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://qianlifeng.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-charp-winform-skin-3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/04/15/charp-winform-skin-3/" class="article-date">
+  <time datetime="2010-04-15T12:58:17.000Z" itemprop="datePublished">2010-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      跟我学做c#皮肤美化（三）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这篇介绍Checkbox控件的制作</p>
+<a id="more"></a>
+<p>先看最终的效果图：</p>
+<p><img src="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2mfcjrdj208i08zglq.jpg" alt=""><br><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2n1f8t4j208k093aa1.jpg" alt=""></p>
+<p>或许大家已经猜出来我这个checkbox是怎么实现的吧？不错，就是前面的框是一个图片，后面的文字是label。经过前面button的讲解我想有能力的人完全可以单独制作出来。还不熟悉的现在就开始跟我一步一步的来。  </p>
+<p>打开上次的项目QLFUI,新建一个名为CheckBox的用户控件。如图</p>
+<p><img src="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2n97kc6j20j20hwdj6.jpg" alt=""></p>
+<p>同样的，我们先设置一下，使其看起来像一个checkbox。具体设置如下：</p>
+<p>CheckBox控件<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">Size:</span><span class="number">70</span>,<span class="number">13</span> </span><br><span class="line"><span class="label">MinimumSize:</span><span class="number">70</span>,<span class="number">13</span>  </span><br><span class="line"><span class="label">BackColor:</span>Transparent</span><br></pre></td></tr></table></figure></p>
+<p>然后拖一个picturebox并设置以下属性：<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">Size:</span><span class="number">13</span>,<span class="number">13</span>  </span><br><span class="line"><span class="label">Location:</span><span class="number">0</span>,<span class="number">0</span>, </span><br><span class="line"><span class="label">BackgroundImageLayout:</span>Stretch</span><br></pre></td></tr></table></figure></p>
+<p>再拖一个label上来设置以下属性：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">AutoSize</span><span class="pseudo">:falseLocation</span><span class="pseudo">:15</span>,0  </span><br><span class="line"><span class="tag">Size</span><span class="pseudo">:50</span><span class="pseudo">:13</span></span><br></pre></td></tr></table></figure></p>
+<p>最终应该是这个样子：</p>
+<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2o2jwlbj204f015gle.jpg" alt=""> </p>
+<p>好了，样子有了接下来就是编码了！还是一样，先贴代码，然后我一句一句解释：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line">代码</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.ComponentModel;</span><br><span class="line"><span class="keyword">using</span> System.Drawing;</span><br><span class="line"><span class="keyword">using</span> System.Data;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Windows.Forms;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> System.Drawing.Imaging;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">QLFUI</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">CheckBox</span> : <span class="title">UserControl</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 变量</span></span><br><span class="line"></span><br><span class="line">        Image _normal;</span><br><span class="line">        Image _normalmove;</span><br><span class="line">        Image _checkedmove;</span><br><span class="line">        Image _checked;</span><br><span class="line">        <span class="keyword">bool</span> check;</span><br><span class="line"></span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 属性</span></span><br><span class="line"></span><br><span class="line">        [Category(<span class="string">"QLFSkinDll"</span>)]</span><br><span class="line">        [Description(<span class="string">"控件是否被选中"</span>)]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">bool</span> Checked</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span> &#123; <span class="keyword">return</span> check; &#125;</span><br><span class="line">            <span class="keyword">set</span></span><br><span class="line">            &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">value</span> == <span class="keyword">true</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    pictureBox1.Image = _checked;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    pictureBox1.Image = _normal;</span><br><span class="line">                &#125;</span><br><span class="line">                check = <span class="keyword">value</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [Category(<span class="string">"QLFSkinDll"</span>)]</span><br><span class="line">        [Description(<span class="string">"显示的文字"</span>)]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> CheckBoxText</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span> &#123; <span class="keyword">return</span> <span class="keyword">this</span>.label1.Text; &#125;</span><br><span class="line">            <span class="keyword">set</span> &#123; <span class="keyword">this</span>.label1.Text = <span class="keyword">value</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 构造函数</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CheckBox</span><span class="params">()</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">            Bitmap nl = <span class="keyword">new</span> Bitmap(Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(<span class="string">@"QLFUI.Res.checkbox.check.bmp"</span>)));</span><br><span class="line">            _normal = nl.Clone(<span class="keyword">new</span> Rectangle(<span class="number">0</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">13</span>), PixelFormat.Format64bppPArgb);</span><br><span class="line">            _normalmove = nl.Clone(<span class="keyword">new</span> Rectangle(<span class="number">13</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">13</span>), PixelFormat.Format64bppPArgb);</span><br><span class="line"></span><br><span class="line">            Bitmap n2 = <span class="keyword">new</span> Bitmap(Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(<span class="string">@"QLFUI.Res.checkbox.check2.bmp"</span>)));</span><br><span class="line">            _checked = n2.Clone(<span class="keyword">new</span> Rectangle(<span class="number">0</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">13</span>), PixelFormat.Format64bppPArgb);</span><br><span class="line">            _checkedmove = n2.Clone(<span class="keyword">new</span> Rectangle(<span class="number">13</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">13</span>), PixelFormat.Format64bppPArgb);</span><br><span class="line"></span><br><span class="line">            InitializeComponent();</span><br><span class="line">            </span><br><span class="line">            pictureBox1.Image = _normal;</span><br><span class="line">           </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">        <span class="preprocessor">#<span class="keyword">region</span> 事件</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pictureBox1_MouseEnter</span><span class="params">(<span class="keyword">object</span> sender, EventArgs e)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (check == <span class="keyword">true</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                pictureBox1.Image = _checkedmove;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                pictureBox1.Image = _normalmove;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pictureBox1_MouseLeave</span><span class="params">(<span class="keyword">object</span> sender, EventArgs e)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (check == <span class="keyword">true</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                </span><br><span class="line">                pictureBox1.Image = _checked;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                pictureBox1.Image = _normal;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pictureBox1_MouseDown</span><span class="params">(<span class="keyword">object</span> sender, MouseEventArgs e)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (check == <span class="keyword">false</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                pictureBox1.Image = _checkedmove;</span><br><span class="line">                check = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                pictureBox1.Image = _normalmove;</span><br><span class="line">                check = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">label1_TextChanged</span><span class="params">(<span class="keyword">object</span> sender, EventArgs e)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            label1.Width = label1.Text.Length *((<span class="keyword">int</span>)<span class="keyword">this</span>.Font.Size+<span class="number">5</span>);</span><br><span class="line">            <span class="keyword">this</span>.Width = label1.Width + <span class="number">20</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CheckBox_SizeChanged</span><span class="params">(<span class="keyword">object</span> sender, EventArgs e)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            label1.Width = <span class="keyword">this</span>.Width - <span class="number">15</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endregion</span> </span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>变量：</strong>  </p>
+<p>CheckBox类的开头我定义了四个image的变量用来分别表示选中和未选中状态下鼠标的移进移出的图像！接下来的bool check变量就是代表该控件是否已经被选中（checkbox最重要的属性就是这个了吧？！）。</p>
+<p><strong>属性：</strong>  </p>
+<p>接下来，就是2个属性了，我代码里面也注释的很清楚。这里只有两个地方需要解释一下:1, [Description(“显示的文字”)]是干什么的？看图你就明白了</p>
+<p><img src="http://ww4.sinaimg.cn/large/5d7c1fa4gw1elx2p90ba0j20cm0dgab8.jpg" alt=""></p>
+<p>这下明白了吧? 对，就是用来解释你这个属性的（别人用你的控件都不知道什么意思，我们当然要适当的注释一下啦）!第二点要注意的就是，在设置Checked这个属性的时候要注意更换图片，选中和不选中的时候的图片不同！其他的属性我想大家经过button控件的讲解已经能很容易看明白里面的内容了。这里就不再罗嗦了。  </p>
+<p>接下来看构造函数。第一句this.SetStyle我就不说了，不懂可以看button里面的讲解。接下来的六句话就是得到四种状态下的图片了，不过得到的好像不是很简单！这是因为我们的原始图片是这样的</p>
+<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2pn1agoj206h03adfp.jpg" alt=""></p>
+<p>看见没有，图片是画在一张图片中的，所以我们需要使用bitmap的clone函数将不同矩形区域下的图片给截取出来。这样解释大家应该明白了Clone的意思了吧。剩下的两句不罗嗦了，和button里面的一样。  </p>
+<p>接下来该做什么呢，根据制作button控件的经验，我们就该开始编写鼠标的各种事件了，并在这些事件中处理不同的背景。  </p>
+<p>事件里面我们一共写了三个事件，与button不同的是这里并没有MouseUp事件，为什么呢？因为不需要，哈哈！开个玩笑，因为背景对于mouseup事件并不需要改变！不过如果你高兴当然可以加上去。事件里面的内容也很简单，就是根据当前check的状态，然后依据鼠标的状态更换picturebox的背景。很简单，我就不多说了。另外要注意的就是把label的对应的事件也与生成的鼠标事件关联起来（怎么关联？直接在label的属性的对应事件里面选择那些个已经存在的事件就行了）</p>
+<p>好了，来运行一下看看效果吧！</p>
+<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2q7wwo1j20cn0dcq44.jpg" alt=""> </p>
+<p>运行的好像还不错呢，我们设置的属性都能成功应用。不过，如果我们在其他项目中引用这个控件并将CheckBoxText属性设置的稍微长一些，我们就会发现有一部分文字显示不出来了。这是因为我们的控件的宽度是固定的70个像素，当label的长度更改时超过整个控件长度的部分就会被隐藏。所以我们还需要在label的内容更改时同时改变整个控件的长度以完全显示文字的内容。  </p>
+<p>看代码，我们写一个label文字更改时的事件<code>label1_TextChanged</code>，当label中的文字改变时就会触发这个事件。事件里面的第一句就是根据文字的个数计算label需要显示的宽度。字体的宽度是用<code>(int)this.Font.Size+</code> 5来得到的(这个宽度我测试的基本能得到要求)，得到了label的宽度我们只要将这个宽度加20(图片的宽度)就大概得到了整个控件的宽度，这样文字就能正常显示了。当然为了以防万一我们还要加一个事件(基本用不上，不过保险嘛，呵呵)就是<code>CheckBox SizeChanged</code>事件了（见代码），当我们手动拉动checkbox时手动改变label的长度，这样即使上面一个事件打不到要求有些文字没有显示出来，我们只要手动拖一下checkbox的长度那文字肯定就能显示出来了。  </p>
+<p>OK,checkbox控件制作完成。  </p>
+<p>下一篇就会开始先制作窗体部分。。。敬请期待！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2010/04/15/charp-winform-skin-3/" data-id="ci7yqhtnc001qwgavwxsjy82a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DotNet/">DotNet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/皮肤/">皮肤</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2010/04/15/charp-winform-skin-4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          跟我学做c#皮肤美化（四）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2010/04/13/charp-winform-skin-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">跟我学做c#皮肤美化（二）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a><a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a><a href="/tags/linux/" style="font-size: 15px;">linux</a><a href="/tags/mysql/" style="font-size: 10px;">mysql</a><a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a><a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a><a href="/tags/python/" style="font-size: 12.5px;">python</a><a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a><a href="/tags/vim/" style="font-size: 10px;">vim</a><a href="/tags/web/" style="font-size: 10px;">web</a><a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a><a href="/tags/树莓派/" style="font-size: 12.5px;">树莓派</a><a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a><a href="/tags/软件/" style="font-size: 12.5px;">软件</a><a href="/tags/随笔/" style="font-size: 15px;">随笔</a><a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">二月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">一月 2010</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/03/22/aria2/">利用aria2实现在树莓派上的远程下载</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/13/raspberrypi2/">树莓派2</a>
+          </li>
+        
+          <li>
+            <a href="/2014/11/02/refuse-malicious-scanning/">拒绝恶意扫描登陆</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/29/wox/">快速启动器Wox</a>
+          </li>
+        
+          <li>
+            <a href="/2014/10/20/install_Python_windows_packages_into_virtualenvs/">安装python三方包到virtualenv</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 qianlifeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="http://www.github.com/qianlifeng" class="mobile-nav-link">Github</a>
+  
+    <a href="http://www.cnblogs.com/qianlifeng" class="mobile-nav-link">博客园</a>
+  
+</nav>
+    
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script type='text/javascript'>
+(function() {
+    var c = document.createElement('script'); 
+    c.type = 'text/javascript';
+    c.async = true;
+    c.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.clicki.cn/boot/50087';
+    var h = document.getElementsByTagName('script')[0];
+    h.parentNode.insertBefore(c, h);
+})();
+</script>
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
