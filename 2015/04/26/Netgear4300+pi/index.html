@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>我的网件4300+树莓派 | 猫猫二次元</title>
+  <title>Netgear4300折腾记 | 猫猫二次元</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在同事的推荐下，入了WNDR4300路由器。天猫335买的，好像比某东做活动的时候还贵不少。anyway，等不到那个时候啦。配合上次买的树莓派，可以开始折腾啦。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的网件4300+树莓派">
+<meta property="og:title" content="Netgear4300折腾记">
 <meta property="og:url" content="http://qianlifeng.github.io/2015/04/26/Netgear4300+pi/index.html">
 <meta property="og:site_name" content="猫猫二次元">
 <meta property="og:description" content="在同事的推荐下，入了WNDR4300路由器。天猫335买的，好像比某东做活动的时候还贵不少。anyway，等不到那个时候啦。配合上次买的树莓派，可以开始折腾啦。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我的网件4300+树莓派">
+<meta name="twitter:title" content="Netgear4300折腾记">
 <meta name="twitter:description" content="在同事的推荐下，入了WNDR4300路由器。天猫335买的，好像比某东做活动的时候还贵不少。anyway，等不到那个时候啦。配合上次买的树莓派，可以开始折腾啦。">
 <meta name="twitter:creator" content="@scottqian2012">
   
@@ -72,7 +72,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      我的网件4300+树莓派
+      Netgear4300折腾记
     </h1>
   
 
@@ -137,18 +137,18 @@
 6. ChinaDNS
 -->
 <h2 id="动态域名解析">动态域名解析</h2><p>我们这里使用DNSPod提供的动态域名解析方案。首先，你得有一个DNSPod的域名，然后你得通过如下两个请求获得一些关于这个域名的基本信息：</p>
-<h2 id="获取域名列表得到_domain_id：">获取域名列表得到 domain_id：</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">curl</span> -X POST <span class="url">https://dnsapi.cn/Domain.List</span> -d <span class="string">"login_email=&lt;your login email&gt;&amp;login_password=xxxx&amp;format=json"</span></span><br></pre></td></tr></table></figure>
-<h2 id="获取域名的记录列表得到_record_id：">获取域名的记录列表得到 record_id：</h2><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST https://dnsapi.cn/<span class="keyword">Record</span>.<span class="keyword">List</span> -d <span class="string">"login_email=heddom&amp;login_password=xxx&amp;format=json&amp;domain_id=11078351"</span></span><br></pre></td></tr></table></figure>
+<p>获取域名列表得到 domain_id<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">curl</span> -X POST <span class="url">https://dnsapi.cn/Domain.List</span> -d <span class="string">"login_email=&lt;your login email&gt;&amp;login_password=xxxx&amp;format=json"</span></span><br></pre></td></tr></table></figure></p>
+<p>获取域名的记录列表得到 record_id：<br><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST https://dnsapi.cn/<span class="keyword">Record</span>.<span class="keyword">List</span> -d <span class="string">"login_email=heddom&amp;login_password=xxx&amp;format=json&amp;domain_id=11078351"</span></span><br></pre></td></tr></table></figure></p>
 <p>然后再将获得的domain_id和record_id放在下面的语句中请求<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span></span><br><span class="line">curl -X POST https://dnsapi.cn/Record.Ddns <span class="operator">-d</span> <span class="string">'login_email=xxxxxxxxx&amp;login_password=xxxxxxx&amp;format=json&amp;domain_id=xxxx&amp;record_id=xxxxxx&amp;record_line=默认&amp;sub_domain=your_subdomain'</span></span><br></pre></td></tr></table></figure></p>
 <p>最后把上面这段加入到Crontab中，让他定时运行即可。</p>
 <p>有了固定了域名，下面就可以做些有意思的事情了。</p>
-<h1 id="暴露树莓派的SSH端口">暴露树莓派的SSH端口</h1><p>点击网络-&gt;防火墙-&gt;端口转发，新建一个22到22的端口转发即可</p>
+<h3 id="暴露树莓派的SSH端口">暴露树莓派的SSH端口</h3><p>点击网络-&gt;防火墙-&gt;端口转发，新建一个22到22的端口转发即可</p>
 <h3 id="暴露离线下载到外网">暴露离线下载到外网</h3><p>在树莓派的nginx做如下配置，这样在访问subdomain.domain.com的时候就直接是下载界面了。<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">server</span> &#123;</span><br><span class="line">        <span class="title">server_name</span> subdomain.domain.com;</span><br><span class="line"></span><br><span class="line">        <span class="title">location</span> / &#123;</span><br><span class="line">                <span class="title">proxy_pass</span>   <span class="url">http://192.168.1.1/yaaw/</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/04/26/Netgear4300+pi/" data-id="ci8y9q93d0025ws9jglgtdvtl" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/04/26/Netgear4300+pi/" data-id="ci8yaqyhy0025wlbcg8xecfut" class="article-share-link">Share</a>
       
       
     </footer>
@@ -207,7 +207,7 @@
       <ul>
         
           <li>
-            <a href="/2015/04/26/Netgear4300+pi/">我的网件4300+树莓派</a>
+            <a href="/2015/04/26/Netgear4300+pi/">Netgear4300折腾记</a>
           </li>
         
           <li>
