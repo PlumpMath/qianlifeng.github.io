@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>nginx二级域名配置小结 | 猫猫二次元</title>
+  <title>Archives: 2015/5 | 猫猫二次元</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一直就听说nginx很牛逼的样子，这次就在VPS上面体验了一把。平常一直混迹于window平台下，所以最多也就配配IIS，而且仅仅限于UI这里点点那里点点。使用nginx完全是不同的感受，所有配置完全写在配置文件里面，所有东西完全掌控在你手上。极客小伙伴们快来体验一把！">
-<meta property="og:type" content="article">
-<meta property="og:title" content="nginx二级域名配置小结">
-<meta property="og:url" content="http://qianlifeng.github.io/2013/11/08/nginx-subdomain-config/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="猫猫二次元">
+<meta property="og:url" content="http://qianlifeng.github.io/archives/2015/05/index.html">
 <meta property="og:site_name" content="猫猫二次元">
-<meta property="og:description" content="一直就听说nginx很牛逼的样子，这次就在VPS上面体验了一把。平常一直混迹于window平台下，所以最多也就配配IIS，而且仅仅限于UI这里点点那里点点。使用nginx完全是不同的感受，所有配置完全写在配置文件里面，所有东西完全掌控在你手上。极客小伙伴们快来体验一把！">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nginx二级域名配置小结">
-<meta name="twitter:description" content="一直就听说nginx很牛逼的样子，这次就在VPS上面体验了一把。平常一直混迹于window平台下，所以最多也就配配IIS，而且仅仅限于UI这里点点那里点点。使用nginx完全是不同的感受，所有配置完全写在配置文件里面，所有东西完全掌控在你手上。极客小伙伴们快来体验一把！">
+<meta name="twitter:title" content="猫猫二次元">
+<meta name="twitter:description">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -59,87 +59,39 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-nginx-subdomain-config" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2013/11/08/nginx-subdomain-config/" class="article-date">
-  <time datetime="2013-11-08T21:15:17.000Z" itemprop="datePublished">2013-11-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      nginx二级域名配置小结
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2015" class="archive-year">2015</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2015/05/05/SSL/" class="archive-article-date">
+  <time datetime="2015-05-05T14:47:17.000Z" itemprop="datePublished">5月 5</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2015/05/05/SSL/">SSL协议运行机制</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一直就听说nginx很牛逼的样子，这次就在VPS上面体验了一把。平常一直混迹于window平台下，所以最多也就配配IIS，而且仅仅限于UI这里点点那里点点。使用nginx完全是不同的感受，所有配置完全写在配置文件里面，所有东西完全掌控在你手上。极客小伙伴们快来体验一把！</p>
-<a id="more"></a>
-<h1 id="nginx安装">nginx安装</h1><hr>
-<p>为了以后查阅起来方便，我决定还是从安装开始写，说不定时间一长我连怎么安装配置nginx都会记不得了，正好也给新手一个完全指南。注：我使用的VPS系统是Ubuntu  </p>
-<h3 id="安装命令："><strong>安装命令</strong>：</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="keyword">get</span> install nginx</span><br></pre></td></tr></table></figure>
-<p>too young too simple啊。装完了之后，有几个常用的目录我们需要认识一下：  </p>
-<ol>
-<li>这是存放domain配置的地方，默认下面应该有个default文件。 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/etc/nginx/site-available</span><br><span class="line">	```  </span><br><span class="line">	如果你有不同的域名<span class="tag">a</span><span class="class">.com</span>,<span class="tag">b</span>.com。那么你就可以在这下面建立<span class="tag">a</span>,b文件分别对这两个域名进行配置，简单的分类作用吧。我们下面要讲到的规则基本上都是在这里面配置的。</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>. 这个是nginx默认的日志存放路径</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>/var/log/nginx/<br>    <figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">	这里面基本上有两类文件：错误日志<span class="escape">`e</span>rror.log<span class="escape">`,</span>访问日志<span class="escape">`a</span>ccess.log<span class="escape">`。</span>后期再配置二级域名的时候，如果配置的不对，过来查看错误日志是很有效的错误定位方法。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;br/&gt;</span><br><span class="line">#配置二级域名</span><br><span class="line"></span><br><span class="line">----------</span><br><span class="line"></span><br><span class="line">打开上文提到的<span class="escape">`/</span>etc/nginx/site-available/default<span class="escape">`文</span>件。键入如下代码（scottqian.com换成你的域名）：</span><br></pre></td></tr></table></figure></p>
-<p>server {<br>        index index.html;<br>        server_name ~^(?<subdomain>.+).scottqian.com$;<br>        root /home/web/$subdomain/;</subdomain></p>
-<pre><code><span class="title">if</span> (<span class="variable">$host</span> != <span class="string">'www.scottqian.com'</span>){
-        <span class="title">rewrite</span><span class="regexp"> ^/(.*)$</span> <span class="url">http://www.scottqian.com/<span class="variable">$1</span></span> <span class="built_in">permanent</span>;
-}
-
-<span class="title">location</span> / {
-        <span class="title">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ =<span class="number">404</span>;
-}
-</code></pre><p>}</p>
-<p>```  </p>
-<p>注意看<code>server_name</code>那一行。这是一个正则表达式，它匹配所有<strong>.scottqian.com的域名，并把</strong>代表的字符用subdomain变量表示。紧接着在下面使用<code>root</code>命令，将当前url的根地址指向<code>/home/web/$subdomain/</code>。通过这个方式实现了任意多个二级域名的配置，比如你想在又多了一个域名lab.scottqian.com。那么只需要在<code>/home/web</code>下面建立一个lab文件夹即可。完全不必再来更改配置。  </p>
-<p>上面那个if判断语句是用来将scottqian.com这样的域名重定向为www.scottqian.com。暂时还不能去掉这个判断，因为没有这个的话subdomain变量就是空的，到时候根目录就是<code>/home/web//</code>，显然是不对的。我就在这上面吃过亏。</p>
-<p><br><br>写完收工！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2013/11/08/nginx-subdomain-config/" data-id="ci9ayqxy0000uwee6smxh5ekx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2013/11/10/hangzhou-photo/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          杭州西湖照片2张
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2013/11/06/static-blog-start/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">静态博客折腾记</div>
-    </a>
-  
-</nav>
-
-  
 </article>
-
-
+  
+  
+    </div></section>
+  
 </section>
         
           <aside id="sidebar">
