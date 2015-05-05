@@ -3,26 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>开启unbuntu上3306远程连接 | 猫猫二次元</title>
+  <title>Windows上的实用工具推荐 | 猫猫二次元</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="创建一个新的用户，并赋予权限。
-1mysql&amp;gt; grant all PRIVILEGES on *.* to user@&apos;%&apos; identified by &apos;pwd&apos;;
- 把上面的user和pwd换成你自己的用户名和密码。可以通过如下命令查看是否添加成功。
-12mysql&amp;gt; use information_schemamysql&amp;gt; select * from user_privi">
+  <meta name="description" content="首先当然是我写的Launcher Wox啦，开源免费
+最近刚刚发现的一个好用的截图工具 ShareX，开源免费">
 <meta property="og:type" content="article">
-<meta property="og:title" content="开启unbuntu上3306远程连接">
-<meta property="og:url" content="http://qianlifeng.github.io/2013/11/22/enable-remote-mysql/index.html">
+<meta property="og:title" content="Windows上的实用工具推荐">
+<meta property="og:url" content="http://qianlifeng.github.io/2012/02/10/auto-backup-solution/index.html">
 <meta property="og:site_name" content="猫猫二次元">
-<meta property="og:description" content="创建一个新的用户，并赋予权限。
-1mysql&amp;gt; grant all PRIVILEGES on *.* to user@&apos;%&apos; identified by &apos;pwd&apos;;
- 把上面的user和pwd换成你自己的用户名和密码。可以通过如下命令查看是否添加成功。
-12mysql&amp;gt; use information_schemamysql&amp;gt; select * from user_privi">
+<meta property="og:description" content="首先当然是我写的Launcher Wox啦，开源免费
+最近刚刚发现的一个好用的截图工具 ShareX，开源免费">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="开启unbuntu上3306远程连接">
-<meta name="twitter:description" content="创建一个新的用户，并赋予权限。
-1mysql&amp;gt; grant all PRIVILEGES on *.* to user@&apos;%&apos; identified by &apos;pwd&apos;;
- 把上面的user和pwd换成你自己的用户名和密码。可以通过如下命令查看是否添加成功。
-12mysql&amp;gt; use information_schemamysql&amp;gt; select * from user_privi">
+<meta name="twitter:title" content="Windows上的实用工具推荐">
+<meta name="twitter:description" content="首先当然是我写的Launcher Wox啦，开源免费
+最近刚刚发现的一个好用的截图工具 ShareX，开源免费">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -68,10 +62,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-enable-remote-mysql" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-auto-backup-solution" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2013/11/22/enable-remote-mysql/" class="article-date">
-  <time datetime="2013-11-22T21:15:17.000Z" itemprop="datePublished">2013-11-22</time>
+    <a href="/2012/02/10/auto-backup-solution/" class="article-date">
+  <time datetime="2012-02-10T21:15:17.000Z" itemprop="datePublished">2012-02-10</time>
 </a>
     
   </div>
@@ -81,7 +75,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      开启unbuntu上3306远程连接
+      Windows上的实用工具推荐
     </h1>
   
 
@@ -89,27 +83,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ol>
-<li><p>创建一个新的用户，并赋予权限。</p>
-<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="subst">&gt;</span> grant <span class="literal">all</span> PRIVILEGES <span class="keyword">on</span> <span class="subst">*</span><span class="built_in">.</span><span class="subst">*</span> <span class="keyword">to</span> user@<span class="string">'%'</span> identified <span class="keyword">by</span> <span class="string">'pwd'</span>;</span><br></pre></td></tr></table></figure>
-<p> 把上面的user和pwd换成你自己的用户名和密码。可以通过如下命令查看是否添加成功。</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use information_schema</span><br><span class="line">mysql&gt; <span class="keyword">select</span> * <span class="keyword">from</span> user_privileges;</span><br></pre></td></tr></table></figure>
-<p> 查询到有下面的结果：’user’@’%’，说明mysql已经授权远程连接。  </p>
-</li>
-<li><p>在<code>/etc/mysql/my.cnf</code>找到<code>bind-address</code>，将其配置的 127.0.0.1，直接改为你<strong>服务器</strong>的地址。  </p>
-</li>
-<li><p>如果还不能访问，可以查看3306端口是否开启。如果开启了，应该会有结果返回。</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -an <span class="string">|grep 3306</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+        <ul>
+<li>首先当然是我写的Launcher <a href="http://www.getwox.com" target="_blank" rel="external">Wox</a>啦，开源免费</li>
+<li>最近刚刚发现的一个好用的截图工具 <a href="https://getsharex.com/" target="_blank" rel="external">ShareX</a>，开源免费</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2013/11/22/enable-remote-mysql/" data-id="ci9az10sn001cwie9l7edobxr" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2012/02/10/auto-backup-solution/" data-id="ci9az10tl0023wie9pmgm2lt7" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/软件/">软件</a></li></ul>
 
     </footer>
   </div>
@@ -117,19 +102,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2013/11/24/manage-multiple-session-using-screen/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2013/11/06/static-blog-start/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          用screen管理多个SSH远程会话
+          静态博客折腾记
         
       </div>
     </a>
   
   
-    <a href="/2013/11/13/restful-api-cross-domain-authentication/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2010/06/13/qzone-spirit/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">RESTful api跨域认证</div>
+      <div class="article-nav-title">QQ空间小精灵</div>
     </a>
   
 </nav>
