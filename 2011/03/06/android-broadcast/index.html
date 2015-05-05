@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android之旅---广播（BroadCast） | 猫猫二次元</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文介绍了如何使用pyinstaller打包python程序，使其成为window下的单个可执行exe文件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android之旅---广播（BroadCast）">
+<meta property="og:url" content="http://qianlifeng.github.io/2011/03/06/android-broadcast/index.html">
+<meta property="og:site_name" content="猫猫二次元">
+<meta property="og:description" content="本文介绍了如何使用pyinstaller打包python程序，使其成为window下的单个可执行exe文件。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android之旅---广播（BroadCast）">
+<meta name="twitter:description" content="本文介绍了如何使用pyinstaller打包python程序，使其成为window下的单个可执行exe文件。">
+<meta name="twitter:creator" content="@scottqian2012">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">猫猫二次元</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="http://www.github.com/qianlifeng">Github</a>
+        
+          <a class="main-nav-link" href="http://www.cnblogs.com/qianlifeng">博客园</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://qianlifeng.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-android-broadcast" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2011/03/06/android-broadcast/" class="article-date">
+  <time datetime="2011-03-06T18:15:17.000Z" itemprop="datePublished">2011-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android之旅---广播（BroadCast）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文介绍了如何使用pyinstaller打包python程序，使其成为window下的单个可执行exe文件。</p>
+<a id="more"></a>
+<h1 id="什么是广播">什么是广播</h1><hr>
+<p>在Android中，Broadcast是一种广泛运用的在应用程序之间传输信息的机制。我们拿广播电台来做个比方。我们平常使用收音机收音是这样的：许许多多不同的广播电台通过特定的频率来发送他们的内容，而我们用户只需要将频率调成和广播电台的一样就可以收听他们的内容了。Android中的广播机制就和这个差不多的道理。</p>
+<p>电台发送的内容是语音，而在Android中我们要发送的广播内容是一个Intent。这个Intent中可以携带我们要传送的数据。</p>
+<p>电台通过大功率的发射器发送内容，而在Android中则是通过sendBroadcast这个方法来发送（很形象的名字吧）。       </p>
+<p>用户通过调整到具体的电台频率接受电台的内容。而在Android中要接受广播中的内容则是通过注册一个BroadCastReceiver来接收的。只有发送广播的action和接收广播的action相同，接受者才能接受这个广播。</p>
+<h1 id="广播有什么用">广播有什么用</h1><hr>
+<p>其实，在什么是广播的第一句就已经说明了广播有什么用了。对了，笼统一点讲就是用来传输数据的。具体一点说就是：     </p>
+<ol>
+<li>实现了不同的程序之间的数据传输与共享，因为只要是和发送广播的action相同的接受者都能接受这个广播。典型的应用就是android自带的短信，电话等等广播，只要我们实现了他们的action的广播，那么我们就能接收他们的数据了，以便做出一些处理。比如说拦截系统短信，拦截骚扰电话等等 </li>
+<li>起到了一个通知的作用，比如在service中要通知主程序，更新主程序的UI等。因为service是没有界面的，所以不能直接获得主程序中的控件，这样我们就只能在主程序中实现一个广播接受者专门用来接受service发过来的数据和通知了。</li>
+</ol>
+<h1 id="实现广播">实现广播</h1><hr>
+<p>现在我们就来实现一个简单的广播程序。Android提供了两种注册广播接受者的形式，分别是在程序中动态注册和在xml中指定。他们之间的区别就是作用的范围不同，程序动态注册的接收者只在程序运行过程中有效，而在xml注册的接收者不管你的程序有没有启动有会起作用。<br>首先介绍在程序中动态注册的方式。</p>
+<h3 id="动态注册方式">动态注册方式</h3><p>我们在程序中设置了三个按钮，分别是“注册广播”，“取消注册”和“发送广播”。然后每个按钮设置点击事件来完成广播的演示。最简单的项目的建立过程和按钮事件的建立我再这里就不罗嗦了，不会的可以下载下面的DEMO源码查看。直接看三个按钮的实现方式。<br>首先是注册广播的按钮事件代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ReceiveBroadCast receiveBroadCast;  <span class="comment">//广播实例</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegisteLinster</span> <span class="keyword">implements</span> <span class="title">OnClickListener</span></span><br><span class="line"></span>&#123;</span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="comment">// 注册广播接收</span></span><br><span class="line">            receiveBroadCast = <span class="keyword">new</span> ReceiveBroadCast();</span><br><span class="line">            IntentFilter filter = <span class="keyword">new</span> IntentFilter();</span><br><span class="line">            filter.addAction(flag);    <span class="comment">//只有持有相同的action的接受者才能接收此广播</span></span><br><span class="line">            registerReceiver(receiveBroadCast, filter);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReceiveBroadCast</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span></span><br><span class="line"></span>&#123;</span><br><span class="line"> </span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="comment">//得到广播中得到的数据，并显示出来</span></span><br><span class="line">            String message = intent.getStringExtra(<span class="string">"data"</span>);</span><br><span class="line">            txtShow.setText(message);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先我们实现了一个ReceiveBroadCast 类，它继承了BroadcastReceiver并实现了其中的onReceive方法，这样当这个广播被接收的时候就会执行这个方法。注意我们在注册广播的时候使用了filter.addAction方法添加了一个过滤器。如果没有这一句，就相当于广播电台没有告诉咱们收音机用户接收的频率，就不好收听这个广播了。</p>
+<p>再来看看如何取消注册，是的程序不再接收这个类型的广播了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnregisteLinster</span> <span class="keyword">implements</span> <span class="title">OnClickListener</span></span><br><span class="line"></span>&#123;</span><br><span class="line"> </span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View arg0)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            unregisterReceiver(receiveBroadCast);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>怎么样？是不是超级简单的啊，就是将我们上面的那个广播类的实例传进去就行了。现在注册，取消注册都好了，就剩下如何发送了。看代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SendBroadCastListener</span> <span class="keyword">implements</span> <span class="title">OnClickListener</span></span><br><span class="line"></span>&#123;</span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View arg0)</span></span><br><span class="line">        </span>&#123;</span><br><span class="line">            Intent intent = <span class="keyword">new</span> Intent();  <span class="comment">//Itent就是我们要发送的内容</span></span><br><span class="line">            intent.putExtra(<span class="string">"data"</span>, <span class="string">"this is data from broadcast "</span>+Calendar.getInstance().get(Calendar.SECOND));  </span><br><span class="line">            intent.setAction(flag);   <span class="comment">//设置你这个广播的action，只有和这个action一样的接受者才能接受者才能接收广播</span></span><br><span class="line">            sendBroadcast(intent);   <span class="comment">//发送广播</span></span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>每一句都注释了的，就不要我再讲了吧。一看就明白了。现在，运行程序看看效果吧。先注册一下，然后每发送一次广播上面的文字就会变化一次，表明已经接收到了广播了。按取消注册后你可以发现再按发送按钮已经接收不到广播了。</p>
+<h3 id="配置文件方式">配置文件方式</h3><p>配置和动态注册的区别在上面已经说了，这种方式适合你的程序需要长期的监测某个广播的情形，比如监测用户的短信。注册方式比较简单，相当于上面的代码只要接收的那部分就行了。不过要注意的是通过配置文件这种方式注册广播需要在单独的一个类中继承BroadReceiver，内部类是没有用的。所以我们新建了一个broadCastReceiveByXml类并继承了BroadReceive。代码如下：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">broadCastReceiveByXml</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">BroadcastReceiver</span></span><br><span class="line"></span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    public void onReceive(<span class="type">Context</span> arg0, <span class="type">Intent</span> arg1)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">Log</span>.d(<span class="string">"qlf"</span>, <span class="string">"broadcast receive by xml"</span>);    <span class="comment">//因为不在主UI下，不好使用控件，所以我们这里打印到LOG里面查看效果</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后在AndroidManifest中的<activity></activity>节点之后我们添加一下代码：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">receiver</span> <span class="attribute">android:name</span>=<span class="value">"com.qlf.broadCast.broadCastReceiveByXml"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">action</span> <span class="attribute">android:name</span>=<span class="value">"com.qlf.broadCastFlag"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">action</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">receiver</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>receiver中的android：name就是我们在程序中的那个接收广播的类。下面的intent-filter和我们讲到的功能类似，而这个action就是上面的那个flag啦。现在我们运行程序，发现同样可以实现上面的功能。</p>
+<p>除了使用我们自己发送广播，android也内置了许多广播。比如我们上面提到的来了消息的时候android会发送一个action名为<code>android.provider.Telephony.SMS_RECEIVED</code>的广播，这个时候如果我们想要接受这个广播只要将配置文件中的那个action设置为上面这个字符串就能接收到消息信息了。android包括了许多其他的广播action，有兴趣的同学到网上搜搜就有了。这里就不再举例了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2011/03/06/android-broadcast/" data-id="ci9b41hp1002kwhf8kq0ajbdj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2012/01/09/easyvs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          EasyVS - Visual Studio扩展
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2010/06/13/qzone-spirit/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">QQ空间小精灵</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a><a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a><a href="/tags/android/" style="font-size: 10px;">android</a><a href="/tags/javascript/" style="font-size: 10px;">javascript</a><a href="/tags/linux/" style="font-size: 15px;">linux</a><a href="/tags/mysql/" style="font-size: 10px;">mysql</a><a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a><a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a><a href="/tags/python/" style="font-size: 17.5px;">python</a><a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a><a href="/tags/vim/" style="font-size: 10px;">vim</a><a href="/tags/web/" style="font-size: 10px;">web</a><a href="/tags/安全/" style="font-size: 10px;">安全</a><a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a><a href="/tags/数据库/" style="font-size: 12.5px;">数据库</a><a href="/tags/树莓派/" style="font-size: 10px;">树莓派</a><a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a><a href="/tags/软件/" style="font-size: 12.5px;">软件</a><a href="/tags/随笔/" style="font-size: 15px;">随笔</a><a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">五月 2012</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">二月 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">一月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">三月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">一月 2010</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/05/SSL/">SSL协议运行机制</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/26/Netgear4300+pi/">Netgear4300折腾记</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/13/raspberrypi2/">树莓派2</a>
+          </li>
+        
+          <li>
+            <a href="/2015/02/10/software-recommandation/">Windows上的实用工具推荐</a>
+          </li>
+        
+          <li>
+            <a href="/2014/11/02/refuse-malicious-scanning/">拒绝恶意扫描登陆</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 qianlifeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="http://www.github.com/qianlifeng" class="mobile-nav-link">Github</a>
+  
+    <a href="http://www.cnblogs.com/qianlifeng" class="mobile-nav-link">博客园</a>
+  
+</nav>
+    
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script type='text/javascript'>
+(function() {
+    var c = document.createElement('script'); 
+    c.type = 'text/javascript';
+    c.async = true;
+    c.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.clicki.cn/boot/50087';
+    var h = document.getElementsByTagName('script')[0];
+    h.parentNode.insertBefore(c, h);
+})();
+</script>
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
