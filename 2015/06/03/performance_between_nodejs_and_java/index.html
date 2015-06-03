@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Nodejs与Java的性能比较 | 猫猫二次元</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近遇到一个项目需要提供这样一种RESTful的查询接口：
+
+接口比较独立，内部没有复杂的业务逻辑，基本就是查询数据库
+接口查询量会非常大，所以希望能有很好的吞吐量
+
+因为接口比较独立，没有业务逻辑负担。所以我们可以选择的方向就比较多，其中两个方向是Nodejs和Java。Java是目前项目的主要开发语言，考虑Nodejs是看中了他的非阻塞的异步IO。而本篇文章的目的就是模拟这两种语言在我们真实使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nodejs与Java的性能比较">
+<meta property="og:url" content="http://qianlifeng.github.io/2015/06/03/performance_between_nodejs_and_java/index.html">
+<meta property="og:site_name" content="猫猫二次元">
+<meta property="og:description" content="最近遇到一个项目需要提供这样一种RESTful的查询接口：
+
+接口比较独立，内部没有复杂的业务逻辑，基本就是查询数据库
+接口查询量会非常大，所以希望能有很好的吞吐量
+
+因为接口比较独立，没有业务逻辑负担。所以我们可以选择的方向就比较多，其中两个方向是Nodejs和Java。Java是目前项目的主要开发语言，考虑Nodejs是看中了他的非阻塞的异步IO。而本篇文章的目的就是模拟这两种语言在我们真实使">
+<meta property="og:image" content="http://qianlifeng.github.io/images/nodejs-vs-java-performance/1.png">
+<meta property="og:image" content="http://qianlifeng.github.io/images/nodejs-vs-java-performance/2.png">
+<meta property="og:image" content="http://qianlifeng.github.io/images/nodejs-vs-java-performance/3.png">
+<meta property="og:image" content="http://qianlifeng.github.io/images/nodejs-vs-java-performance/4.png">
+<meta property="og:updated_time" content="2015-06-03T13:39:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nodejs与Java的性能比较">
+<meta name="twitter:description" content="最近遇到一个项目需要提供这样一种RESTful的查询接口：
+
+接口比较独立，内部没有复杂的业务逻辑，基本就是查询数据库
+接口查询量会非常大，所以希望能有很好的吞吐量
+
+因为接口比较独立，没有业务逻辑负担。所以我们可以选择的方向就比较多，其中两个方向是Nodejs和Java。Java是目前项目的主要开发语言，考虑Nodejs是看中了他的非阻塞的异步IO。而本篇文章的目的就是模拟这两种语言在我们真实使">
+<meta name="twitter:creator" content="@scottqian2012">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">猫猫二次元</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="http://www.github.com/qianlifeng">Github</a>
+        
+          <a class="main-nav-link" href="http://www.cnblogs.com/qianlifeng">博客园</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-performance_between_nodejs_and_java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/06/03/performance_between_nodejs_and_java/" class="article-date">
+  <time datetime="2015-06-03T15:41:17.000Z" itemprop="datePublished">2015-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nodejs与Java的性能比较
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近遇到一个项目需要提供这样一种RESTful的查询接口：</p>
+<ol>
+<li>接口比较独立，内部没有复杂的业务逻辑，基本就是查询数据库</li>
+<li>接口查询量会非常大，所以希望能有很好的吞吐量</li>
+</ol>
+<p>因为接口比较独立，没有业务逻辑负担。所以我们可以选择的方向就比较多，其中两个方向是Nodejs和Java。Java是目前项目的主要开发语言，考虑Nodejs是看中了他的非阻塞的异步IO。<br>而本篇文章的目的就是模拟这两种语言在我们真实使用场景下的表现。</p>
+<a id="more"></a>
+<p>todo:PV/吞吐量介绍</p>
+<h1 id="一些规则">一些规则</h1><p>在进行比较之前，我们需要先确定一些规则：</p>
+<ul>
+<li>双方尽量使用最原生最简单的实现，排除第三方库的性能干扰。</li>
+<li>在同一台机器上进行测试（Intel i7 4710MQ，16G）</li>
+<li>对同一数据集进行查询</li>
+</ul>
+<h1 id="准备数据库">准备数据库</h1><p>首先，使用如下python脚本fake出我们的测试数据。我这里生成了一张200W行数据的表。后面就针对该表进行查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># encoding: utf-8&#10;#!/usr/bin/python&#10;&#10;import MySQLdb&#10;import uuid&#10;&#10;&#10;def InsertRow(db):&#10;    cursor = db.cursor()&#10;    sql = &#34;insert into purch_sku_master (mem_id,mem_code,sku_id,sku_code,item,sku_name,sku_abbr) values (&#39;main&#39;,&#39;main&#39;,&#39;sku-&#123;&#125;&#39;,&#39;SKU0000009837&#39;,&#39;ITEM&#123;&#125;&#39;,&#39;&#21355;&#34915;&#22806;&#22871;_MQF1213020_&#29943;&#34013;_&#123;&#125;&#39;,&#39;&#21322;&#24320;&#35167;&#32447;&#34923;&#123;&#125;&#39;);&#34;.format(&#10;        str(uuid.uuid4()),&#10;        str(uuid.uuid4()),&#10;        str(uuid.uuid4()),&#10;        str(uuid.uuid4())&#10;    )&#10;    cursor.execute(sql)&#10;&#10;&#10;db = MySQLdb.connect(&#34;localhost&#34;,&#34;&#34;,&#34;&#34;,&#34;test&#34; )&#10;for i in xrange(1,2000000):&#10;    print i&#10;    InsertRow(db)&#10;    if i % 1000 == 0:&#10;        db.commit()&#10;db.commit()&#10;db.close()</span><br></pre></td></tr></table></figure></p>
+<h1 id="Nodejs">Nodejs</h1><p>接着编写Nodejs端的测试代码，先看目录结构：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--nodejs&#10;    --package.json&#10;    --httpserver.js</span><br></pre></td></tr></table></figure></p>
+<p><code>package.json</code>里面定义了该项目的一些信息与依赖，因为我们使用的是mysql数据库，所以这里会依赖一个mysql的包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;    &#34;name&#34;: &#34;test&#34;,&#10;    &#34;version&#34;: &#34;0.1.0&#34;,&#10;    &#34;description&#34;: &#34;A testing package&#34;,&#10;    &#34;dependencies&#34;: &#123;&#10;        &#34;mysql&#34;: &#34;2.7.0&#34;&#10;    &#125;,&#10;    &#34;main&#34;: &#34;index&#34;,&#10;    &#34;scripts&#34;: &#123;&#10;        &#34;start&#34;: &#34;node HttpServer.js&#34;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面是Nodejs的测试代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var http = require(&#34;http&#34;);&#10;var mysql      = require(&#39;mysql&#39;);&#10;var connection = mysql.createConnection(&#123;&#10;    host     : &#39;localhost&#39;,&#10;    user     : &#39;&#39;,&#10;    password : &#39;&#39;,&#10;    database: &#39;test&#39;&#10;&#125;);&#10;&#10;http.createServer(function(request, response) &#123;&#10;    query(function(rows)&#123;&#10;        response.writeHead(200, &#123;&#34;Content-Type&#34;: &#34;text/plain&#34;&#125;);&#10;        response.write(rows[0].sku_id);&#10;        response.end();&#10;    &#125;);&#10;&#125;).listen(8888);&#10;&#10;&#10;function query(callback)&#123;&#10;    connection.query(&#34;select * from purch_sku_master where sku_id = &#39;sku-000ba89a-4817-4835-ba55-7606ec7b54ed&#39;&#34;, function(err, rows, fields) &#123;&#10;        if (err) throw err;&#10;        callback(rows);&#10;    &#125;);&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Java">Java</h1><p>根据第一条规则，我这里没有使用SpringMVC类似的框架，而是直接使用了Servlet进行测试。直接看我实现的Servlet类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.scottqian.javaPerformanceTest;&#10;&#10;import java.io.IOException;&#10;import java.io.PrintWriter;&#10;import java.sql.Connection;&#10;import java.sql.DriverManager;&#10;import java.sql.ResultSet;&#10;import java.sql.Statement;&#10;&#10;import javax.servlet.http.HttpServlet;&#10;import javax.servlet.http.HttpServletRequest;&#10;import javax.servlet.http.HttpServletResponse;&#10;&#10;@SuppressWarnings(&#34;serial&#34;)&#10;public class ServletDemo extends HttpServlet &#123;&#10;&#10;    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException &#123;&#10;        PrintWriter pw = res.getWriter();&#10;        res.setContentType(&#34;text/plain&#34;);&#10;        try &#123;&#10;            Class.forName(&#34;com.mysql.jdbc.Driver&#34;); //&#36825;&#37324;&#27880;&#24847;&#35201;&#23558;mysql-connector-java-5.1.35-bin.jar&#25335;&#36125;&#21040;WEB-INF/lib&#19979;&#38754;&#10;            Connection con = DriverManager.getConnection(&#34;jdbc:mysql://localhost:3306/test&#34;, &#34;&#34;, &#34;&#34;);&#10;            Statement stmt = con.createStatement();&#10;            String sql = &#34;select * from purch_sku_master where sku_id = &#39;sku-000ba89a-4817-4835-ba55-7606ec7b54ed&#39;&#34;;&#10;&#10;            ResultSet rs = stmt.executeQuery(sql);&#10;            while (rs.next()) &#123;&#10;                pw.println(rs.getString(&#34;sku_id&#34;));&#10;            &#125;&#10;&#10;            stmt.close();&#10;            con.close();&#10;        &#125; catch (Exception e) &#123;&#10;            pw.write(e.getMessage());&#10;        &#125;&#10;        pw.close();&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面是web.xml的配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&#62;&#10;&#60;web-app xmlns=&#34;http://xmlns.jcp.org/xml/ns/javaee&#34;&#10;         xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34;&#10;         xsi:schemaLocation=&#34;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&#34;&#10;         version=&#34;3.1&#34;&#62;&#10;    &#60;servlet&#62;&#10;        &#60;servlet-name&#62;HelloWorldServlet&#60;/servlet-name&#62;&#10;        &#60;servlet-class&#62;com.scottqian.javaPerformanceTest.ServletDemo&#60;/servlet-class&#62;&#10;    &#60;/servlet&#62;&#10;    &#60;servlet-mapping&#62;&#10;        &#60;servlet-name&#62;HelloWorldServlet&#60;/servlet-name&#62;&#10;        &#60;url-pattern&#62;/&#60;/url-pattern&#62;&#10;    &#60;/servlet-mapping&#62;&#10;&#60;/web-app&#62;</span><br></pre></td></tr></table></figure></p>
+<p>最后将上面的部分放到Tomcat8下面运行即可。</p>
+<h1 id="性能测试工具Jmeter">性能测试工具Jmeter</h1><p>我是用了Jmeter工具进行性能测试。首先，需要建立一个线程组：<br><img src="/images/nodejs-vs-java-performance/1.png" alt=""><br>然后设置一些关于线程组的变量。我们这里使用了30个线程，每个线程发送1000个请求，立即发送。相当于30000个请求一下子过来，看服务器每秒能处理多少个请求。<br><img src="/images/nodejs-vs-java-performance/2.png" alt=""><br>在线程组之下，还需要设置一个HTTP请求sampler，然后在这里面设置需要请求的url<br><img src="/images/nodejs-vs-java-performance/3.png" alt=""><br>最后，添加一个聚合报告，用于查看测试的结果<br><img src="/images/nodejs-vs-java-performance/4.png" alt=""></p>
+<h1 id="测试结果">测试结果</h1><table>
+<thead>
+<tr>
+<th>Label</th>
+<th># Samples</th>
+<th>Average</th>
+<th>Median</th>
+<th>90% Line</th>
+<th>95% Line</th>
+<th>99% Line</th>
+<th>Min</th>
+<th>Max</th>
+<th>Error %</th>
+<th>Throughput</th>
+<th>KB/sec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>java</td>
+<td>31887</td>
+<td>106</td>
+<td>71</td>
+<td>210</td>
+<td>395</td>
+<td>693</td>
+<td>1</td>
+<td>1310</td>
+<td>0.16%</td>
+<td>639.8</td>
+<td>330.0</td>
+</tr>
+<tr>
+<td>nodejs</td>
+<td>31862</td>
+<td>47</td>
+<td>40</td>
+<td>96</td>
+<td>108</td>
+<td>132</td>
+<td>0</td>
+<td>194</td>
+<td>0.17%</td>
+<td>642.8</td>
+<td>118.6</td>
+</tr>
+<tr>
+<td>总体</td>
+<td>63749</td>
+<td>76</td>
+<td>55</td>
+<td>125</td>
+<td>210</td>
+<td>559</td>
+<td>0</td>
+<td>1310</td>
+<td>0.17%</td>
+<td>1278.7</td>
+<td>447.9</td>
+</tr>
+</tbody>
+</table>
+<p>这里主要看Throughput这一列，这一列代表的意思是每秒请求数。可以看到nodejs和java在测试机器上每秒差不多都能处理640个请求。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2015/06/03/performance_between_nodejs_and_java/" data-id="ciagswlm80013wbd1nmgdt2af" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/06/01/spring-mvc-in-action-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SpringMVC - 初识</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a> <a href="/tags/Java/" style="font-size: 12.5px;">Java</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/python/" style="font-size: 17.5px;">python</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a> <a href="/tags/数据库/" style="font-size: 12.5px;">数据库</a> <a href="/tags/树莓派/" style="font-size: 10px;">树莓派</a> <a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a> <a href="/tags/软件/" style="font-size: 12.5px;">软件</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">五月 2012</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">二月 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">一月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">三月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">一月 2010</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/06/03/performance_between_nodejs_and_java/">Nodejs与Java的性能比较</a>
+          </li>
+        
+          <li>
+            <a href="/2015/06/01/spring-mvc-in-action-1/">SpringMVC - 初识</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/28/maven-start/">使用Maven构建项目</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/05/SSL/">SSL协议运行机制</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/26/Netgear4300+pi/">Netgear4300折腾记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 qianlifeng<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="http://www.github.com/qianlifeng" class="mobile-nav-link">Github</a>
+  
+    <a href="http://www.cnblogs.com/qianlifeng" class="mobile-nav-link">博客园</a>
+  
+</nav>
+    
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script type='text/javascript'>
+(function() {
+    var c = document.createElement('script'); 
+    c.type = 'text/javascript';
+    c.async = true;
+    c.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.clicki.cn/boot/50087';
+    var h = document.getElementsByTagName('script')[0];
+    h.parentNode.insertBefore(c, h);
+})();
+</script>
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
