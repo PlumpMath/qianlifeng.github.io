@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://qianlifeng.github.io/images/nodejs-vs-java-performance/2.png">
 <meta property="og:image" content="http://qianlifeng.github.io/images/nodejs-vs-java-performance/3.png">
 <meta property="og:image" content="http://qianlifeng.github.io/images/nodejs-vs-java-performance/4.png">
-<meta property="og:updated_time" content="2015-06-03T13:39:20.000Z">
+<meta property="og:updated_time" content="2015-06-05T03:07:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nodejs与Java的性能比较">
 <meta name="twitter:description" content="最近遇到一个项目需要提供这样一种RESTful的查询接口：
@@ -111,12 +111,19 @@
 </ol>
 <p>因为接口比较独立，没有业务逻辑负担。所以我们可以选择的方向就比较多，其中两个方向是Nodejs和Java。Java是目前项目的主要开发语言，考虑Nodejs是看中了他的非阻塞的异步IO。<br>而本篇文章的目的就是模拟这两种语言在我们真实使用场景下的表现。</p>
 <a id="more"></a>
-<p>todo:PV/吞吐量介绍</p>
+<h1 id="吞吐量与PV">吞吐量与PV</h1><p>开始之前，我们需要先了解几个名词，这对我们后面分析比较数据会有一定帮助。</p>
+<ul>
+<li><strong>吞吐量</strong>：每秒钟完成的请求数。</li>
+<li><strong>PV</strong>：PV是page view的简写。PV是指页面的访问次数，每打开或刷新一次页面，就算做一个pv。</li>
+</ul>
+<p>他们之间存在如下的简单换算：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#27599;&#21488;&#26381;&#21153;&#22120;&#27599;&#31186;&#22788;&#29702;&#35831;&#27714;&#30340;&#25968;&#37327;=((80% &#215; &#24635;PV&#37327;)/(24&#23567;&#26102; &#215; 60&#20998; &#215; 60&#31186; &#215; 40%)) / &#26381;&#21153;&#22120;&#25968;&#37327;&#12290;</span><br></pre></td></tr></table></figure></p>
+<p>其中关键的参数是80%、40%。表示一天中有80%的请求发生在一天的40%的时间内。24小时的40%是9.6小时，有80%的请求发生一天的9.6个小时当中。<br>所以说，如果你的网站每秒能处理600个请求，那么你大概能抗住每日2500W的PV请求。当然这里只是理想情况下的简单换算，真实环境可能会与这个值有出入。</p>
 <h1 id="一些规则">一些规则</h1><p>在进行比较之前，我们需要先确定一些规则：</p>
 <ul>
 <li>双方尽量使用最原生最简单的实现，排除第三方库的性能干扰。</li>
 <li>在同一台机器上进行测试（Intel i7 4710MQ，16G）</li>
-<li>对同一数据集进行查询</li>
+<li>对同一数据集进行查询 (包含200W记录的表)</li>
+<li>测试流程为：请求来了之后，程序会从10个候选的ID中随机抽取一个进行数据库查询，并将查询的结果返回到页面</li>
 </ul>
 <h1 id="准备数据库">准备数据库</h1><p>首先，使用如下python脚本fake出我们的测试数据。我这里生成了一张200W行数据的表。后面就针对该表进行查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># encoding: utf-8&#10;#!/usr/bin/python&#10;&#10;import MySQLdb&#10;import uuid&#10;&#10;&#10;def InsertRow(db):&#10;    cursor = db.cursor()&#10;    sql = &#34;insert into purch_sku_master (mem_id,mem_code,sku_id,sku_code,item,sku_name,sku_abbr) values (&#39;main&#39;,&#39;main&#39;,&#39;sku-&#123;&#125;&#39;,&#39;SKU0000009837&#39;,&#39;ITEM&#123;&#125;&#39;,&#39;&#21355;&#34915;&#22806;&#22871;_MQF1213020_&#29943;&#34013;_&#123;&#125;&#39;,&#39;&#21322;&#24320;&#35167;&#32447;&#34923;&#123;&#125;&#39;);&#34;.format(&#10;        str(uuid.uuid4()),&#10;        str(uuid.uuid4()),&#10;        str(uuid.uuid4()),&#10;        str(uuid.uuid4())&#10;    )&#10;    cursor.execute(sql)&#10;&#10;&#10;db = MySQLdb.connect(&#34;localhost&#34;,&#34;&#34;,&#34;&#34;,&#34;test&#34; )&#10;for i in xrange(1,2000000):&#10;    print i&#10;    InsertRow(db)&#10;    if i % 1000 == 0:&#10;        db.commit()&#10;db.commit()&#10;db.close()</span><br></pre></td></tr></table></figure></p>
 <h1 id="Nodejs">Nodejs</h1><p>接着编写Nodejs端的测试代码，先看目录结构：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--nodejs&#10;    --package.json&#10;    --httpserver.js</span><br></pre></td></tr></table></figure></p>
@@ -188,12 +195,24 @@
 </tr>
 </tbody>
 </table>
-<p>这里主要看Throughput这一列，这一列代表的意思是每秒请求数。可以看到nodejs和java在测试机器上每秒差不多都能处理640个请求。</p>
+<p>先解释一下上面的几个名词：</p>
+<ul>
+<li><strong>Samples</strong>：表示你这次测试中一共发出了多少个请求</li>
+<li><strong>Average</strong>：平均响应时间</li>
+<li><strong>Median</strong>：中位数，也就是 50％ 用户的响应时间</li>
+<li><strong>90% Line</strong>：90％ 用户的响应时间</li>
+<li><strong>Min</strong>：最小响应时间</li>
+<li><strong>Max</strong>：最大响应时间 </li>
+<li><strong>Error%</strong>：本次测试中出现错误的请求的数量/请求的总数</li>
+<li><strong>Throughput</strong>：吞吐量——默认情况下表示每秒完成的请求数（Request per Second）</li>
+<li><strong>KB/Sec</strong>：每秒从服务器端接收到的数据量</li>
+</ul>
+<p>这里主要看Throughput（吞吐量）这一列，可以看到nodejs和java在测试机器上每秒差不多都能处理640个请求。这个结果比较意外，因为我测试这个的目的实际上想证明Nodejs在这方面会比Java的性能好一点的:(<br>但是值得注意的是nodejs的平均响应时间比java小了一倍多（那为啥吞吐量最终还差不多呢？）</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/06/03/performance_between_nodejs_and_java/" data-id="ciagswlm80013wbd1nmgdt2af" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/06/03/performance_between_nodejs_and_java/" data-id="ciaj178k60013whcr1lc8bw6h" class="article-share-link">Share</a>
       
       
     </footer>
