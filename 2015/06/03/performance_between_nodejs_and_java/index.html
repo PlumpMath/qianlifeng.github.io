@@ -25,7 +25,8 @@
 <meta property="og:image" content="http://qianlifeng.github.io/Images/nodejs-vs-java-performance/2.png">
 <meta property="og:image" content="http://qianlifeng.github.io/Images/nodejs-vs-java-performance/3.png">
 <meta property="og:image" content="http://qianlifeng.github.io/Images/nodejs-vs-java-performance/4.png">
-<meta property="og:updated_time" content="2015-06-09T06:50:07.000Z">
+<meta property="og:image" content="http://qianlifeng.github.io/Images/nodejs-vs-java-performance/compare.png">
+<meta property="og:updated_time" content="2015-06-09T08:27:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nodejs与Java的性能比较">
 <meta name="twitter:description" content="最近遇到一个项目需要提供这样一种RESTful的查询接口：
@@ -121,9 +122,10 @@
 <h1 id="一些规则">一些规则</h1><p>在进行比较之前，我们需要先确定一些规则：</p>
 <ul>
 <li>双方尽量使用最原生最简单的实现，排除第三方库的性能干扰。</li>
-<li>在同一台机器上进行测试（Intel i7 4710MQ，16G）</li>
+<li>在同一台机器上进行测试（CentOS, 130G内存，Xeno E5-2640 v3 @ 2.6GHz 32核）</li>
 <li>对同一数据集进行查询 (包含200W记录的表)</li>
 <li>测试流程为：请求来了之后，程序会从10个候选的ID中随机抽取一个进行数据库查询，并将查询的结果返回到页面</li>
+<li>测试环境都是默认配置</li>
 </ul>
 <h1 id="准备数据库">准备数据库</h1><p>首先，使用如下python脚本fake出我们的测试数据。我这里生成了一张200W行数据的表。后面就针对该表进行查询<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> MySQLdb</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">InsertRow</span><span class="params">(db)</span>:</span></span><br><span class="line">    cursor = db.cursor()</span><br><span class="line">    sql = <span class="string">"insert into purch_sku_master (mem_id,mem_code,sku_id,sku_code,item,sku_name,sku_abbr) values ('main','main','sku-&#123;&#125;','SKU0000009837','ITEM&#123;&#125;','卫衣外套_MQF1213020_瓷蓝_&#123;&#125;','半开襟线衫&#123;&#125;');"</span>.format(</span><br><span class="line">        str(uuid.uuid4()),</span><br><span class="line">        str(uuid.uuid4()),</span><br><span class="line">        str(uuid.uuid4()),</span><br><span class="line">        str(uuid.uuid4())</span><br><span class="line">    )</span><br><span class="line">    cursor.execute(sql)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">db = MySQLdb.connect(<span class="string">"localhost"</span>,<span class="string">""</span>,<span class="string">""</span>,<span class="string">"test"</span> )</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">2000000</span>):</span><br><span class="line">    <span class="keyword">print</span> i</span><br><span class="line">    InsertRow(db)</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">1000</span> == <span class="number">0</span>:</span><br><span class="line">        db.commit()</span><br><span class="line">db.commit()</span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure></p>
 <h1 id="Nodejs">Nodejs</h1><p>接着编写Nodejs端的测试代码，先看目录结构：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--nodejs&#10;    --package.json&#10;    --httpserver.js</span><br></pre></td></tr></table></figure></p>
@@ -133,7 +135,7 @@
 <p>下面是web.xml的配置：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span></span><br><span class="line">         <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">         <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span></span><br><span class="line">         <span class="attribute">version</span>=<span class="value">"3.1"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>HelloWorldServlet<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>com.scottqian.javaPerformanceTest.ServletDemo<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>HelloWorldServlet<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>最后将上面的部分放到Tomcat8下面运行即可。</p>
 <h1 id="性能测试工具Jmeter">性能测试工具Jmeter</h1><p>我是用了Jmeter工具进行性能测试。首先，需要建立一个线程组：<br><img src="/Images/nodejs-vs-java-performance/1.png" alt=""><br>然后设置一些关于线程组的变量。<br><img src="/Images/nodejs-vs-java-performance/2.png" alt=""><br>在线程组之下，还需要设置一个HTTP请求sampler，然后在这里面设置需要请求的url<br><img src="/Images/nodejs-vs-java-performance/3.png" alt=""><br>最后，添加一个聚合报告，用于查看测试的结果<br><img src="/Images/nodejs-vs-java-performance/4.png" alt=""></p>
-<h1 id="测试结果">测试结果</h1><table>
+<h1 id="测试结果">测试结果</h1><h3 id="100并发">100并发</h3><table>
 <thead>
 <tr>
 <th>Label</th>
@@ -153,45 +155,231 @@
 <tbody>
 <tr>
 <td>java</td>
-<td>10000</td>
-<td>229</td>
-<td>59</td>
-<td>820</td>
-<td>1052</td>
-<td>1396</td>
-<td>2</td>
-<td>2059</td>
-<td>0.03%</td>
-<td>556.8</td>
-<td>253.2</td>
+<td>9369</td>
+<td>224</td>
+<td>200</td>
+<td>290</td>
+<td>345</td>
+<td>529</td>
+<td>79</td>
+<td>1371</td>
+<td>0.25%</td>
+<td>182.5</td>
+<td>40.0</td>
 </tr>
 <tr>
 <td>nodejs</td>
-<td>10000</td>
-<td>57</td>
-<td>31</td>
-<td>155</td>
-<td>185</td>
-<td>259</td>
-<td>0</td>
-<td>331</td>
-<td>0.00%</td>
-<td>577.4</td>
-<td>104.3</td>
+<td>9322</td>
+<td>315</td>
+<td>297</td>
+<td>367</td>
+<td>426</td>
+<td>580</td>
+<td>51</td>
+<td>967</td>
+<td>0.30%</td>
+<td>185.1</td>
+<td>35.8</td>
 </tr>
 <tr>
 <td>总体</td>
-<td>20000</td>
-<td>143</td>
-<td>44</td>
-<td>360</td>
-<td>820</td>
-<td>1323</td>
-<td>0</td>
-<td>2059</td>
-<td>0.02%</td>
-<td>1113.5</td>
-<td>353.8</td>
+<td>18691</td>
+<td>269</td>
+<td>287</td>
+<td>338</td>
+<td>392</td>
+<td>542</td>
+<td>51</td>
+<td>1371</td>
+<td>0.27%</td>
+<td>364.1</td>
+<td>75.1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="200并发">200并发</h3><table>
+<thead>
+<tr>
+<th>Label</th>
+<th># Samples</th>
+<th>Average</th>
+<th>Median</th>
+<th>90% Line</th>
+<th>95% Line</th>
+<th>99% Line</th>
+<th>Min</th>
+<th>Max</th>
+<th>Error %</th>
+<th>Throughput</th>
+<th>KB/sec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>java</td>
+<td>11376</td>
+<td>330</td>
+<td>246</td>
+<td>420</td>
+<td>556</td>
+<td>1581</td>
+<td>34</td>
+<td>10959</td>
+<td>0.15%</td>
+<td>252.1</td>
+<td>54.8</td>
+</tr>
+<tr>
+<td>nodejs</td>
+<td>11278</td>
+<td>401</td>
+<td>327</td>
+<td>506</td>
+<td>632</td>
+<td>1542</td>
+<td>13</td>
+<td>9968</td>
+<td>0.13%</td>
+<td>264.2</td>
+<td>50.1</td>
+</tr>
+<tr>
+<td>总体</td>
+<td>22654</td>
+<td>365</td>
+<td>312</td>
+<td>485</td>
+<td>601</td>
+<td>1548</td>
+<td>13</td>
+<td>10959</td>
+<td>0.14%</td>
+<td>502.0</td>
+<td>102.1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="300并发">300并发</h3><table>
+<thead>
+<tr>
+<th>Label</th>
+<th># Samples</th>
+<th>Average</th>
+<th>Median</th>
+<th>90% Line</th>
+<th>95% Line</th>
+<th>99% Line</th>
+<th>Min</th>
+<th>Max</th>
+<th>Error %</th>
+<th>Throughput</th>
+<th>KB/sec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>java</td>
+<td>17017</td>
+<td>403</td>
+<td>374</td>
+<td>568</td>
+<td>662</td>
+<td>1252</td>
+<td>21</td>
+<td>1964</td>
+<td>0.09%</td>
+<td>246.3</td>
+<td>53.2</td>
+</tr>
+<tr>
+<td>nodejs</td>
+<td>16850</td>
+<td>430</td>
+<td>400</td>
+<td>565</td>
+<td>624</td>
+<td>945</td>
+<td>55</td>
+<td>4008</td>
+<td>0.14%</td>
+<td>278.7</td>
+<td>52.8</td>
+</tr>
+<tr>
+<td>总体</td>
+<td>33867</td>
+<td>417</td>
+<td>390</td>
+<td>566</td>
+<td>637</td>
+<td>1066</td>
+<td>21</td>
+<td>4008</td>
+<td>0.12%</td>
+<td>490.3</td>
+<td>99.4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="500并发">500并发</h3><table>
+<thead>
+<tr>
+<th>Label</th>
+<th># Samples</th>
+<th>Average</th>
+<th>Median</th>
+<th>90% Line</th>
+<th>95% Line</th>
+<th>99% Line</th>
+<th>Min</th>
+<th>Max</th>
+<th>Error %</th>
+<th>Throughput</th>
+<th>KB/sec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>java</td>
+<td>20785</td>
+<td>801</td>
+<td>798</td>
+<td>1121</td>
+<td>1188</td>
+<td>1385</td>
+<td>84</td>
+<td>2388</td>
+<td>0.24%</td>
+<td>243.5</td>
+<td>53.4</td>
+</tr>
+<tr>
+<td>nodejs</td>
+<td>20609</td>
+<td>664</td>
+<td>647</td>
+<td>859</td>
+<td>924</td>
+<td>1076</td>
+<td>7</td>
+<td>1999</td>
+<td>0.29%</td>
+<td>274.5</td>
+<td>53.0</td>
+</tr>
+<tr>
+<td>总体</td>
+<td>41394</td>
+<td>733</td>
+<td>705</td>
+<td>1031</td>
+<td>1127</td>
+<td>1297</td>
+<td>7</td>
+<td>2388</td>
+<td>0.26%</td>
+<td>484.8</td>
+<td>99.9</td>
 </tr>
 </tbody>
 </table>
@@ -207,13 +395,19 @@
 <li><strong>Throughput</strong>：吞吐量——默认情况下表示每秒完成的请求数（Request per Second）</li>
 <li><strong>KB/Sec</strong>：每秒从服务器端接收到的数据量</li>
 </ul>
-<p>这里主要看Throughput（吞吐量）这一列，可以看到nodejs和java在测试机器上每秒差不多都能处理560个请求，在这组中nodejs比java好了3%左右。但是我测试过多组，每次结果的吞吐量他们都差不多。这个结果比较意外，因为我测试这个的目的实际上想证明Nodejs在这方面会比Java的性能好一点的:(<br>但是值得注意的是nodejs的平均响应时间比java小的多（那为啥吞吐量最终还差不多呢？）</p>
+<p><img src="/Images/nodejs-vs-java-performance/compare.png" alt=""><br>从上面的分析可以得到一下一些结论：</p>
+<ol>
+<li>nodejs的平均吞吐量比java多了<strong>8%</strong>左右。</li>
+<li>在大并发情况下，nodejs的错误率会比java略微高一点</li>
+<li>上了200并发之后，java的吞吐量有略微下降趋势。猜想后面并发如果更大，java的吞吐量应该会更差</li>
+</ol>
+<p>另外，有一个有趣的现象是当刚开始运行测试的时候，nodejs的吞吐量是一下子窜到200多。而java则是慢慢一点一点涨上去的。nodejs的异步非阻塞模型应该帮了不少忙。</p>
 <p>最后，测试工程<a href="/Images/nodejs-vs-java-performance/nodejsVSjava.zip">下载</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/06/03/performance_between_nodejs_and_java/" data-id="ciaoyxc0g0013wh9nhl4c0ngf" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/06/03/performance_between_nodejs_and_java/" data-id="ciap2eo1n0013wdcs41hl4quk" class="article-share-link">Share</a>
       
     </footer>
   </div>
