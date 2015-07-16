@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: javascript | 猫猫猿</title>
+  <title>ngrok | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="猫猫猿">
-<meta property="og:url" content="http://qianlifeng.github.io/tags/javascript/index.html">
+  <meta name="description" content="ngrok是一款内网穿透神器，可以直接将内网的对口暴露到外网。它包含服务端和客户端，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ngrok">
+<meta property="og:url" content="http://qianlifeng.github.io/2015/07/16/ngrok/index.html">
 <meta property="og:site_name" content="猫猫猿">
-<meta property="og:description">
+<meta property="og:description" content="ngrok是一款内网穿透神器，可以直接将内网的对口暴露到外网。它包含服务端和客户端，">
+<meta property="og:updated_time" content="2015-07-16T14:19:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="猫猫猿">
-<meta name="twitter:description">
+<meta name="twitter:title" content="ngrok">
+<meta name="twitter:description" content="ngrok是一款内网穿透神器，可以直接将内网的对口暴露到外网。它包含服务端和客户端，">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -59,39 +60,95 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2012" class="archive-year">2012</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2012/03/08/back-to-top-chrome-extension/" class="archive-article-date">
-  <time datetime="2012-03-08T13:46:00.000Z" itemprop="datePublished">3月 8</time>
+        <section id="main"><article id="post-ngrok" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/16/ngrok/" class="article-date">
+  <time datetime="2015-07-16T17:57:17.000Z" itemprop="datePublished">2015-07-16</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2012/03/08/back-to-top-chrome-extension/">在chrome中利用“油猴”为每个网页增加“返回顶部”功能</a>
+    <h1 class="article-title" itemprop="name">
+      ngrok
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ngrok是一款内网穿透神器，可以直接将内网的对口暴露到外网。它包含服务端和客户端，</p>
+<a id="more"></a>
+<h1 id="下载并安装Go">下载并安装Go</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/download</span><br><span class="line">wget https://storage.googleapis.com/golang/go1.<span class="number">4.2</span>.linux-amd64.tar.gz</span><br><span class="line">tar -xvf  go1.<span class="number">4.2</span>.linux-amd64.tar.gz</span><br><span class="line">cp -R go /usr/<span class="built_in">local</span></span><br><span class="line">cp /usr/<span class="built_in">local</span>/go/bin/* /usr/bin</span><br></pre></td></tr></table></figure>
+<h1 id="下载ngrok">下载ngrok</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/github</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/inconshreveable/ngrok.git</span><br><span class="line"><span class="built_in">cd</span> ngrok</span><br></pre></td></tr></table></figure>
+<h1 id="开始编译ngrok">开始编译ngrok</h1><ul>
+<li><p>首先为根域名生成证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NGROK_DOMAIN=<span class="string">"yourdomain.com"</span></span><br><span class="line">openssl genrsa -out rootCA.key <span class="number">2048</span></span><br><span class="line">openssl req -x509 -new -nodes -key rootCA.key -subj <span class="string">"/CN=<span class="variable">$NGROK_DOMAIN</span>"</span> -days <span class="number">5000</span> -out rootCA.pem</span><br><span class="line">openssl genrsa -out device.key <span class="number">2048</span></span><br><span class="line">openssl req -new -key device.key -subj <span class="string">"/CN=<span class="variable">$NGROK_DOMAIN</span>"</span> -out device.csr</span><br><span class="line">openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days <span class="number">5000</span></span><br><span class="line">cp rootCA.pem assets/client/tls/ngrokroot.crt</span><br><span class="line">cp device.crt assets/server/tls/snakeoil.crt </span><br><span class="line">cp device.key assets/server/tls/snakeoil.key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译服务器端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GOOS=linux GOARCH=amd64&#10;#&#22914;&#26524;&#26159;32&#20301;&#31995;&#32479;&#65292;&#36825;&#37324; GOARCH=386</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>然后make<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make release-server</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>编译Windows客户端<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/go/src&#10;GOOS=windows GOARCH=amd64 ./make.bash&#10;cd ~/github/ngrok&#10;GOOS=windows GOARCH=amd64 make release-client</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果编译成功，应该在<code>bin/windows_amd64/</code>下产生一个<code>ngrok.exe</code></p>
+<h1 id="运行">运行</h1><ul>
+<li>启动服务端<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ngrokd -domain=&#34;yourdomain.com&#34; -httpAddr=&#34;:8080&#34; -httpsAddr=&#34;:445&#34;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>*启动客户端<br>首先在ngrok.exe的同级目录新建一个配置文件ngrok.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server_addr: &#34;yourdomain.com:4443&#34;&#10;trust_host_root_certs: false</span><br></pre></td></tr></table></figure></p>
+<p>这里的4443是固定的，是ngrok在服务端监听的端口。  </p>
+<p>然后运行命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok.exe -subdomain oms -config=ngrok.conf 8081</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2015/07/16/ngrok/" data-id="cic6a9u7t001dwp9iczv6ustc" class="article-share-link">Share</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/14/spring-aop/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Spring AOP小试</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'scottqian';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
 </section>
         
           <aside id="sidebar">
