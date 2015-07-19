@@ -5,16 +5,16 @@
   
   <title>ngrok | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ngrok是一款内网穿透神器，可以直接将内网的对口暴露到外网。它包含服务端和客户端，">
+  <meta name="description" content="ngrok是一款内网穿透神器，可以直接将内网的端口暴露到外网，实在是居家必备神器。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ngrok">
 <meta property="og:url" content="http://qianlifeng.github.io/2015/07/16/ngrok/index.html">
 <meta property="og:site_name" content="猫猫猿">
-<meta property="og:description" content="ngrok是一款内网穿透神器，可以直接将内网的对口暴露到外网。它包含服务端和客户端，">
-<meta property="og:updated_time" content="2015-07-16T14:19:28.000Z">
+<meta property="og:description" content="ngrok是一款内网穿透神器，可以直接将内网的端口暴露到外网，实在是居家必备神器。">
+<meta property="og:updated_time" content="2015-07-19T14:55:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ngrok">
-<meta name="twitter:description" content="ngrok是一款内网穿透神器，可以直接将内网的对口暴露到外网。它包含服务端和客户端，">
+<meta name="twitter:description" content="ngrok是一款内网穿透神器，可以直接将内网的端口暴露到外网，实在是居家必备神器。">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -81,7 +81,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>ngrok是一款内网穿透神器，可以直接将内网的对口暴露到外网。它包含服务端和客户端，</p>
+        <p>ngrok是一款内网穿透神器，可以直接将内网的端口暴露到外网，实在是居家必备神器。</p>
 <a id="more"></a>
 <h1 id="下载并安装Go">下载并安装Go</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/download</span><br><span class="line">wget https://storage.googleapis.com/golang/go1.<span class="number">4.2</span>.linux-amd64.tar.gz</span><br><span class="line">tar -xvf  go1.<span class="number">4.2</span>.linux-amd64.tar.gz</span><br><span class="line">cp -R go /usr/<span class="built_in">local</span></span><br><span class="line">cp /usr/<span class="built_in">local</span>/go/bin/* /usr/bin</span><br></pre></td></tr></table></figure>
 <h1 id="下载ngrok">下载ngrok</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/github</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/inconshreveable/ngrok.git</span><br><span class="line"><span class="built_in">cd</span> ngrok</span><br></pre></td></tr></table></figure>
@@ -100,17 +100,20 @@
 </ul>
 <p>如果编译成功，应该在<code>bin/windows_amd64/</code>下产生一个<code>ngrok.exe</code></p>
 <h1 id="运行">运行</h1><ul>
-<li>启动服务端<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ngrokd -domain=&#34;yourdomain.com&#34; -httpAddr=&#34;:8080&#34; -httpsAddr=&#34;:445&#34;</span><br></pre></td></tr></table></figure>
+<li><p>启动服务端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ngrokd -domain=&#34;yourdomain.com&#34; -httpAddr=&#34;:8080&#34; -httpsAddr=&#34;:445&#34;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动客户端<br>首先在ngrok.exe的同级目录新建一个配置文件ngrok.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server_addr: &#34;yourdomain.com:4443&#34;&#10;trust_host_root_certs: false</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>*启动客户端<br>首先在ngrok.exe的同级目录新建一个配置文件ngrok.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server_addr: &#34;yourdomain.com:4443&#34;&#10;trust_host_root_certs: false</span><br></pre></td></tr></table></figure></p>
 <p>这里的4443是固定的，是ngrok在服务端监听的端口。  </p>
-<p>然后运行命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok.exe -subdomain oms -config=ngrok.conf 8081</span><br></pre></td></tr></table></figure></p>
+<p>  然后运行命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok.exe -subdomain oms -config=ngrok.conf 8081</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/07/16/ngrok/" data-id="cic6a9u7t001dwp9iczv6ustc" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/07/16/ngrok/" data-id="cicalw4cw001dwp9gmevzzelj" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
