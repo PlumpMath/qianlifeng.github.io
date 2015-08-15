@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Netgear4300折腾记 | 猫猫猿</title>
+  <title>禁用Intellij的注解自动折行 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在同事的推荐下，入了WNDR4300路由器。天猫335买的，好像比某东做活动的时候还贵不少。anyway，等不到那个时候啦。配合上次买的树莓派，可以开始折腾啦。">
+  <meta name="description" content="在Intellij中，自动格式化代码的时候，方法的注解默认会被格式化到单独的一行中，看着非常不爽，遂改之">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Netgear4300折腾记">
-<meta property="og:url" content="http://qianlifeng.github.io/2015/04/26/Netgear4300+pi/index.html">
+<meta property="og:title" content="禁用Intellij的注解自动折行">
+<meta property="og:url" content="http://qianlifeng.github.io/2015/08/15/disable-method-annotation-on-intellij/index.html">
 <meta property="og:site_name" content="猫猫猿">
-<meta property="og:description" content="在同事的推荐下，入了WNDR4300路由器。天猫335买的，好像比某东做活动的时候还贵不少。anyway，等不到那个时候啦。配合上次买的树莓派，可以开始折腾啦。">
+<meta property="og:description" content="在Intellij中，自动格式化代码的时候，方法的注解默认会被格式化到单独的一行中，看着非常不爽，遂改之">
 <meta property="og:updated_time" content="2015-08-15T11:00:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Netgear4300折腾记">
-<meta name="twitter:description" content="在同事的推荐下，入了WNDR4300路由器。天猫335买的，好像比某东做活动的时候还贵不少。anyway，等不到那个时候啦。配合上次买的树莓派，可以开始折腾啦。">
+<meta name="twitter:title" content="禁用Intellij的注解自动折行">
+<meta name="twitter:description" content="在Intellij中，自动格式化代码的时候，方法的注解默认会被格式化到单独的一行中，看着非常不爽，遂改之">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -60,10 +60,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Netgear4300+pi" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-disable-method-annotation-on-intellij" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/04/26/Netgear4300+pi/" class="article-date">
-  <time datetime="2015-04-26T17:08:17.000Z" itemprop="datePublished">2015-04-26</time>
+    <a href="/2015/08/15/disable-method-annotation-on-intellij/" class="article-date">
+  <time datetime="2015-08-15T18:53:17.000Z" itemprop="datePublished">2015-08-15</time>
 </a>
     
   </div>
@@ -73,7 +73,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Netgear4300折腾记
+      禁用Intellij的注解自动折行
     </h1>
   
 
@@ -81,99 +81,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在同事的推荐下，入了WNDR4300路由器。天猫335买的，好像比某东做活动的时候还贵不少。anyway，等不到那个时候啦。<br>配合上次买的树莓派，可以开始折腾啦。</p>
+        <p>在Intellij中，自动格式化代码的时候，方法的注解默认会被格式化到单独的一行中，看着非常不爽，遂改之</p>
 <a id="more"></a>
-<p>首先，把目标定下来，我理想中的样子应该是：</p>
-<ul>
-<li>能够远程下载。不管是在外面还是在家里，直接在web上操作一下即可</li>
-<li>小型NAS。可以多个设备访问移动硬盘中的资源，包括在线播放远程下载的电影等</li>
-<li>外部直接能SSH到我的树莓派上，例如ssh pi.xxxx.com</li>
-<li>路由器应该直接翻墙，这样家里所有的设备都可以透明访问被墙网站</li>
-</ul>
-<h2 id="路由器刷OpenWRT">路由器刷OpenWRT</h2><p>首先，咱们要把路由器刷成<a href="http://openwrt.org/" target="_blank" rel="external">openwrt</a>系统，这样才能让一切<br>成为可能。去openwrt官方网站下载针对4300的rom：<a href="http://downloads.openwrt.org/barrier_breaker/14.07/ar71xx/nand/openwrt-ar71xx-nand-wndr4300-ubi-factory.img" target="_blank" rel="external">openwrt-ar71xx-nand-wndr4300-ubi-factory.img </a>。</p>
-<p>刷机方法：</p>
-<ul>
-<li>有线连上路由器的一个LAN口，并把电脑IP设置为192.168.1.2，掩码设成255.255.255.0</li>
-<li>在 Windows 控制面板 -&gt; 程序 -&gt; 打开或关闭Windows功能 里面勾选 <em>TFTP客户端</em></li>
-<li>关闭路由器。用小针按住路由器后面的reset，然后打开路由器电源。刚开始会是电源灯在黄色闪烁<br>，然后变成绿色闪烁。此时可以松开reset</li>
-<li>打开命令行，输入<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tftp -i 192.168.1.1 put openwrt-ar71xx-nand-wndr4300-ubi-factory.img</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>如果出现传输成功的字样，说明刷机开始</p>
-<ul>
-<li>待确认路由器重启成功后(比如可以登录<a href="http://192.168.1.1" target="_blank" rel="external">http://192.168.1.1</a>)，直接关闭路由器电源等待5分钟然后再打开电源，否则可能出现 5G WiFi 不可用的问题</li>
-</ul>
-<h2 id="配置OpenWRT">配置OpenWRT</h2><p>路由器刷完之后，还不是很好用，比如默认无线是关闭的，么有中文界面等等。下面就来一个一个配置</p>
-<p>###配置无线网络<br>进入Network -&gt; Wifi 会看到两个无线（2.4G和5G）都被禁用了，点击Edit配置一下即可</p>
-<p>###设置拨号上网<br>进入Network -&gt; Interfaces -&gt; Wan -&gt; Edit 将Protocol改为PPPoE， 然后设置用户名密码即可</p>
-<p>###安装Luci中文包<br>这一步我们需要SSH到路由器上进行，使用putty ssh上去即可。首先，更新软件源:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg update</span><br></pre></td></tr></table></figure></p>
-<p>注意，由于众所周知的网络原因，有时候根本更新不了。此时可以通过代理来更新。在/etc/opkg.conf中加入如下代理配置（根据你的代理来设置）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">option http_proxy http://192.168.1.100:1080</span><br></pre></td></tr></table></figure></p>
-<p>然后安装中文包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg install luci-i18n-chinese</span><br></pre></td></tr></table></figure></p>
-<p>安装完成之后，进入luci界面。然后到System -&gt; System -&gt; Language and Style，将语言改成中文。</p>
-<p>至此，路由器基本的设置已经完成。如果要求不高，设置到这里就行了。但是既然刷了OpenWRT，有几个会满足只到这里呢？</p>
-<h2 id="OpenWRT插件">OpenWRT插件</h2><p>###Shadowsocks代理</p>
-<ul>
-<li><p>下载<a href="http://sourceforge.net/projects/openwrt-dist/files/shadowsocks-libev/" target="_blank" rel="external">Shadowsocks安装包</a>(选择ar71xx系列)<br>和 <a href="http://sourceforge.net/projects/openwrt-dist/files/luci-app/shadowsocks-spec/" target="_blank" rel="external">Luci app shadowsocks</a>用于界面管理</p>
-</li>
-<li><p>使用WinSCP将文件传到路由器（注意选择SCP协议，否则会报错）</p>
-</li>
-<li><p>使用如下命令安装Shadowsocks</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg install shadowsocks-libev-spec-&#123;&#29256;&#26412;&#21495;&#125;-&#123;&#26550;&#26500;&#125;.ipk&#10;opkg install luci-app-shadowsocks-spec-&#123;&#29256;&#26412;&#21495;&#125;.ipk</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装完成后到Luci界面的 <em>服务</em> 菜单里面就会看到Shdowsocks选项了。界面上稍微配置配置就能FQ了，爽歪歪:)</p>
-</li>
-</ul>
-<p>###挂载移动硬盘</p>
-<ul>
-<li>安装USB驱动<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg update&#10;opkg install kmod-usb-storage #&#23433;&#35013;usb&#23384;&#20648;&#35774;&#22791;&#39537;&#21160;&#10;opkg install kmod-usb-storage-extras&#10;opkg install usbutils #&#23433;&#35013;&#20102;&#36825;&#20010;&#21518;&#21487;&#20197;&#29992; lsusb&#10;opkg install ntfs-3g #&#25346;&#36733;NTFS&#10;opkg install block-mount  #&#23433;&#35013;&#20043;&#21518;luci&#30340;&#31995;&#32479;-&#62;&#25346;&#36733;&#28857;&#19979;&#21487;&#20197;&#30452;&#25509;&#26597;&#30475;&#25346;&#36733;&#28857;&#20449;&#24687;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>使用如下命令挂载硬盘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsusb #&#26597;&#30475;usb&#35774;&#22791;  &#10;mkdir /mnt/seagate&#10;#&#21152;&#36733;&#31227;&#21160;&#30828;&#30424;&#65292;&#19988;&#20351;&#29992;big_writes&#31561;&#21442;&#25968;&#25552;&#39640;&#24615;&#33021;  &#10;ntfs-3g /dev/sda1 /mnt/seagate -o noatime,big_writes,async</span><br></pre></td></tr></table></figure></p>
-<p>可以把上面最后一句加入到/etc/rc.local中实现开机自动挂载</p>
-<p>###文件共享Samba<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg install luci-app-samba</span><br></pre></td></tr></table></figure></p>
-<p>安装完成后，重启路由器。此时服务菜单下面会多一个 <em>网络共享</em>， 简单配置一下即可,没什么好讲的了。</p>
-<p>###BT下载Aria2</p>
-<p>首先，安装aria2。注意，不要从自带软件源里面安装aria2，自带的是1.18.7版本，这个版本默认不支持BT和磁力链接。所以推荐下载1.18.5版本的手动安装<a href="http://pan.baidu.com/s/1eQiwpMi" target="_blank" rel="external">aria2</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opkg install aria2_1.18.5-1_ar71xx.ipk&#10;opkg install yaaw_all.ipk&#10;opkg install luci-app-aria2_all.ipk</span><br></pre></td></tr></table></figure></p>
-<p>安装完成后，重启路由器。此时服务菜单下面会多一个 <em>Aria2配置</em>， 简单配置一下即可,也没什么好讲的。<br>配置完成后，打开 <a href="http://192.168.1.1/yaaw" target="_blank" rel="external">http://192.168.1.1/yaaw</a> 就可以访问了</p>
-<!-- todo:
-1. 硬盘休眠
-2. 广告屏蔽adbyby
-6. ChinaDNS
--->
-<h2 id="动态域名解析">动态域名解析</h2><p>我们这里使用DNSPod提供的动态域名解析方案。首先，你得有一个DNSPod的域名，然后你得通过如下两个请求获得一些关于这个域名的基本信息：</p>
-<p>获取域名列表得到 domain_id<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST https://dnsapi.cn/Domain.List -d &#34;login_email=&#60;your login email&#62;&#38;login_password=xxxx&#38;format=json&#34;</span><br></pre></td></tr></table></figure></p>
-<p>获取域名的记录列表得到 record_id：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST https://dnsapi.cn/Record.List -d &#34;login_email=heddom&#38;login_password=xxx&#38;format=json&#38;domain_id=11078351&#34;</span><br></pre></td></tr></table></figure></p>
-<p>然后再将获得的domain_id和record_id放在下面的语句中请求<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash&#10;curl -X POST https://dnsapi.cn/Record.Ddns -d &#39;login_email=xxxxxxxxx&#38;login_password=xxxxxxx&#38;format=json&#38;domain_id=xxxx&#38;record_id=xxxxxx&#38;record_line=&#40664;&#35748;&#38;sub_domain=your_subdomain&#39;</span><br></pre></td></tr></table></figure></p>
-<p>最后把上面这段加入到Crontab中，让他定时运行即可。</p>
-<p>有了固定了域名，下面就可以做些有意思的事情了。</p>
-<p>###暴露树莓派的SSH端口<br>点击网络-&gt;防火墙-&gt;端口转发，新建一个22到22的端口转发即可</p>
-<p>###暴露离线下载到外网</p>
-<p>在树莓派的nginx做如下配置，这样在访问subdomain.domain.com的时候就直接是下载界面了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server &#123;&#10;        server_name subdomain.domain.com;&#10;&#10;        location / &#123;&#10;                proxy_pass   http://192.168.1.1/yaaw/;&#10;        &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>原来默认格式化后的结果如下，个人以为非常难看</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@RequestMapping</span>(value = <span class="string">"/test"</span>)</span><br><span class="line"><span class="keyword">public</span></span><br><span class="line"><span class="annotation">@ResponseBody</span></span><br><span class="line"><span class="function">String <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"qlf"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改之后的格式化效果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@RequestMapping</span>(value = <span class="string">"/test"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@ResponseBody</span> <span class="function">String <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"qlf"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>具体的修改位置：  </p>
+<p><strong>File</strong> -&gt; <strong>Settings</strong> -&gt; <strong>Editor</strong> -&gt; <strong>Code Style</strong> -&gt; <strong>Java</strong> -&gt; <strong>Wrapping and Braces</strong> -&gt; <strong>Method Annotations</strong> 改为 <strong>Do not warp</strong> 即可。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/04/26/Netgear4300+pi/" data-id="cidcyd0x80036mqe3fqnojsqa" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/08/15/disable-method-annotation-on-intellij/" data-id="cidcyd0vy0022mqe3lbz2fgz7" class="article-share-link">Share</a>
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2015/05/05/SSL/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          SSL协议运行机制
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/03/13/raspberrypi2/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/07/16/ngrok/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">树莓派2</div>
+      <div class="article-nav-title">ngrok</div>
     </a>
   
 </nav>

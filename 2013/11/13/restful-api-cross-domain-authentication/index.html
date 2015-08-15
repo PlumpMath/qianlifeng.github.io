@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://qianlifeng.github.io/2013/11/13/restful-api-cross-domain-authentication/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="本文主要介绍了RESTful api跨域认证的一些知识。包括了什么是跨域，跨域的危害，如何进行合理的跨域认证等。另文中如有不对的地方，欢迎指正.">
-<meta property="og:updated_time" content="2015-07-19T15:05:32.000Z">
+<meta property="og:updated_time" content="2015-08-15T11:00:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RESTful api跨域认证">
 <meta name="twitter:description" content="本文主要介绍了RESTful api跨域认证的一些知识。包括了什么是跨域，跨域的危害，如何进行合理的跨域认证等。另文中如有不对的地方，欢迎指正.">
@@ -98,14 +98,16 @@
 </li>
 </ul>
 <p><a name="intro"></a></p>
-<h2 id="前言">前言</h2><hr>
+<p>##前言</p>
+<hr>
 <p>在正式介绍Web Api跨域认证之前，我想先举一个web api跨域认证的例子，就算是需求吧，也有利于后面讲解的时候有例子可说。</p>
 <p>假设现在有两台服务器：<i class="fa fa-windows"></i> Server A和 <i class="fa fa-windows"></i> Server B。 <i class="fa fa-windows"></i> Server A(域名：<a href="https://www.serverA.com/api/" target="_blank" rel="external">https://www.serverA.com/api/</a>) 上面运行着一个提供Web Api的程序，此程序中的api都需要用户登录以后才能操作。<i class="fa fa-windows"></i> Server B(域名：<a href="http://www.serverB.com" target="_blank" rel="external">http://www.serverB.com</a>) 也有一个程序，专门用来消费这些Web PI 。  </p>
 <p>ServerB上面有一个登录操作，此操作会去请求ServerA上面的某个用户认证api。要求:  </p>
-<pre><code><span class="bullet">1. </span>成功请求此api
-<span class="bullet">2. </span>持久化用户的此次认证，以便用户的后续请求。
+<pre><code><span class="number">1.</span> 成功请求此api
+<span class="number">2.</span> 持久化用户的此次认证，以便用户的后续请求。
 </code></pre><p><br><br><a name="what-is-cross-domain"></a></p>
-<h2 id="什么是跨域">什么是跨域</h2><hr>
+<p>##什么是跨域</p>
+<hr>
 <p>对于上面的要求，如果你直接通过ajax请求此认证api显然是不行的。为什么？因为这个请求跨域了。那么什么请求才是跨域请求？  </p>
 <pre><code>所谓跨域请求是指请求一个与当前url协议不同,或者域名不同,或者端口不同的链接资源。
 </code></pre><p>下面这个表格可以帮助理解什么样的请求是跨域请求。  </p>
@@ -113,7 +115,8 @@
 
 <p>这种不能跨域请求的限制又称为：“<a href="http://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">Same-Origin Policy</a>”（同源策略）。值得注意的是<strong>这种安全限制是Javascript保证的</strong>，也就是说以后如果出来个新的浏览器端语言不带这种限制，那么你就可以随便请求不同域的资源。还有一个例子可以佐证，你直接使用wget命令请求RESTful api认证的页面同样会有结果返回。因为此处的请求不是由javascript发出，已经没有了同源策略的限制了。</p>
 <p><br><br><a name="damage"></a></p>
-<h2 id="跨域的危害">跨域的危害</h2><hr>
+<p>##跨域的危害</p>
+<hr>
 <p>为什么要采用这种同源策略的限制呢？我们来模拟一下攻击场景。比如说某网站A有个api<code>http://localhost:5000/api/getuser</code>，此API用来获得当前用户的登陆信息 [ 假设此API不需要认证操作 ] 。碰巧的是用户同时在一个新的标签页打开了网站B。网站B下面有这么一段代码：</p>
 <pre><code class="html"><span class="doctype">&lt;!DOCTYPE html&gt;</span>
 <span class="tag">&lt;<span class="title">html</span>&gt;</span>
@@ -139,7 +142,8 @@
 </code></pre>
 <p>如果没有同源策略的限制，那么用户打开网站B的同时，网站B就可以悄悄获得用户在网站A的信息了。如果这个请求换成某个删除API，那就是大问题了。</p>
 <p><br><br><a name="how-to-cors"></a></p>
-<h2 id="如何进行跨域请求">如何进行跨域请求</h2><hr>
+<p>##如何进行跨域请求</p>
+<hr>
 <p><a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="external">RESTful</a> api大行其道的今天，我们需要跨域请求的需求也越来越多。如何进行安全的跨域请求呢？这里介绍几种方法：<br><strong>1. JSONP</strong>  </p>
 <pre><code>JSONP依赖于这样一个事实：带有src属性的标签具有跨域的能力。  
 </code></pre><p>比如大家经常看到的各种CDN加速就不存在跨域的问题。JSONP是通过JS动态构造这么一个带有src属性的标签，比如说script，src的链接请求远程的跨域URL。然后服务器端返回JSON格式的数据，而又那么巧JS对JSON格式原生就支持，所以返回的JSON数据拿过来就能用了。Jquery已经对JSONP提供了封装，使用起来和一般的ajax请求没多大区别，具体用法大家去搜索一下就是，一大把。  </p>
@@ -161,10 +165,12 @@
 <p><strong>3. Flash</strong>  </p>
 <p>你也可以把跨域请求放在Flash里面，这样就不用受同源策略的限制了。此方法我没用过，只是提一下。  </p>
 <p><br><br><a name="why-normal-authentication-failed"></a></p>
-<h2 id="为什么传统认证方式不行">为什么传统认证方式不行</h2><hr>
+<p>##为什么传统认证方式不行</p>
+<hr>
 <p>解决了跨域问题，RESTful api跨域认证就完成了一半了。认证的方式有很多很多，我这里说的传统认证方式是指通过Cookie来协助认证的方式，比如ASP.net里面的Form认证。这类认证大多是通过在Cookie写入登陆信息，然后浏览器发送请求后服务端再去验证Cookie是否存在，从而达到认证用户的目的。但是我们现在涉及到一个跨域的问题，而<code>Cookie是不能跨站共享的</code>。即使RESTful那边设置了cookie，也不会到当前请求的域下面。到了第二次请求的时候，还是得不到认证信息。  </p>
 <p><br><br><a name="how-to-authentication"></a></p>
-<h2 id="如何进行跨域认证">如何进行跨域认证</h2><hr>
+<p>##如何进行跨域认证</p>
+<hr>
 <p><strong>1. <a href="http://zh.wikipedia.org/wiki/HTTP%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81" target="_blank" rel="external">HTTP基本认证</a></strong></p>
 <blockquote>
 <p>在HTTP中，基本认证是一种用来允许Web浏览器或其他客户端程序在请求时提供用户名和口令形式的身份凭证的一种登录验证方式。<br>在发送之前是以用户名追加一个冒号然后串接上口令，并将得出的结果字符串再用Base64算法编码。例如，提供的用户名是Aladdin、口令是open sesame，则拼接后的结果就是Aladdin:open sesame，然后再将其用Base64编码，得到QWxhZGRpbjpvcGVuIHNlc2FtZQ==。最终将Base64编码的字符串发送出去，由接收者解码得到一个由冒号分隔的用户名和口令的字符串。  </p>
@@ -188,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2013/11/13/restful-api-cross-domain-authentication/" data-id="cicam8ifx000wm3glurug0jk1" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2013/11/13/restful-api-cross-domain-authentication/" data-id="cidcyd0u6000wmqe31ijjmazv" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/">web</a></li></ul>
 
@@ -244,7 +250,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -253,7 +259,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/python/" style="font-size: 17.5px;">python</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a> <a href="/tags/数据库/" style="font-size: 12.5px;">数据库</a> <a href="/tags/树莓派/" style="font-size: 10px;">树莓派</a> <a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a> <a href="/tags/软件/" style="font-size: 15px;">软件</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+      <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/python/" style="font-size: 17.5px;">python</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/安全/" style="font-size: 12.5px;">安全</a> <a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a> <a href="/tags/数据库/" style="font-size: 12.5px;">数据库</a> <a href="/tags/树莓派/" style="font-size: 10px;">树莓派</a> <a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a> <a href="/tags/软件/" style="font-size: 15px;">软件</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
     </div>
   </div>
 
@@ -262,7 +268,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">五月 2012</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">二月 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">一月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">三月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">一月 2010</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">五月 2012</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">二月 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">一月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">三月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">一月 2010</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -272,6 +278,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/08/15/disable-method-annotation-on-intellij/">禁用Intellij的注解自动折行</a>
+          </li>
         
           <li>
             <a href="/2015/07/16/ngrok/">ngrok</a>
@@ -287,10 +297,6 @@
         
           <li>
             <a href="/2015/06/01/spring-mvc-in-action-1/">SpringMVC - 初识</a>
-          </li>
-        
-          <li>
-            <a href="/2015/05/28/maven-start/">使用Maven构建项目</a>
           </li>
         
       </ul>
