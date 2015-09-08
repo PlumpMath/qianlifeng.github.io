@@ -3,17 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Java | 猫猫猿</title>
+  <title>猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
+  <meta name="description" content="title: Akka in action date: 2015-09-08 16:35:17
+tags: [AKKA]使用AKKA构建高并发的分布式系统">
+<meta property="og:type" content="article">
 <meta property="og:title" content="猫猫猿">
-<meta property="og:url" content="http://qianlifeng.github.io/tags/Java/index.html">
+<meta property="og:url" content="http://qianlifeng.github.io/2015/09/08/akka-in-action/index.html">
 <meta property="og:site_name" content="猫猫猿">
-<meta property="og:description">
+<meta property="og:description" content="title: Akka in action date: 2015-09-08 16:35:17
+tags: [AKKA]使用AKKA构建高并发的分布式系统">
+<meta property="og:updated_time" content="2015-09-08T08:47:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="猫猫猿">
-<meta name="twitter:description">
+<meta name="twitter:description" content="title: Akka in action date: 2015-09-08 16:35:17
+tags: [AKKA]使用AKKA构建高并发的分布式系统">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -59,77 +63,67 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/14/spring-aop/" class="archive-article-date">
-  <time datetime="2015-07-14T20:47:17.000Z" itemprop="datePublished">7月 14</time>
+        <section id="main"><article id="post-akka-in-action" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/08/akka-in-action/" class="article-date">
+  <time datetime="2015-09-08T08:47:46.000Z" itemprop="datePublished">2015-09-08</time>
 </a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/14/spring-aop/">Spring AOP小试</a>
-    </h1>
-  
-
-    </header>
+    
   </div>
-</article>
-  
+  <div class="article-inner">
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/06/01/spring-mvc-in-action-1/" class="archive-article-date">
-  <time datetime="2015-06-01T16:06:00.000Z" itemprop="datePublished">6月 1</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/06/01/spring-mvc-in-action-1/">SpringMVC - 初识</a>
-    </h1>
-  
+        <p>title: Akka in action date: 2015-09-08 16:35:17</p>
+<h1 id="tags:_[AKKA]">tags: [AKKA]</h1><p>使用AKKA构建高并发的分布式系统 <a id="more"></a></p>
+<p>#AKKA起步 本文使用Maven作为依赖管理工具。新建一个最基本的Maven console项目，并在pom.xml中加入如下依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-actor_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.3.12<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>新建一个<code>UserActor</code>。AKKA是基于消息来进行通信的，每个Actor都可以接受到来自其他Actor的消息，然后对消息进行处理。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> akka.actor.UntypedActor;</span><br><span class="line"><span class="keyword">import</span> akka.event.Logging;</span><br><span class="line"><span class="keyword">import</span> akka.event.LoggingAdapter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserActor</span> <span class="keyword">extends</span> <span class="title">UntypedActor</span> </span>&#123;</span><br><span class="line">    LoggingAdapter log = Logging.getLogger(getContext().system(), <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        log.info(<span class="string">"Received String message: &#123;&#125;"</span>, message);</span><br><span class="line">        getSender().tell(<span class="string">"got it"</span>, getSelf());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>Main</code>方法中新建<code>ActorSystem</code>，并向<code>UserActor</code>发送消息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> akka.actor.ActorRef;</span><br><span class="line"><span class="keyword">import</span> akka.actor.ActorSystem;</span><br><span class="line"><span class="keyword">import</span> akka.actor.Props;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> ActorSystem system = ActorSystem.create(<span class="string">"ActorSystem"</span>);</span><br><span class="line">        <span class="keyword">final</span> ActorRef myActor = system.actorOf(Props.create(UserActor.class));</span><br><span class="line">        myActor.tell(<span class="string">"hello world"</span>, ActorRef.noSender());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行此程序，如果一切顺利可以看到如下输出，代表发送消息成功：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[INFO] [09/08/2015 16:44:52.482] [ActorSystem-akka.actor.default-dispatcher-3] [akka://ActorSystem/user/$a] Received String message: hello world</span><br></pre></td></tr></table></figure></p>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/28/maven-start/" class="archive-article-date">
-  <time datetime="2015-05-28T15:43:00.000Z" itemprop="datePublished">5月 28</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/28/maven-start/">使用Maven构建项目</a>
-    </h1>
-  
-
-    </header>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2015/09/08/akka-in-action/" data-id="cieb47j01002zmdbovhyhuq3k" class="article-share-link">Share</a>
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/16/ngrok/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ngrok</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'scottqian';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
 </section>
         
           <aside id="sidebar">
