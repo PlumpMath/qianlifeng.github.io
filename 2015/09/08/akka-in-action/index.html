@@ -3,21 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>猫猫猿</title>
+  <title>Akka in action | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="title: Akka in action date: 2015-09-08 16:35:17
-tags: [AKKA]使用AKKA构建高并发的分布式系统">
+  <meta name="description" content="使用AKKA构建高并发的分布式系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="猫猫猿">
+<meta property="og:title" content="Akka in action">
 <meta property="og:url" content="http://qianlifeng.github.io/2015/09/08/akka-in-action/index.html">
 <meta property="og:site_name" content="猫猫猿">
-<meta property="og:description" content="title: Akka in action date: 2015-09-08 16:35:17
-tags: [AKKA]使用AKKA构建高并发的分布式系统">
-<meta property="og:updated_time" content="2015-09-08T08:47:46.000Z">
+<meta property="og:description" content="使用AKKA构建高并发的分布式系统">
+<meta property="og:updated_time" content="2015-09-09T07:12:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="猫猫猿">
-<meta name="twitter:description" content="title: Akka in action date: 2015-09-08 16:35:17
-tags: [AKKA]使用AKKA构建高并发的分布式系统">
+<meta name="twitter:title" content="Akka in action">
+<meta name="twitter:description" content="使用AKKA构建高并发的分布式系统">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -66,29 +63,43 @@ tags: [AKKA]使用AKKA构建高并发的分布式系统">
         <section id="main"><article id="post-akka-in-action" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/09/08/akka-in-action/" class="article-date">
-  <time datetime="2015-09-08T08:47:46.000Z" itemprop="datePublished">2015-09-08</time>
+  <time datetime="2015-09-08T16:35:17.000Z" itemprop="datePublished">2015-09-08</time>
 </a>
     
   </div>
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Akka in action
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>title: Akka in action date: 2015-09-08 16:35:17</p>
-<h1 id="tags:_[AKKA]">tags: [AKKA]</h1><p>使用AKKA构建高并发的分布式系统 <a id="more"></a></p>
+        <p>使用AKKA构建高并发的分布式系统<br><a id="more"></a></p>
 <p>#AKKA起步 本文使用Maven作为依赖管理工具。新建一个最基本的Maven console项目，并在pom.xml中加入如下依赖：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-actor_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.3.12<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>新建一个<code>UserActor</code>。AKKA是基于消息来进行通信的，每个Actor都可以接受到来自其他Actor的消息，然后对消息进行处理。  </p>
+<p>新建一个<code>UserActor</code>。Actor是一个封装了状态和行为的Java对象，Actor之间通过交换消息来进行通信。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> akka.actor.UntypedActor;</span><br><span class="line"><span class="keyword">import</span> akka.event.Logging;</span><br><span class="line"><span class="keyword">import</span> akka.event.LoggingAdapter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserActor</span> <span class="keyword">extends</span> <span class="title">UntypedActor</span> </span>&#123;</span><br><span class="line">    LoggingAdapter log = Logging.getLogger(getContext().system(), <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Object message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        log.info(<span class="string">"Received String message: &#123;&#125;"</span>, message);</span><br><span class="line">        getSender().tell(<span class="string">"got it"</span>, getSelf());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在<code>Main</code>方法中新建<code>ActorSystem</code>，并向<code>UserActor</code>发送消息</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> akka.actor.ActorRef;</span><br><span class="line"><span class="keyword">import</span> akka.actor.ActorSystem;</span><br><span class="line"><span class="keyword">import</span> akka.actor.Props;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> ActorSystem system = ActorSystem.create(<span class="string">"ActorSystem"</span>);</span><br><span class="line">        <span class="keyword">final</span> ActorRef myActor = system.actorOf(Props.create(UserActor.class));</span><br><span class="line">        myActor.tell(<span class="string">"hello world"</span>, ActorRef.noSender());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行此程序，如果一切顺利可以看到如下输出，代表发送消息成功：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[INFO] [09/08/2015 16:44:52.482] [ActorSystem-akka.actor.default-dispatcher-3] [akka://ActorSystem/user/$a] Received String message: hello world</span><br></pre></td></tr></table></figure></p>
+<p>可以把<code>ActorSystem</code>想象成一个Actor组织，所有的Actor活动都在这个组织下进行，包括Actor的创建。 一个<code>ActorSystem</code>会创建1-N个线程来真正执行的Actor任务。<br><code>ActorSystem</code>的创建是一个比较消耗 资源的过程，因此最好在一个逻辑程序中只创建一个<code>ActorSystem</code>。  </p>
+<p><code>Actor</code>模型的设计原则是尽可能的对外界屏蔽<code>Actor</code>的具体实现，因此这里我们使用<code>system.actorOf</code>得到了一个<code>Actor</code>的引用，这样就屏蔽了Actor的内部细节。</p>
+<p>运行此程序，如果一切顺利可以看到如下输出，代表发送消息成功：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[INFO] [09/08/2015 16:44:52.482] [ActorSystem-akka.actor.default-dispatcher-3] [akka://ActorSystem/user/$a] Received String message: hello world</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/09/08/akka-in-action/" data-id="cieb47j01002zmdbovhyhuq3k" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/09/08/akka-in-action/" data-id="ciecg8bsz002zm7guz50vbzhj" class="article-share-link">Share</a>
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AKKA/">AKKA</a></li></ul>
+
     </footer>
   </div>
   
@@ -132,7 +143,7 @@ tags: [AKKA]使用AKKA构建高并发的分布式系统">
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AKKA/">AKKA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DotNet/">DotNet</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/皮肤/">皮肤</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件/">软件</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/验证码/">验证码</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -141,7 +152,7 @@ tags: [AKKA]使用AKKA构建高并发的分布式系统">
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/python/" style="font-size: 17.5px;">python</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a> <a href="/tags/数据库/" style="font-size: 12.5px;">数据库</a> <a href="/tags/树莓派/" style="font-size: 10px;">树莓派</a> <a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a> <a href="/tags/软件/" style="font-size: 15px;">软件</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
+      <a href="/tags/AKKA/" style="font-size: 10px;">AKKA</a> <a href="/tags/DotNet/" style="font-size: 20px;">DotNet</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 12.5px;">nginx</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/python/" style="font-size: 17.5px;">python</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/摄影/" style="font-size: 12.5px;">摄影</a> <a href="/tags/数据库/" style="font-size: 12.5px;">数据库</a> <a href="/tags/树莓派/" style="font-size: 10px;">树莓派</a> <a href="/tags/皮肤/" style="font-size: 17.5px;">皮肤</a> <a href="/tags/软件/" style="font-size: 15px;">软件</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/验证码/" style="font-size: 10px;">验证码</a>
     </div>
   </div>
 
@@ -162,7 +173,7 @@ tags: [AKKA]使用AKKA构建高并发的分布式系统">
       <ul>
         
           <li>
-            <a href="/2015/09/08/akka-in-action/">(no title)</a>
+            <a href="/2015/09/08/akka-in-action/">Akka in action</a>
           </li>
         
           <li>
