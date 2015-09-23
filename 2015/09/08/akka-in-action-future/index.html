@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2011/3 | 猫猫猿</title>
+  <title>Akka in action - Future | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="猫猫猿">
-<meta property="og:url" content="http://qianlifeng.github.io/archives/2011/03/index.html">
+  <meta name="description" content="在AKKA中，Future是一种用来接收并发操作结果的数据结构，通过Futre我们可以同步或者异步的接受Actor的返回结果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Akka in action - Future">
+<meta property="og:url" content="http://qianlifeng.github.io/2015/09/08/akka-in-action-future/index.html">
 <meta property="og:site_name" content="猫猫猿">
-<meta property="og:description">
+<meta property="og:description" content="在AKKA中，Future是一种用来接收并发操作结果的数据结构，通过Futre我们可以同步或者异步的接受Actor的返回结果。">
+<meta property="og:updated_time" content="2015-09-23T09:22:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="猫猫猿">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Akka in action - Future">
+<meta name="twitter:description" content="在AKKA中，Future是一种用来接收并发操作结果的数据结构，通过Futre我们可以同步或者异步的接受Actor的返回结果。">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -59,39 +60,74 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2011" class="archive-year">2011</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2011/03/06/android-broadcast/" class="archive-article-date">
-  <time datetime="2011-03-06T18:15:17.000Z" itemprop="datePublished">3月 6</time>
+        <section id="main"><article id="post-akka-in-action-future" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/08/akka-in-action-future/" class="article-date">
+  <time datetime="2015-09-08T16:35:17.000Z" itemprop="datePublished">2015-09-08</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2011/03/06/android-broadcast/">Android之旅---广播（BroadCast）</a>
+    <h1 class="article-title" itemprop="name">
+      Akka in action - Future
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在AKKA中，Future是一种用来接收并发操作结果的数据结构，通过Futre我们可以同步或者异步的接受Actor的返回结果。<br><a id="more"></a></p>
+<p>注：本文中的例子基于</p>
+<p>#同步接收Actor返回消息  </p>
+<p>要同步的从Actor那边接收消息，可以使用<code>Patterns.ask</code>方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ActorSelection selection = system.actorSelection(<span class="string">"akka.tcp://ActorSystemA@192.168.8.136:2552/user/ActorA"</span>);</span><br><span class="line"></span><br><span class="line">Timeout timeout = <span class="keyword">new</span> Timeout(Duration.create(<span class="number">5</span>, <span class="string">"seconds"</span>));</span><br><span class="line">Future&lt;Object&gt; future = Patterns.ask(selection, <span class="string">"from b"</span>, timeout);</span><br><span class="line">String result = (String) Await.result(future, timeout.duration());</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qianlifeng.github.io/2015/09/08/akka-in-action-future/" data-id="ciewl1ixg0032mafehyvc1fhw" class="article-share-link">Share</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AKKA/">AKKA</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/09/08/akka-in-action/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Akka in action</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'scottqian';
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
 </section>
         
           <aside id="sidebar">
