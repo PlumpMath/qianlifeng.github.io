@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="SSH在手，天下我有">
-<meta property="og:updated_time" content="2015-10-12T04:20:16.000Z">
+<meta property="og:updated_time" content="2015-10-12T04:24:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH打洞大法">
 <meta name="twitter:description" content="SSH在手，天下我有">
@@ -82,13 +82,17 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>SSH在手，天下我有<br><a id="more"></a></p>
-<p>#使用场景</p>
-<h2 id="暴露内网端口给外网">暴露内网端口给外网</h2><p>这招可以用在开发调试或者内容资源展示的时候。别人访问外网，然后外网转发到内网，实际的内容还是在内网。外网不过起了一个跳板的作用。因为外网不能主动访问到内网，<strong>所以下面这条命令一定要从内网运行</strong>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#26292;&#38706;&#20869;&#32593;&#30340;3306&#32473;remotehost&#30340;9123&#65292;&#36825;&#26679;&#21035;&#20154;&#35775;&#38382;&#22806;&#32593;&#30340;9123&#23454;&#38469;&#23601;&#26159;&#35775;&#38382;&#30340;&#20869;&#32593;&#30340;3306&#10;ssh -R 9123:127.0.0.1:3306 username@remotehost</span><br></pre></td></tr></table></figure></p>
+<h1 id="暴露内网端口给外网">暴露内网端口给外网</h1><p>##使用场景</p>
+<ul>
+<li>开发联调。别人只能访问到你的外网地址，但是你想在本地机器监测并调试</li>
+<li>内网内容资源展示</li>
+</ul>
+<p>基本流程就是别人访问外网，然后外网转发到内网，实际的内容还是在内网。外网不过起了一个跳板的作用。因为外网不能主动访问到内网，<strong>所以下面这条命令一定要从内网运行</strong>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#26292;&#38706;&#20869;&#32593;&#30340;3306&#32473;remotehost&#30340;9123&#65292;&#36825;&#26679;&#21035;&#20154;&#35775;&#38382;&#22806;&#32593;&#30340;9123&#23454;&#38469;&#23601;&#26159;&#35775;&#38382;&#30340;&#20869;&#32593;&#30340;3306&#10;ssh -R 9123:127.0.0.1:3306 username@remotehost</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/" data-id="cifnfm51k0039m6e92t3oeohn" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/" data-id="cifnfs9w00039miahu4n7zg6d" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
