@@ -3,25 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>跟我学做c#皮肤美化（三） | 猫猫猿</title>
+  <title>使用log4jdbc-log4j2记录完整的SQL执行语句 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇介绍Checkbox控件的制作">
+  <meta name="description" content="平常在使用Hibernate的show_sql开关的时候，打印出来的sql不是真实的sql，参数都是?。在调试性能的时候比较蛋疼。利用log4jdbc-log4f2可以达到打印完整SQL的要求，甚至他还可以打印出执行的结果集">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跟我学做c#皮肤美化（三）">
-<meta property="og:url" content="http://qianlifeng.github.io/2010/04/15/charp-winform-skin-3/index.html">
+<meta property="og:title" content="使用log4jdbc-log4j2记录完整的SQL执行语句">
+<meta property="og:url" content="http://qianlifeng.github.io/2015/11/17/log4jdbc-log4j2/index.html">
 <meta property="og:site_name" content="猫猫猿">
-<meta property="og:description" content="这篇介绍Checkbox控件的制作">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2mfcjrdj208i08zglq.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2n1f8t4j208k093aa1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2n97kc6j20j20hwdj6.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2o2jwlbj204f015gle.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/5d7c1fa4gw1elx2p90ba0j20cm0dgab8.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2pn1agoj206h03adfp.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2q7wwo1j20cn0dcq44.jpg">
+<meta property="og:description" content="平常在使用Hibernate的show_sql开关的时候，打印出来的sql不是真实的sql，参数都是?。在调试性能的时候比较蛋疼。利用log4jdbc-log4f2可以达到打印完整SQL的要求，甚至他还可以打印出执行的结果集">
 <meta property="og:updated_time" content="2015-11-17T09:16:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="跟我学做c#皮肤美化（三）">
-<meta name="twitter:description" content="这篇介绍Checkbox控件的制作">
+<meta name="twitter:title" content="使用log4jdbc-log4j2记录完整的SQL执行语句">
+<meta name="twitter:description" content="平常在使用Hibernate的show_sql开关的时候，打印出来的sql不是真实的sql，参数都是?。在调试性能的时候比较蛋疼。利用log4jdbc-log4f2可以达到打印完整SQL的要求，甚至他还可以打印出执行的结果集">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -67,10 +60,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-charp-winform-skin-3" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-log4jdbc-log4j2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2010/04/15/charp-winform-skin-3/" class="article-date">
-  <time datetime="2010-04-15T12:58:17.000Z" itemprop="datePublished">2010-04-15</time>
+    <a href="/2015/11/17/log4jdbc-log4j2/" class="article-date">
+  <time datetime="2015-11-17T16:55:17.000Z" itemprop="datePublished">2015-11-17</time>
 </a>
     
   </div>
@@ -80,7 +73,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      跟我学做c#皮肤美化（三）
+      使用log4jdbc-log4j2记录完整的SQL执行语句
     </h1>
   
 
@@ -88,44 +81,72 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这篇介绍Checkbox控件的制作</p>
-<a id="more"></a>
-<p>先看最终的效果图：</p>
-<p><img src="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2mfcjrdj208i08zglq.jpg" alt=""><br><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2n1f8t4j208k093aa1.jpg" alt=""></p>
-<p>或许大家已经猜出来我这个checkbox是怎么实现的吧？不错，就是前面的框是一个图片，后面的文字是label。经过前面button的讲解我想有能力的人完全可以单独制作出来。还不熟悉的现在就开始跟我一步一步的来。  </p>
-<p>打开上次的项目QLFUI,新建一个名为CheckBox的用户控件。如图</p>
-<p><img src="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2n97kc6j20j20hwdj6.jpg" alt=""></p>
-<p>同样的，我们先设置一下，使其看起来像一个checkbox。具体设置如下：</p>
-<p>CheckBox控件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Size:70,13 &#10;MinimumSize:70,13  &#10;BackColor:Transparent</span><br></pre></td></tr></table></figure></p>
-<p>然后拖一个picturebox并设置以下属性：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Size:13,13  &#10;Location:0,0, &#10;BackgroundImageLayout:Stretch</span><br></pre></td></tr></table></figure></p>
-<p>再拖一个label上来设置以下属性：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AutoSize:falseLocation:15,0  &#10;Size:50:13</span><br></pre></td></tr></table></figure></p>
-<p>最终应该是这个样子：</p>
-<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2o2jwlbj204f015gle.jpg" alt=""> </p>
-<p>好了，样子有了接下来就是编码了！还是一样，先贴代码，然后我一句一句解释：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#20195;&#30721;&#10;&#10;using System;&#10;using System.Collections.Generic;&#10;using System.ComponentModel;&#10;using System.Drawing;&#10;using System.Data;&#10;using System.Linq;&#10;using System.Text;&#10;using System.Windows.Forms;&#10;using System.Reflection;&#10;using System.Drawing.Imaging;&#10;&#10;namespace QLFUI&#10;&#123;&#10;    public partial class CheckBox : UserControl&#10;    &#123;&#10;        #region &#21464;&#37327;&#10;&#10;        Image _normal;&#10;        Image _normalmove;&#10;        Image _checkedmove;&#10;        Image _checked;&#10;        bool check;&#10;&#10;        #endregion&#10;&#10;        #region &#23646;&#24615;&#10;&#10;        [Category(&#34;QLFSkinDll&#34;)]&#10;        [Description(&#34;&#25511;&#20214;&#26159;&#21542;&#34987;&#36873;&#20013;&#34;)]&#10;        public bool Checked&#10;        &#123;&#10;            get &#123; return check; &#125;&#10;            set&#10;            &#123;&#10;&#10;                if (value == true)&#10;                &#123;&#10;                    pictureBox1.Image = _checked;&#10;                &#125;&#10;                else&#10;                &#123;&#10;                    pictureBox1.Image = _normal;&#10;                &#125;&#10;                check = value;&#10;            &#125;&#10;        &#125;&#10;&#10;        [Category(&#34;QLFSkinDll&#34;)]&#10;        [Description(&#34;&#26174;&#31034;&#30340;&#25991;&#23383;&#34;)]&#10;        public string CheckBoxText&#10;        &#123;&#10;            get &#123; return this.label1.Text; &#125;&#10;            set &#123; this.label1.Text = value; &#125;&#10;        &#125;&#10;&#10;        #endregion&#10;&#10;        #region &#26500;&#36896;&#20989;&#25968;&#10;&#10;        public CheckBox()&#10;        &#123;&#10;            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);&#10;&#10;            Bitmap nl = new Bitmap(Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(@&#34;QLFUI.Res.checkbox.check.bmp&#34;)));&#10;            _normal = nl.Clone(new Rectangle(0, 0, 13, 13), PixelFormat.Format64bppPArgb);&#10;            _normalmove = nl.Clone(new Rectangle(13, 0, 13, 13), PixelFormat.Format64bppPArgb);&#10;&#10;            Bitmap n2 = new Bitmap(Image.FromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(@&#34;QLFUI.Res.checkbox.check2.bmp&#34;)));&#10;            _checked = n2.Clone(new Rectangle(0, 0, 13, 13), PixelFormat.Format64bppPArgb);&#10;            _checkedmove = n2.Clone(new Rectangle(13, 0, 13, 13), PixelFormat.Format64bppPArgb);&#10;&#10;            InitializeComponent();&#10;            &#10;            pictureBox1.Image = _normal;&#10;           &#10;        &#125;&#10;&#10;        #endregion&#10;&#10;        #region &#20107;&#20214;&#10;&#10;        private void pictureBox1_MouseEnter(object sender, EventArgs e)&#10;        &#123;&#10;            if (check == true)&#10;            &#123;&#10;                pictureBox1.Image = _checkedmove;&#10;            &#125;&#10;            else&#10;            &#123;&#10;                pictureBox1.Image = _normalmove;&#10;            &#125;&#10;        &#125;&#10;&#10;        private void pictureBox1_MouseLeave(object sender, EventArgs e)&#10;        &#123;&#10;            if (check == true)&#10;            &#123;&#10;                &#10;                pictureBox1.Image = _checked;&#10;            &#125;&#10;            else&#10;            &#123;&#10;                pictureBox1.Image = _normal;&#10;            &#125;&#10;        &#125;&#10;&#10;        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)&#10;        &#123;&#10;            if (check == false)&#10;            &#123;&#10;                pictureBox1.Image = _checkedmove;&#10;                check = true;&#10;            &#125;&#10;            else&#10;            &#123;&#10;                pictureBox1.Image = _normalmove;&#10;                check = false;&#10;            &#125;&#10;        &#125;&#10;&#10;        private void label1_TextChanged(object sender, EventArgs e)&#10;        &#123;&#10;            label1.Width = label1.Text.Length *((int)this.Font.Size+5);&#10;            this.Width = label1.Width + 20;&#10;        &#125;&#10;&#10;        private void CheckBox_SizeChanged(object sender, EventArgs e)&#10;        &#123;&#10;            label1.Width = this.Width - 15;&#10;        &#125;&#10;&#10;        #endregion &#10;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>变量：</strong>  </p>
-<p>CheckBox类的开头我定义了四个image的变量用来分别表示选中和未选中状态下鼠标的移进移出的图像！接下来的bool check变量就是代表该控件是否已经被选中（checkbox最重要的属性就是这个了吧？！）。</p>
-<p><strong>属性：</strong>  </p>
-<p>接下来，就是2个属性了，我代码里面也注释的很清楚。这里只有两个地方需要解释一下:1, [Description(“显示的文字”)]是干什么的？看图你就明白了</p>
-<p><img src="http://ww4.sinaimg.cn/large/5d7c1fa4gw1elx2p90ba0j20cm0dgab8.jpg" alt=""></p>
-<p>这下明白了吧? 对，就是用来解释你这个属性的（别人用你的控件都不知道什么意思，我们当然要适当的注释一下啦）!第二点要注意的就是，在设置Checked这个属性的时候要注意更换图片，选中和不选中的时候的图片不同！其他的属性我想大家经过button控件的讲解已经能很容易看明白里面的内容了。这里就不再罗嗦了。  </p>
-<p>接下来看构造函数。第一句this.SetStyle我就不说了，不懂可以看button里面的讲解。接下来的六句话就是得到四种状态下的图片了，不过得到的好像不是很简单！这是因为我们的原始图片是这样的</p>
-<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2pn1agoj206h03adfp.jpg" alt=""></p>
-<p>看见没有，图片是画在一张图片中的，所以我们需要使用bitmap的clone函数将不同矩形区域下的图片给截取出来。这样解释大家应该明白了Clone的意思了吧。剩下的两句不罗嗦了，和button里面的一样。  </p>
-<p>接下来该做什么呢，根据制作button控件的经验，我们就该开始编写鼠标的各种事件了，并在这些事件中处理不同的背景。  </p>
-<p>事件里面我们一共写了三个事件，与button不同的是这里并没有MouseUp事件，为什么呢？因为不需要，哈哈！开个玩笑，因为背景对于mouseup事件并不需要改变！不过如果你高兴当然可以加上去。事件里面的内容也很简单，就是根据当前check的状态，然后依据鼠标的状态更换picturebox的背景。很简单，我就不多说了。另外要注意的就是把label的对应的事件也与生成的鼠标事件关联起来（怎么关联？直接在label的属性的对应事件里面选择那些个已经存在的事件就行了）</p>
-<p>好了，来运行一下看看效果吧！</p>
-<p><img src="http://ww3.sinaimg.cn/large/5d7c1fa4gw1elx2q7wwo1j20cn0dcq44.jpg" alt=""> </p>
-<p>运行的好像还不错呢，我们设置的属性都能成功应用。不过，如果我们在其他项目中引用这个控件并将CheckBoxText属性设置的稍微长一些，我们就会发现有一部分文字显示不出来了。这是因为我们的控件的宽度是固定的70个像素，当label的长度更改时超过整个控件长度的部分就会被隐藏。所以我们还需要在label的内容更改时同时改变整个控件的长度以完全显示文字的内容。  </p>
-<p>看代码，我们写一个label文字更改时的事件<code>label1_TextChanged</code>，当label中的文字改变时就会触发这个事件。事件里面的第一句就是根据文字的个数计算label需要显示的宽度。字体的宽度是用<code>(int)this.Font.Size+</code> 5来得到的(这个宽度我测试的基本能得到要求)，得到了label的宽度我们只要将这个宽度加20(图片的宽度)就大概得到了整个控件的宽度，这样文字就能正常显示了。当然为了以防万一我们还要加一个事件(基本用不上，不过保险嘛，呵呵)就是<code>CheckBox SizeChanged</code>事件了（见代码），当我们手动拉动checkbox时手动改变label的长度，这样即使上面一个事件打不到要求有些文字没有显示出来，我们只要手动拖一下checkbox的长度那文字肯定就能显示出来了。  </p>
-<p>OK,checkbox控件制作完成。  </p>
-<p>下一篇就会开始先制作窗体部分。。。敬请期待！</p>
+        <p>平常在使用Hibernate的show_sql开关的时候，打印出来的sql不是真实的sql，参数都是?。在调试性能的时候比较蛋疼。利用<a href="https://code.google.com/p/log4jdbc-log4j2/" target="_blank" rel="external">log4jdbc-log4f2</a>可以达到打印完整SQL的要求，甚至他还可以打印出执行的结果集<br><a id="more"></a></p>
+<p><strong> 注意，我这边使用的logback(slf4j)作为日志记录组件，如果你不是使用的logback，那么如下方法可能对你不适用，请查看官网文档。</strong></p>
+<ul>
+<li><p>加入如下Maven包：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.bgee.log4jdbc-log4j2<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>log4jdbc-log4j2-jdbc4<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.16<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>slf4j-api<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;logback.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>log4j-over-slf4j<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>jcl-over-slf4j<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>jul-to-slf4j<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更改数据库连接，由原来的</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:mysql://localhost:1527</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>改为<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:log4jdbc:mysql://localhost:1527</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>更改JDBC Driver，由原来的<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.mysql.jdbc.Driver</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>改为<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.sf.log4jdbc.sql.jdbcapi.DriverSpy</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>添加log4jdbc.log4j2.properties配置文件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">log4jdbc.spylogdelegator.name=net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后在logback.xml加入如下appender</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">logger</span> <span class="attribute">name</span>=<span class="value">"jdbc.sqltiming"</span> <span class="attribute">level</span>=<span class="value">"DEBUG"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">logger</span> <span class="attribute">name</span>=<span class="value">"jdbc.resultsettable"</span> <span class="attribute">level</span>=<span class="value">"DEBUG"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">logger</span> <span class="attribute">name</span>=<span class="value">"jdbc.resultset"</span> <span class="attribute">level</span>=<span class="value">"WARN"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">logger</span> <span class="attribute">name</span>=<span class="value">"jdbc.audit"</span> <span class="attribute">level</span>=<span class="value">"WARN"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>log4jdbc-log4j2支持如下几种appender</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>logger</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jdbc.sqlonly</td>
+<td>Logs only SQL. SQL executed within a prepared statement is automatically shown with it’s bind arguments replaced with the data bound at that position, for greatly increased readability.</td>
+</tr>
+<tr>
+<td>jdbc.sqltiming</td>
+<td>Logs the SQL, post-execution, including timing statistics on how long the SQL took to execute.</td>
+</tr>
+<tr>
+<td>jdbc.audit</td>
+<td>Logs ALL JDBC calls except for ResultSets. This is a very voluminous output, and is not normally needed unless tracking down a specific JDBC problem.</td>
+</tr>
+<tr>
+<td>jdbc.resultset</td>
+<td>Even more voluminous, because all calls to ResultSet objects are logged.</td>
+</tr>
+<tr>
+<td>jdbc.resultsettable</td>
+<td>Log the jdbc results as a table. Level debug will fill in unread values in the result set.</td>
+</tr>
+<tr>
+<td>jdbc.connection</td>
+<td>Logs connection open and close events as well as dumping all open connection numbers. This is very useful for hunting down connection leak problems.</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2010/04/15/charp-winform-skin-3/" data-id="cih362but002jmmcwqxpnvmh5" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/11/17/log4jdbc-log4j2/" data-id="cih362bu2001ommcwpojx8zmc" class="article-share-link">Share</a>
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DotNet/">DotNet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/皮肤/">皮肤</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
 
     </footer>
   </div>
@@ -133,19 +154,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2010/04/15/charp-winform-skin-4/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          跟我学做c#皮肤美化（四）
-        
-      </div>
-    </a>
   
-  
-    <a href="/2010/04/13/charp-winform-skin-2/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/09/28/SSH-tunnel/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">跟我学做c#皮肤美化（二）</div>
+      <div class="article-nav-title">SSH打洞大法</div>
     </a>
   
 </nav>
