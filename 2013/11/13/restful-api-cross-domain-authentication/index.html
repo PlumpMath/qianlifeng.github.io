@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://qianlifeng.github.io/2013/11/13/restful-api-cross-domain-authentication/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="本文主要介绍了RESTful api跨域认证的一些知识。包括了什么是跨域，跨域的危害，如何进行合理的跨域认证等。另文中如有不对的地方，欢迎指正.">
-<meta property="og:updated_time" content="2015-11-17T09:16:48.000Z">
+<meta property="og:updated_time" content="2016-02-22T15:23:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RESTful api跨域认证">
 <meta name="twitter:description" content="本文主要介绍了RESTful api跨域认证的一些知识。包括了什么是跨域，跨域的危害，如何进行合理的跨域认证等。另文中如有不对的地方，欢迎指正.">
@@ -103,8 +103,8 @@
 <p>在正式介绍Web Api跨域认证之前，我想先举一个web api跨域认证的例子，就算是需求吧，也有利于后面讲解的时候有例子可说。</p>
 <p>假设现在有两台服务器：<i class="fa fa-windows"></i> Server A和 <i class="fa fa-windows"></i> Server B。 <i class="fa fa-windows"></i> Server A(域名：<a href="https://www.serverA.com/api/" target="_blank" rel="external">https://www.serverA.com/api/</a>) 上面运行着一个提供Web Api的程序，此程序中的api都需要用户登录以后才能操作。<i class="fa fa-windows"></i> Server B(域名：<a href="http://www.serverB.com" target="_blank" rel="external">http://www.serverB.com</a>) 也有一个程序，专门用来消费这些Web PI 。  </p>
 <p>ServerB上面有一个登录操作，此操作会去请求ServerA上面的某个用户认证api。要求:  </p>
-<pre><code><span class="number">1.</span> 成功请求此api
-<span class="number">2.</span> 持久化用户的此次认证，以便用户的后续请求。
+<pre><code>1. 成功请求此api
+2. 持久化用户的此次认证，以便用户的后续请求。
 </code></pre><p><br><br><a name="what-is-cross-domain"></a></p>
 <p>##什么是跨域</p>
 <hr>
@@ -118,27 +118,27 @@
 <p>##跨域的危害</p>
 <hr>
 <p>为什么要采用这种同源策略的限制呢？我们来模拟一下攻击场景。比如说某网站A有个api<code>http://localhost:5000/api/getuser</code>，此API用来获得当前用户的登陆信息 [ 假设此API不需要认证操作 ] 。碰巧的是用户同时在一个新的标签页打开了网站B。网站B下面有这么一段代码：</p>
-<pre><code class="html"><span class="doctype">&lt;!DOCTYPE html&gt;</span>
-<span class="tag">&lt;<span class="title">html</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://codeorigin.jquery.com/jquery-2.0.3.min.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">body</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"button"</span> <span class="attribute">id</span>=<span class="value">"btnGetInfo"</span> <span class="attribute">value</span>=<span class="value">"Get"</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span> 
+<pre><code class="html"><span class="meta">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;<span class="name">html</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">head</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://codeorigin.jquery.com/jquery-2.0.3.min.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+    <span class="tag">&lt;/<span class="name">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">body</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">id</span>=<span class="string">"btnGetInfo"</span> <span class="attr">value</span>=<span class="string">"Get"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span> 
 
 
-        <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
-            $(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{
-                    $(<span class="string">"#btnGetInfo"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{
-                        $.get(<span class="string">"http://localhost:5000/api/getuser/1"</span>)
-                            .success(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>{
+        <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined">
+            $(function(){
+                    $("#btnGetInfo").click(function(){
+                        $.get("http://localhost:5000/api/getuser/1")
+                            .success(function(d){
                                 alert(d);     
                             });        
                     });           
             });
-        </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+        </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+    <span class="tag">&lt;/<span class="name">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="name">html</span>&gt;</span>
 </code></pre>
 <p>如果没有同源策略的限制，那么用户打开网站B的同时，网站B就可以悄悄获得用户在网站A的信息了。如果这个请求换成某个删除API，那就是大问题了。</p>
 <p><br><br><a name="how-to-cors"></a></p>
@@ -184,17 +184,58 @@
 <p><strong>3. 自定义认证</strong>   </p>
 <p>还有一种方法是自己定义认证。既然Cookie行不通，那么还有什么东西客户端能够拿得到的。响应头信息！前面提到的<code>Access-Control-Allow-Origin</code>就是一种响应头。如果我们将用户认证成功后的标志放到响应头然后传到客户端，客户端在第二次请求的时候将这个标志再放到响应头中传到服务器，服务器验证通过后再返回带有这种响应头的数据便可。总体和HTTP基本认证有些类似。也有不一样。主要是加密过程不再使用简单的BASE64。  </p>
 <p>我目前使用的便是这种方式，代码是asp.net mvc。上点干活。</p>
-<pre><code class="c#">public class TokenInspector : DelegatingHandler&#10;{&#10;    protected override Task&#60;HttpResponseMessage&#62; SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)&#10;    {&#10;        const string TOKEN_NAME = &#34;X-JWT-Token&#34;;&#10;        if (request.RequestUri.AbsolutePath == &#34;/user/validate&#34;) return base.SendAsync(request, cancellationToken);&#10;        if (request.Method == HttpMethod.Options) return base.SendAsync(request, cancellationToken);&#10;&#10;        if (request.Headers.Contains(TOKEN_NAME))&#10;        {&#10;            string encryptedToken = request.Headers.GetValues(TOKEN_NAME).First();&#10;            try&#10;            {&#10;                AuthToken token = AuthToken.Decrypt(encryptedToken);&#10;                //bool isValidUserId = IdentityStore.IsValidUserId(token.UserId);&#10;                bool requestIPMatchesTokenIP = token.IP.Equals(request.GetClientIP());&#10;&#10;                if (!requestIPMatchesTokenIP)&#10;                {&#10;                    HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &#34;Invalid identity or client machine.&#34;);&#10;                    return Task.FromResult(reply);&#10;                }&#10;            }&#10;            catch (Exception ex)&#10;            {&#10;                HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &#34;Invalid token.&#34;);&#10;                return Task.FromResult(reply);&#10;            }&#10;        }&#10;        else&#10;        {&#10;            HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &#34;Request is missing authorization token.&#34;);&#10;            return Task.FromResult(reply);&#10;        }&#10;&#10;        return base.SendAsync(request, cancellationToken);&#10;    }&#10;&#10;}
+<pre><code class="c#">public class TokenInspector : DelegatingHandler
+{
+    protected override Task&lt;HttpResponseMessage&gt; SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        const string TOKEN_NAME = &quot;X-JWT-Token&quot;;
+        if (request.RequestUri.AbsolutePath == &quot;/user/validate&quot;) return base.SendAsync(request, cancellationToken);
+        if (request.Method == HttpMethod.Options) return base.SendAsync(request, cancellationToken);
+
+        if (request.Headers.Contains(TOKEN_NAME))
+        {
+            string encryptedToken = request.Headers.GetValues(TOKEN_NAME).First();
+            try
+            {
+                AuthToken token = AuthToken.Decrypt(encryptedToken);
+                //bool isValidUserId = IdentityStore.IsValidUserId(token.UserId);
+                bool requestIPMatchesTokenIP = token.IP.Equals(request.GetClientIP());
+
+                if (!requestIPMatchesTokenIP)
+                {
+                    HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &quot;Invalid identity or client machine.&quot;);
+                    return Task.FromResult(reply);
+                }
+            }
+            catch (Exception ex)
+            {
+                HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &quot;Invalid token.&quot;);
+                return Task.FromResult(reply);
+            }
+        }
+        else
+        {
+            HttpResponseMessage reply = request.CreateErrorResponse(HttpStatusCode.Unauthorized, &quot;Request is missing authorization token.&quot;);
+            return Task.FromResult(reply);
+        }
+
+        return base.SendAsync(request, cancellationToken);
+    }
+
+}
 </code></pre>
 <p>DelegatingHandler这个类用来拦截HTTP消息的，有点类似于HTTPModule的作用，不过HTTPModule是IIS的东西。而这个DelegatingHandler是属于asp.net mvc里面的。可以看到我们在每个请求的时候，都会去检查一下请求头中是否存在特定的头。如果没有或者认证失败，就返回认证失败。<br>在用户认证的时候，我们只需要在响应头中添加特定的头信息进去，然后让客户端每次请求的时候附上此头信息即可。（通过jquery的全部ajax设定可以很容易做到）</p>
-<pre><code class="c#">AuthToken token = new AuthToken(user.UserName, HttpContext.Current.Request.UserHostAddress,DateTime.Now);&#10;HttpContext.Current.Response.AddHeader(&#34;X-JWT-Token&#34;, token.Encrypt());&#10;// must set this, otherwise jquery can&#39;t access X-JWT-Token header&#10;HttpContext.Current.Response.AddHeader(&#34;Access-Control-Expose-Headers&#34;, &#34;X-JWT-Token&#34;);
+<pre><code class="c#">AuthToken token = new AuthToken(user.UserName, HttpContext.Current.Request.UserHostAddress,DateTime.Now);
+HttpContext.Current.Response.AddHeader(&quot;X-JWT-Token&quot;, token.Encrypt());
+// must set this, otherwise jquery can&apos;t access X-JWT-Token header
+HttpContext.Current.Response.AddHeader(&quot;Access-Control-Expose-Headers&quot;, &quot;X-JWT-Token&quot;);
 </code></pre>
 <p>使用自定义的方式，我们还要考虑这个头的时效性问题，如何防止中间人攻击等等问题。不过已经不属于这次的内容了，基本的跨域认证已经可以完成了。  </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2013/11/13/restful-api-cross-domain-authentication/" data-id="cih362bte000wmmcwxa77wj72" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2013/11/13/restful-api-cross-domain-authentication/" data-id="ciky4v86a000w3mjs4t871c0u" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/">web</a></li></ul>
 
@@ -311,7 +352,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2015 qianlifeng<br>
+      &copy; 2016 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

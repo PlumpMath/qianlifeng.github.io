@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://api.drp.io/files/544a4243dc812.png">
 <meta property="og:image" content="http://api.drp.io/files/544a2c5b85f45.png">
 <meta property="og:image" content="http://api.drp.io/files/544a2d1e2758a.png">
-<meta property="og:updated_time" content="2015-11-17T09:16:48.000Z">
+<meta property="og:updated_time" content="2016-02-22T15:23:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="快速启动器Wox">
 <meta name="twitter:description" content="其实在正式写Wox之前，我就一直想写一款快速启动工具。因为自己本身快捷键用的很多，特别是用了Vim之后。自带的Win + R感觉不能搜索程序，比较鸡肋。这中间也使用过Launchy，但是总感觉好久不维护的样子，后面慢慢也放弃掉了。大概2011年的时候也用C语言做过一些这方面的尝试，fstart 和 smartrun。但是不知道是程序功底不够呢，还是C++实在太烂，最后也丢弃掉了。然后大概是2013">
@@ -105,9 +105,9 @@
         <p>其实在正式写Wox之前，我就一直想写一款快速启动工具。因为自己本身快捷键用的很多，特别是用了Vim之后。自带的<code>Win + R</code>感觉不能搜索程序，比较鸡肋。这中间也使用过<a href="http://www.launchy.net/" target="_blank" rel="external">Launchy</a>，但是总感觉好久不维护的样子，后面慢慢也放弃掉了。大概2011年的时候也用C语言做过一些这方面的尝试，<a href="https://code.google.com/p/fstart/" target="_blank" rel="external">fstart</a> 和 <a href="https://code.google.com/p/smartrun/" target="_blank" rel="external">smartrun</a>。但是不知道是程序功底不够呢，还是C++实在太烂，最后也丢弃掉了。然后大概是2013年的11月份知道了Mac有个<a href="http://www.alfredapp.com/" target="_blank" rel="external">Alfred</a>，惊为神器，网上也是好评如潮。可惜windows下面没有这玩意儿:(  </p>
 <p>于是，自然而然的就萌生了一些Windows下面的类似Alfred的软件，连名字一开始都是取得WinAlfred。开始写的时候在V2ex上发了<a href="http://v2ex.com/t/93922" target="_blank" rel="external">帖子</a>，得到了一些人的肯定，后来也渐渐有一些人参与到这个项目当中来。中间被Alfred发来的邮件警告说不能用包含Alfred的名字，因为那是他们的商标。最终，在v2ex上让大家起了个名字，就是现在的Wox啦。</p>
 <a id="more"></a>
-<h2 id="#介绍">#介绍</h2><p>Wox是一款启动器。用于快速搜索本机安装的各种程序，文件。也可以通过插件快速搜索网络内容，比如今天天气如何，某某电影的评分是多少等等。  </p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="#介绍"></a>#介绍</h2><p>Wox是一款启动器。用于快速搜索本机安装的各种程序，文件。也可以通过插件快速搜索网络内容，比如今天天气如何，某某电影的评分是多少等等。  </p>
 <p>Wox是开源的，开源地址：<a href="http://www.github.com/qianlifeng/wox" target="_blank" rel="external">http://www.github.com/qianlifeng/wox</a>，欢迎Pull Request或者任何的Issue。</p>
-<h2 id="#系统插件">#系统插件</h2><p>Wox的插件体系分为两个方面，系统插件和第三方插件。系统插件一般不需要关键字触发（Web Search插件除外），而第三方插件都需要一个关键字触发。例如，我想使用<a href="https://github.com/qianlifeng/Wox.Plugin.Youdao" target="_blank" rel="external">有道翻译</a>的插件，那么则需要使用<code>yd</code> + 空格 + 翻译内容进行触发。这个触发关键字可以配置，另外在后续的文章中我会介绍如何通过快捷键来简化这个过程。</p>
+<h2 id="系统插件"><a href="#系统插件" class="headerlink" title="#系统插件"></a>#系统插件</h2><p>Wox的插件体系分为两个方面，系统插件和第三方插件。系统插件一般不需要关键字触发（Web Search插件除外），而第三方插件都需要一个关键字触发。例如，我想使用<a href="https://github.com/qianlifeng/Wox.Plugin.Youdao" target="_blank" rel="external">有道翻译</a>的插件，那么则需要使用<code>yd</code> + 空格 + 翻译内容进行触发。这个触发关键字可以配置，另外在后续的文章中我会介绍如何通过快捷键来简化这个过程。</p>
 <ul>
 <li><p><strong>程序插件(Programs)</strong>  </p>
 <p><img src="http://ww2.sinaimg.cn/large/5d7c1fa4jw1elrtwot5lmj20m807maas.jpg" alt="">  </p>
@@ -181,12 +181,12 @@
 <p>幸运的是，通过<a href="https://github.com/yiwenshengmei/MyEverything" target="_blank" rel="external">https://github.com/yiwenshengmei/MyEverything</a>这个项目，我们可以将.net版本的Everything带到Wox当中。目前已经基本使用了Everything的功能。但是内存占用和搜索速度上还有待进一步提高。</p>
 </li>
 </ul>
-<h2 id="#第三方插件">#第三方插件</h2><p>  除了系统插件和内置的插件外，Wox还提供了插件平台用于插件制作者分享自己制作的插件。<a href="">http://www.getwox.com/plugin</a>  </p>
+<h2 id="第三方插件"><a href="#第三方插件" class="headerlink" title="#第三方插件"></a>#第三方插件</h2><p>  除了系统插件和内置的插件外，Wox还提供了插件平台用于插件制作者分享自己制作的插件。<a href="">http://www.getwox.com/plugin</a>  </p>
 <p>  目前，Wox支持的插件语言包括但不仅限于<code>C#</code>和<code>Python</code>，用户甚至可以使用<code>C</code>,<code>Ruby</code>,<code>Nodejs</code>,<code>Go</code>等等各种语言来编写Wox插件。目前对使用C#编写的插件支持度最好，Python其次。关于如何编写Wox插件，大家有兴趣可以去看<a href="http://url_to_do" target="_blank" rel="external">这篇文章</a>中的指南。</p>
-<h2 id="#主题">#主题</h2><p>  <img src="http://api.drp.io/files/544a461139f56.png" alt="">  </p>
+<h2 id="主题"><a href="#主题" class="headerlink" title="#主题"></a>#主题</h2><p>  <img src="http://api.drp.io/files/544a461139f56.png" alt="">  </p>
 <p>  Wox支持丰富的主题。用户可以在设置窗口中选择自己喜欢的主题。  </p>
 <p>  此外，我们还提供了一个在线主题制作工具<a href="http://www.getwox.com/themebuilder" target="_blank" rel="external">ThemeBuilder</a>方便用户进行主题制作。在网站上配置好喜欢的主题之后，点击下载，将主题文件下载到本地之后将文件重新命名为主题的名字+xaml后缀，例如：炫酷吊炸天.xaml。然后将此主题文件放在Wox目录下面的<code>Themes</code>文件夹当中并重启Wox即可。重启后，用户即可在主题列表里面看到新增的主题了。</p>
-<h2 id="#热键">#热键</h2><p>  <img src="http://api.drp.io/files/544a4878cbb40.png" alt="">  </p>
+<h2 id="热键"><a href="#热键" class="headerlink" title="#热键"></a>#热键</h2><p>  <img src="http://api.drp.io/files/544a4878cbb40.png" alt="">  </p>
 <p>  作为键盘流，强大的热键支持必不可少。在Wox中，热键分为两类。一类是系统已经定义好了，用户不能更改的，比如上面提到的<code>Ctrl + R</code>，另外一类就是用户可以自定义的热键，这也是我下面介绍的重点。用好这个功能再配合插件，往往能起到事半功倍的效果。  </p>
 <p>  如上图所示，自定义热键基本分类两种。  </p>
 <ol>
@@ -199,19 +199,19 @@
 <p>另外一个非常合适自定义热键的插件是<a href="https://github.com/qianlifeng/Wox.Plugin.ClipboardManager" target="_blank" rel="external">剪贴板插件</a>，我默认使用的是<code>Ctrl + Shift + v</code>激活，是我必不可少的插件之一。</p>
 </li>
 </ol>
-<h2 id="#代理">#代理</h2><p>  <img src="http://api.drp.io/files/544a4243dc812.png" alt="">  </p>
+<h2 id="代理"><a href="#代理" class="headerlink" title="#代理"></a>#代理</h2><p>  <img src="http://api.drp.io/files/544a4243dc812.png" alt="">  </p>
 <p>  在设置窗口中，用户可以选择为Wox设置HTTP代理。这个功能对对于一些企业用户来说可能很有必要，因为他们的网络环境都是通过代理连接的。  </p>
 <p>  如果用户在这边设置了代理，那么<code>wpm</code>命令和插件都会通过此代理进行连接。注：如果插件作者在代码中没有考虑到Wox提供的代理信息，那么该插件还是不支持当前设置代理的。</p>
-<h2 id="#上下文菜单">#上下文菜单</h2><p>  <img src="http://api.drp.io/files/544a2c5b85f45.png" alt="">  </p>
+<h2 id="上下文菜单"><a href="#上下文菜单" class="headerlink" title="#上下文菜单"></a>#上下文菜单</h2><p>  <img src="http://api.drp.io/files/544a2c5b85f45.png" alt="">  </p>
 <p>  从<a href="https://github.com/qianlifeng/Wox/milestones/V1.1.0" target="_blank" rel="external">v1.1.0</a>开始，Wox实现了搜索项的上下文菜单功能。如上图所示，在选中搜索项的时候，如果在右边能看到一个小菜单图标的话就说明这个项是有菜单的。此时，你只需使用<code>Shift + 回车</code>即可进入菜单选项。如果想从菜单界面返回到搜索项界面只需要按<code>Esc</code>即可。  </p>
 <p>  <img src="http://api.drp.io/files/544a2d1e2758a.png" alt="">  </p>
 <p>  菜单项提供了一些你可能要对此文件/命令进行的操作，比如使用管理员权限打开此文件或者打开文件所在目录等等。目前，菜单项只能由插件制作者添加，因为对于一个搜索项，它需要有哪些菜单，插件制作者应该最清楚。  </p>
-<h2 id="#相关链接">#相关链接</h2><p>官网：<a href="http://www.getwox.com" target="_blank" rel="external">http://www.getwox.com</a><br>Github：<a href="http://www.github.com/qianlifeng/wox" target="_blank" rel="external">http://www.github.com/qianlifeng/wox</a><br>异次元介绍：<a href="http://www.iplaysoft.com/wox.html" target="_blank" rel="external">http://www.iplaysoft.com/wox.html</a><br>小众软件介绍：<a href="http://www.appinn.com/wox-launcher/" target="_blank" rel="external">http://www.appinn.com/wox-launcher/</a>  </p>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="#相关链接"></a>#相关链接</h2><p>官网：<a href="http://www.getwox.com" target="_blank" rel="external">http://www.getwox.com</a><br>Github：<a href="http://www.github.com/qianlifeng/wox" target="_blank" rel="external">http://www.github.com/qianlifeng/wox</a><br>异次元介绍：<a href="http://www.iplaysoft.com/wox.html" target="_blank" rel="external">http://www.iplaysoft.com/wox.html</a><br>小众软件介绍：<a href="http://www.appinn.com/wox-launcher/" target="_blank" rel="external">http://www.appinn.com/wox-launcher/</a>  </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2014/10/29/wox/" data-id="cih362bsh0000mmcwttgcwbrw" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2014/10/29/wox/" data-id="ciky4v84800003mjsx4ih7q6a" class="article-share-link">Share</a>
       
     </footer>
   </div>
@@ -326,7 +326,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2015 qianlifeng<br>
+      &copy; 2016 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

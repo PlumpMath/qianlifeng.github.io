@@ -14,7 +14,7 @@
 <meta property="og:image" content="http://scott-tuchuang.qiniudn.com/origin.png">
 <meta property="og:image" content="http://scott-tuchuang.qiniudn.com/gray.png">
 <meta property="og:image" content="http://scott-tuchuang.qiniudn.com/captcha_threshold.png">
-<meta property="og:updated_time" content="2015-11-17T09:16:48.000Z">
+<meta property="og:updated_time" content="2016-02-22T15:23:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用OpenCV进行简单验证码识别">
 <meta name="twitter:description" content="最近对计算机视觉产生了点兴趣，具体来说应该是简单的图形识别方向。本文介绍了如何使用OpenCV进行简单的验证码识别。">
@@ -95,19 +95,19 @@
 <p>到这边图像预处理基本已经差不多了，剩下来就是寻找里面的图像轮廓，进行切图。  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(cnts, _) = cv2.findContours(ts.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)</span><br></pre></td></tr></table></figure>
 <p>这句话会找出图片给里面所有的轮廓信息，当然里面有很多无用的轮廓，比如0这个数字，他会找出两个轮廓出来。一个是0的外圈，一个是0的内圈。我们还需要一些简单的代码去除这些多余的轮廓。  </p>
-<pre><code>cmax = <span class="number">100</span>
-cmin = <span class="number">20</span>
+<pre><code>cmax = 100
+cmin = 20
 cts = []
-<span class="keyword">for</span> item <span class="keyword">in</span> cnts:
-    <span class="keyword">if</span> cmin &lt; <span class="function"><span class="title">len</span><span class="params">(item)</span></span> &lt; cmax:
-        (x,y,w,h) = cv2.<span class="function"><span class="title">boundingRect</span><span class="params">(item)</span></span>
-        cts.<span class="function"><span class="title">append</span><span class="params">((x,y,w,h)</span></span>)
+for item in cnts:
+    if cmin &lt; len(item) &lt; cmax:
+        (x,y,w,h) = cv2.boundingRect(item)
+        cts.append((x,y,w,h))
 </code></pre><p>未完待续!</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2014/06/29/captcha-recognition-using-opencv/" data-id="cih362buy002rmmcwms8swddf" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2014/06/29/captcha-recognition-using-opencv/" data-id="ciky4v87x002r3mjs9hhz2v9r" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/验证码/">验证码</a></li></ul>
 
@@ -224,7 +224,7 @@ cts = []
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2015 qianlifeng<br>
+      &copy; 2016 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
