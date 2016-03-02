@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="SSH在手，天下我有">
-<meta property="og:updated_time" content="2016-03-02T03:45:36.000Z">
+<meta property="og:updated_time" content="2016-03-02T04:00:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH打洞大法">
 <meta name="twitter:description" content="SSH在手，天下我有">
@@ -90,12 +90,13 @@
 <h1 id="流量转发"><a href="#流量转发" class="headerlink" title="流量转发"></a>流量转发</h1><h2 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
 <li>本地不能直接连接处于内网的mysql，可以通过ssh forward上去</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这条命令会转发本地3308的流程到mysqlhost的3306端口</span><br><span class="line">ssh -f user@sshhost -L 3308:mysqlhost:3306 -N</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这条命令会转发本地3308的流程到mysqlhost的3306端口</span><br><span class="line">ssh -L 3308:mysqlhost:3306 user@sshhost</span><br></pre></td></tr></table></figure>
+<p>还是比较好区分这两种命令的。R代表remote，L代表local，如果是-R表示remote -&gt; local，-L标志local-&gt;remote</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/" data-id="cilaawwdf000e4ih33xaimqhv" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/" data-id="cilabgbb7000e4hgtmqpxzbu2" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
