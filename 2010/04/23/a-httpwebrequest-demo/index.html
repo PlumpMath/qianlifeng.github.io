@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://qianlifeng.github.io/2010/04/23/a-httpwebrequest-demo/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="最近经常要用到模拟网页的登录，网页的抓取。一开始都是用同步的方法获取，同步在请求量比较小的情况下还可以接受。但是比如我一下子请求上百个，上千个页面就显得力不从心了。昨天终于狠下心来研究了一下异步的获取方式。虽说没有同步的方法简单，不过效率上真的提高了很多。现在记下来，以便以后查阅吧。">
-<meta property="og:updated_time" content="2016-02-22T15:23:12.000Z">
+<meta property="og:updated_time" content="2016-03-02T03:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个httpwebrequest异步下载的例子">
 <meta name="twitter:description" content="最近经常要用到模拟网页的登录，网页的抓取。一开始都是用同步的方法获取，同步在请求量比较小的情况下还可以接受。但是比如我一下子请求上百个，上千个页面就显得力不从心了。昨天终于狠下心来研究了一下异步的获取方式。虽说没有同步的方法简单，不过效率上真的提高了很多。现在记下来，以便以后查阅吧。">
@@ -21,7 +21,7 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
   
 
 </head>
@@ -83,12 +83,12 @@
       
         <p>最近经常要用到模拟网页的登录，网页的抓取。一开始都是用同步的方法获取，同步在请求量比较小的情况下还可以接受。但是比如我一下子请求上百个，上千个页面就显得力不从心了。昨天终于狠下心来研究了一下异步的获取方式。虽说没有同步的方法简单，不过效率上真的提高了很多。现在记下来，以便以后查阅吧。   </p>
 <a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#20195;&#30721;&#10;&#10;namespace &#24322;&#27493;&#35843;&#29992;&#26041;&#27861;&#10;&#123;&#10;    class Program&#10;    &#123;&#10;&#10;        static void Main(string[] args)&#10;        &#123;&#10;            for (int i = 0; i &#60; 1111; i++)&#10;            &#123;&#10;                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(&#34;http://www.cnblogs.com/qianlifeng/&#34;);&#10;                request.BeginGetResponse(new AsyncCallback(OnResponse), request);&#10;                Console.WriteLine(&#34;&#35831;&#27714;&#34; + i + &#34;&#23436;&#25104;&#34;);&#10;            &#125;&#10;            Console.Read();&#10;        &#125;&#10;&#10;        static void OnResponse(IAsyncResult ar)&#10;        &#123;&#10;            HttpWebRequest request = (HttpWebRequest)ar.AsyncState;&#10;            HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(ar);&#10;            Stream stream = response.GetResponseStream();&#10;            StreamReader sr = new StreamReader(stream, Encoding.UTF8);&#10;            Console.WriteLine( sr.ReadToEnd());&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">代码</span><br><span class="line"></span><br><span class="line">namespace 异步调用方法</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            for (int i = 0; i &lt; 1111; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(&quot;http://www.cnblogs.com/qianlifeng/&quot;);</span><br><span class="line">                request.BeginGetResponse(new AsyncCallback(OnResponse), request);</span><br><span class="line">                Console.WriteLine(&quot;请求&quot; + i + &quot;完成&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Console.Read();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        static void OnResponse(IAsyncResult ar)</span><br><span class="line">        &#123;</span><br><span class="line">            HttpWebRequest request = (HttpWebRequest)ar.AsyncState;</span><br><span class="line">            HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(ar);</span><br><span class="line">            Stream stream = response.GetResponseStream();</span><br><span class="line">            StreamReader sr = new StreamReader(stream, Encoding.UTF8);</span><br><span class="line">            Console.WriteLine( sr.ReadToEnd());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2010/04/23/a-httpwebrequest-demo/" data-id="ciky4v88900373mjsknih3v0v" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2010/04/23/a-httpwebrequest-demo/" data-id="cilaawwdm000k4ih3lr7uevce" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DotNet/">DotNet</a></li></ul>
 
@@ -225,8 +225,8 @@
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
 <script type='text/javascript'>
@@ -240,7 +240,7 @@
 })();
 </script>
 
-<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/script.js"></script>
 
   </div>
 </body>

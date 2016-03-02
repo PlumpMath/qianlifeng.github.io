@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://qianlifeng.github.io/2014/07/25/start-django-with-supervisor/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="人生苦短，我用Supervisor">
-<meta property="og:updated_time" content="2016-02-22T15:23:12.000Z">
+<meta property="og:updated_time" content="2016-03-02T03:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Supervisor管理程序">
 <meta name="twitter:description" content="人生苦短，我用Supervisor">
@@ -21,7 +21,7 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
   
 
 </head>
@@ -85,13 +85,13 @@
 <p>首先通过如下命令安装supervisor<code>sudo apt-get install supervisor</code>  </p>
 <p>安装完成之后，默认的配置文件应该在<code>/etc/supervisor/conf.d/</code>下面，此后你如果想创建一个新的使用supervisor运行的程序，则在此文件夹里面添加配置文件。  </p>
 <p>这里提供一个参考例子：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[program:name]&#10;command = uwsgi --ini your_uwsgi_path&#10;autorestart = true&#10;stopsignal = QUIT&#10;stdout_logfile = log_path&#10;redirect_stderr = true&#10;```  &#10;&#10;&#21019;&#24314;&#23436;&#20043;&#21518;&#20351;&#29992;`supervisorctl start name`&#21551;&#21160;&#31243;&#24207;&#21363;&#21487;&#12290;  &#10;&#10;&#10;Supervisor&#36824;&#25552;&#20379;&#20102;web&#30028;&#38754;&#31649;&#29702;&#36827;&#31243;&#12290;  &#10;&#21487;&#20197;&#22312;`/etc/supervisor/config.conf`&#37324;&#38754;&#36827;&#34892;&#37197;&#32622;&#65306;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[program:name]</span><br><span class="line">command = uwsgi --ini your_uwsgi_path</span><br><span class="line">autorestart = true</span><br><span class="line">stopsignal = QUIT</span><br><span class="line">stdout_logfile = log_path</span><br><span class="line">redirect_stderr = true</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">创建完之后使用`supervisorctl start name`启动程序即可。  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Supervisor还提供了web界面管理进程。  </span><br><span class="line">可以在`/etc/supervisor/config.conf`里面进行配置：</span><br></pre></td></tr></table></figure>
 <p>[inet_http_server]<br>port = 127.0.0.1:8011<br>username = scott<br>password = yourpassword<br>```</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2014/07/25/start-django-with-supervisor/" data-id="ciky4v85w000d3mjstg4skmys" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2014/07/25/start-django-with-supervisor/" data-id="cilaawwg2003d4ih3i1j33jjx" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/supervisor/">supervisor</a></li></ul>
 
@@ -228,8 +228,8 @@
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
 <script type='text/javascript'>
@@ -243,7 +243,7 @@
 })();
 </script>
 
-<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/script.js"></script>
 
   </div>
 </body>
