@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Spring AOP小试 | 猫猫猿</title>
+  <title>Archives: 2015/8 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="第一次使用Spring的AOP拦截，感觉还是很强大的嘛^Q^">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Spring AOP小试">
-<meta property="og:url" content="http://qianlifeng.github.io/2015/07/14/spring-aop/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="猫猫猿">
+<meta property="og:url" content="http://qianlifeng.github.io/archives/2015/08/index.html">
 <meta property="og:site_name" content="猫猫猿">
-<meta property="og:description" content="第一次使用Spring的AOP拦截，感觉还是很强大的嘛^Q^">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring AOP小试">
-<meta name="twitter:description" content="第一次使用Spring的AOP拦截，感觉还是很强大的嘛^Q^">
+<meta name="twitter:title" content="猫猫猿">
+<meta name="twitter:description">
 <meta name="twitter:creator" content="@scottqian2012">
   
   
@@ -60,93 +59,39 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-spring-aop" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/14/spring-aop/" class="article-date">
-  <time datetime="2015-07-14T20:47:17.000Z" itemprop="datePublished">2015-07-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      Spring AOP小试
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2015" class="archive-year">2015</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2015/08/15/disable-method-annotation-on-intellij/" class="archive-article-date">
+  <time datetime="2015-08-15T18:53:17.000Z" itemprop="datePublished">8月 15</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2015/08/15/disable-method-annotation-on-intellij/">禁用Intellij的注解自动折行</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第一次使用Spring的AOP拦截，感觉还是很强大的嘛^Q^<br><a id="more"></a></p>
-<p>直接来一个最简单的例子，实现一个方法同步的切面。要求是所有注解了<code>@Synchronized</code>的方法都必须同步执行（加锁）。 效果如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Synchronized</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">imporOrder</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//todo: logic</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如何实现呢？ 首先声明注解：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 顺序执行方法，防止高并发下的执行顺序问题</span><br><span class="line"> */</span></span><br><span class="line"><span class="meta">@Target</span>(ElementType.METHOD)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Synchronized &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>接着声明切面</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Around;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.annotation.Order;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Order</span>(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedAspect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> Object locker = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"@annotation(cn.fcgyl.oms.aspect.Synchronized)()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">doSynchronize</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (locker) &#123;</span><br><span class="line">            Object retVal = pjp.proceed();</span><br><span class="line">            <span class="keyword">return</span> retVal;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>定义的切面必须使用<code>@Aspect</code>注解</li>
-<li>注册这个切面bean到Spring，我这里是使用<code>@Component</code>自动装配的</li>
-<li>定义拦截方法（本例中的<code>doSynchronize</code>），同时标注拦截类型。Spring AOP只支持拦截方法，所以这里的几种拦截类型大概是<code>@Before</code>,<code>@After</code>,<code>@Around</code></li>
-<li>这里的<code>@Order</code>指定了该注解的优先级，越小的数字代表了越高的优先级</li>
-</ol>
-<p>最后启用切面，在spring配置文件中配置如下信息：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 开启AOP切面 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>大功告成。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/07/14/spring-aop/" data-id="cio6h8kr2003b8femiii2yf4m" class="article-share-link">Share</a>
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/07/16/ngrok/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          ngrok
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/06/03/performance_between_nodejs_and_java/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Nodejs与Java的性能比较</div>
-    </a>
-  
-</nav>
-
-  
 </article>
-
-
-<section id="comments">
-  <div id="disqus_thread">
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES * * */
-        var disqus_shortname = 'scottqian';
-        
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-
+  
+  
+    </div></section>
+  
 </section>
         
           <aside id="sidebar">
