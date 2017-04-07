@@ -6,13 +6,14 @@
   <title>使用python进行新浪微博应用开发 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="本文简单的介绍了如何使用新浪微博API来做一个简单的微博应用">
+<meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用python进行新浪微博应用开发">
 <meta property="og:url" content="http://qianlifeng.github.io/2012/02/12/create-weibo-app-by-python/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="本文简单的介绍了如何使用新浪微博API来做一个简单的微博应用">
 <meta property="og:image" content="http://qianlifeng.github.io/Images/create-weibo-app-by-python/1.png">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用python进行新浪微博应用开发">
 <meta name="twitter:description" content="本文简单的介绍了如何使用新浪微博API来做一个简单的微博应用">
@@ -22,10 +23,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -56,7 +54,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -91,18 +89,18 @@
 <li>点击刚才创建的应用进入详细页面，然后查看应用信息-基本信息下面。在程序开发过程中，我们需要app key 和 app secret来调用新浪API</li>
 <li>下载对应语言的sdk。当然这里以python为例，下载地址：<a href="http://code.google.com/p/sinaweibopy/" target="_blank" rel="external">http://code.google.com/p/sinaweibopy/</a>。下载完成后将里面的weibo.py复制到你的应用程序同一目录下，或者复制到lib/site-package下。这样你的应用就可以调用sdk了。</li>
 <li><p>在你的程序里面做如下测试，如果你幸运的话你应该能得到正确的返回结果了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">from weibo import APIClient</span><br><span class="line"></span><br><span class="line">APP_KEY = &apos;xxxx&apos; # app key</span><br><span class="line">APP_SECRET = &apos;xxxx&apos; # app secret</span><br><span class="line">CALLBACK_URL = &apos;xxxxxx&apos;# callback url       </span><br><span class="line"></span><br><span class="line">#利用官方微博SDK</span><br><span class="line">client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)</span><br><span class="line"></span><br><span class="line">#用得到的url到新浪页面访问</span><br><span class="line">url = client.get_authorize_url()</span><br><span class="line">webbrowser.open_new(url)</span><br><span class="line"></span><br><span class="line">#手动输入新浪返回的code</span><br><span class="line">code = raw_input()</span><br><span class="line"></span><br><span class="line">#新浪返回的token，类似abc123xyz456，每天的token不一样</span><br><span class="line">r = client.request_access_token(code)</span><br><span class="line">access_token = r.access_token</span><br><span class="line">expires_in = r.expires_in # token过期的UNIX时间</span><br><span class="line"></span><br><span class="line">#设置得到的access_token</span><br><span class="line">client.set_access_token(access_token, expires_in)</span><br><span class="line"></span><br><span class="line">#有了access_token后，可以做任何事情了</span><br><span class="line">client.get.friendships__followers()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">from weibo import APIClient</div><div class="line"></div><div class="line">APP_KEY = &apos;xxxx&apos; # app key</div><div class="line">APP_SECRET = &apos;xxxx&apos; # app secret</div><div class="line">CALLBACK_URL = &apos;xxxxxx&apos;# callback url       </div><div class="line"></div><div class="line">#利用官方微博SDK</div><div class="line">client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)</div><div class="line"></div><div class="line">#用得到的url到新浪页面访问</div><div class="line">url = client.get_authorize_url()</div><div class="line">webbrowser.open_new(url)</div><div class="line"></div><div class="line">#手动输入新浪返回的code</div><div class="line">code = raw_input()</div><div class="line"></div><div class="line">#新浪返回的token，类似abc123xyz456，每天的token不一样</div><div class="line">r = client.request_access_token(code)</div><div class="line">access_token = r.access_token</div><div class="line">expires_in = r.expires_in # token过期的UNIX时间</div><div class="line"></div><div class="line">#设置得到的access_token</div><div class="line">client.set_access_token(access_token, expires_in)</div><div class="line"></div><div class="line">#有了access_token后，可以做任何事情了</div><div class="line">client.get.friendships__followers()</div></pre></td></tr></table></figure>
 </li>
 <li><p>利用API做你能想到的任何事情，比如我做了一个粉丝和关注者的性别分析：<br><img src="/Images/create-weibo-app-by-python/1.png" alt=""><br>要实现这个统计很简单，首先获得某个用户的所有关注者：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def GetAllFriends(self,uid):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    得到所有的关注对象</span><br><span class="line">    返回：(screenName,gender)元组数组</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    resFollows = []</span><br><span class="line">    nextCursor = -1</span><br><span class="line">    while nextCursor != 0:</span><br><span class="line">        followers = self.client.get.friendships__friends(uid=uid,count=200,cursor=nextCursor)</span><br><span class="line">        nextCursor = followers[&quot;next_cursor&quot;]</span><br><span class="line">        for follower in followers[&quot;users&quot;]:</span><br><span class="line">            resFollows.append( (follower[&quot;screen_name&quot;],follower[&quot;gender&quot;]) )</span><br><span class="line">    print len(resFollows)</span><br><span class="line">    return resFollows</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def GetAllFriends(self,uid):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    得到所有的关注对象</div><div class="line">    返回：(screenName,gender)元组数组</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    resFollows = []</div><div class="line">    nextCursor = -1</div><div class="line">    while nextCursor != 0:</div><div class="line">        followers = self.client.get.friendships__friends(uid=uid,count=200,cursor=nextCursor)</div><div class="line">        nextCursor = followers[&quot;next_cursor&quot;]</div><div class="line">        for follower in followers[&quot;users&quot;]:</div><div class="line">            resFollows.append( (follower[&quot;screen_name&quot;],follower[&quot;gender&quot;]) )</div><div class="line">    print len(resFollows)</div><div class="line">    return resFollows</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>然后利用matplotlib这个第三方库进行绘图即可。关于matplotlib我想我后面会写一些文章进行说明的，很强大的一个二维绘图库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">def FriendsMaleOrFemale(uid):</span><br><span class="line">    wb = MySinaWeiBo()</span><br><span class="line">    m = 0</span><br><span class="line">    f = 0</span><br><span class="line">    n = 0</span><br><span class="line">    for i in wb.GetAllFriends(uid):</span><br><span class="line">       if i[1] == &quot;m&quot;:</span><br><span class="line">            m = m+1</span><br><span class="line">       elif i[1] == &quot;f&quot;:</span><br><span class="line">            f = f+1</span><br><span class="line">       else:</span><br><span class="line">            n = n+1</span><br><span class="line"></span><br><span class="line">    ind = np.arange(1,4) # np.arange(1,N+1)  # the x locations for the groups</span><br><span class="line">    width = 0.25       # the width of the bars</span><br><span class="line"></span><br><span class="line">    plt.subplot(111)</span><br><span class="line">    rects1 = plt.bar(ind, (m,f,n), width,bottom = 0,align = &apos;center&apos;)</span><br><span class="line"></span><br><span class="line">    #增加Y轴说明</span><br><span class="line">    plt.ylabel(u&apos;关注数&apos;)</span><br><span class="line">    #增加标题</span><br><span class="line">    plt.title(u&apos;我关注的人性别分析(有效样本：%d)&apos; % (m+f+n))</span><br><span class="line">    #设置x坐标位置和文字</span><br><span class="line">    plt.xticks(ind, (u&quot;男&quot;,u&quot;女&quot;,u&quot;未知&quot;) )</span><br><span class="line">    autolabel(rects1)</span><br><span class="line">    plt.legend(rects1,(u&quot;用户：%s&quot; % wb.GetUserByUid(uid),))</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>然后利用matplotlib这个第三方库进行绘图即可。关于matplotlib我想我后面会写一些文章进行说明的，很强大的一个二维绘图库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">def FriendsMaleOrFemale(uid):</div><div class="line">    wb = MySinaWeiBo()</div><div class="line">    m = 0</div><div class="line">    f = 0</div><div class="line">    n = 0</div><div class="line">    for i in wb.GetAllFriends(uid):</div><div class="line">       if i[1] == &quot;m&quot;:</div><div class="line">            m = m+1</div><div class="line">       elif i[1] == &quot;f&quot;:</div><div class="line">            f = f+1</div><div class="line">       else:</div><div class="line">            n = n+1</div><div class="line"></div><div class="line">    ind = np.arange(1,4) # np.arange(1,N+1)  # the x locations for the groups</div><div class="line">    width = 0.25       # the width of the bars</div><div class="line"></div><div class="line">    plt.subplot(111)</div><div class="line">    rects1 = plt.bar(ind, (m,f,n), width,bottom = 0,align = &apos;center&apos;)</div><div class="line"></div><div class="line">    #增加Y轴说明</div><div class="line">    plt.ylabel(u&apos;关注数&apos;)</div><div class="line">    #增加标题</div><div class="line">    plt.title(u&apos;我关注的人性别分析(有效样本：%d)&apos; % (m+f+n))</div><div class="line">    #设置x坐标位置和文字</div><div class="line">    plt.xticks(ind, (u&quot;男&quot;,u&quot;女&quot;,u&quot;未知&quot;) )</div><div class="line">    autolabel(rects1)</div><div class="line">    plt.legend(rects1,(u&quot;用户：%s&quot; % wb.GetUserByUid(uid),))</div><div class="line">    plt.show()</div></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2012/02/12/create-weibo-app-by-python/" data-id="cio6h8kpj001k8femevjdqvg4" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2012/02/12/create-weibo-app-by-python/" data-id="cj182rti7001ngx23tid4deaq" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
@@ -112,19 +110,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2012/03/08/back-to-top-chrome-extension/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2012/02/08/sqlserver-backup-restore/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          在chrome中利用“油猴”为每个网页增加“返回顶部”功能
+          SQL Server数据的导入导出
         
       </div>
     </a>
   
   
-    <a href="/2012/02/08/simplify-sqlserver-backup-restore/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2012/03/08/back-to-top-chrome-extension/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">利用python简化sql server数据导入导出</div>
+      <div class="article-nav-title">在chrome中利用“油猴”为每个网页增加“返回顶部”功能</div>
     </a>
   
 </nav>
@@ -219,7 +217,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

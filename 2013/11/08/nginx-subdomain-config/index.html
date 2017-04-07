@@ -6,12 +6,13 @@
   <title>nginx二级域名配置小结 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一直就听说nginx很牛逼的样子，这次就在VPS上面体验了一把。平常一直混迹于window平台下，所以最多也就配配IIS，而且仅仅限于UI这里点点那里点点。使用nginx完全是不同的感受，所有配置完全写在配置文件里面，所有东西完全掌控在你手上。极客小伙伴们快来体验一把！">
+<meta name="keywords" content="nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx二级域名配置小结">
 <meta property="og:url" content="http://qianlifeng.github.io/2013/11/08/nginx-subdomain-config/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="一直就听说nginx很牛逼的样子，这次就在VPS上面体验了一把。平常一直混迹于window平台下，所以最多也就配配IIS，而且仅仅限于UI这里点点那里点点。使用nginx完全是不同的感受，所有配置完全写在配置文件里面，所有东西完全掌控在你手上。极客小伙伴们快来体验一把！">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx二级域名配置小结">
 <meta name="twitter:description" content="一直就听说nginx很牛逼的样子，这次就在VPS上面体验了一把。平常一直混迹于window平台下，所以最多也就配配IIS，而且仅仅限于UI这里点点那里点点。使用nginx完全是不同的感受，所有配置完全写在配置文件里面，所有东西完全掌控在你手上。极客小伙伴们快来体验一把！">
@@ -20,10 +21,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -54,7 +52,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -84,27 +82,27 @@
         <p>一直就听说nginx很牛逼的样子，这次就在VPS上面体验了一把。平常一直混迹于window平台下，所以最多也就配配IIS，而且仅仅限于UI这里点点那里点点。使用nginx完全是不同的感受，所有配置完全写在配置文件里面，所有东西完全掌控在你手上。极客小伙伴们快来体验一把！</p>
 <a id="more"></a>
 <p>为了以后查阅起来方便，我决定还是从安装开始写，说不定时间一长我连怎么安装配置nginx都会记不得了，正好也给新手一个完全指南。注：我使用的VPS系统是Ubuntu  </p>
-<p>#nginx安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure></p>
+<p>#nginx安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install nginx</div></pre></td></tr></table></figure></p>
 <p>too young too simple啊。装完了之后，有几个常用的目录我们需要认识一下：</p>
 <ol>
 <li><p>下面这个路径是存放domain配置的地方。默认下面应该有个default文件。  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/nginx/site-available</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/nginx/site-available</div></pre></td></tr></table></figure>
 <p>如果你有不同的域名a.com,b.com。那么你就可以在这下面建立a,b文件分别对这两个域名进行配置，简单的分类作用吧。我们下面要讲到的规则基本上都是在这里面配置的。</p>
 </li>
 <li><p>这个是nginx默认的日志存放路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/log/nginx/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/var/log/nginx/</div></pre></td></tr></table></figure>
 <p>这里面基本上有两类文件：错误日志<code>error.log</code>,访问日志<code>access.log</code>。后期再配置二级域名的时候，如果配置的不对，过来查看错误日志是很有效的错误定位方法。</p>
 </li>
 </ol>
 <p><br></p>
-<p>#配置二级域名<br>打开上文提到的<code>/etc/nginx/site-available/default</code>文件。键入如下代码（scottqian.com换成你的域名）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        index index.html;</span><br><span class="line">        server_name ~^(?&lt;subdomain&gt;.+)\.scottqian\.com$;</span><br><span class="line">        root /home/web/$subdomain/;</span><br><span class="line"></span><br><span class="line">        if ($host != &apos;www.scottqian.com&apos;)&#123;</span><br><span class="line">                rewrite ^/(.*)$ http://www.scottqian.com/$1 permanent;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">                try_files $uri $uri/ =404;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>#配置二级域名<br>打开上文提到的<code>/etc/nginx/site-available/default</code>文件。键入如下代码（scottqian.com换成你的域名）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">        index index.html;</div><div class="line">        server_name ~^(?&lt;subdomain&gt;.+)\.scottqian\.com$;</div><div class="line">        root /home/web/$subdomain/;</div><div class="line"></div><div class="line">        if ($host != &apos;www.scottqian.com&apos;)&#123;</div><div class="line">                rewrite ^/(.*)$ http://www.scottqian.com/$1 permanent;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        location / &#123;</div><div class="line">                try_files $uri $uri/ =404;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>注意看<code>server_name</code>那一行。这是一个正则表达式，它匹配所有<strong>.scottqian.com的域名，并把</strong>代表的字符用subdomain变量表示。紧接着在下面使用<code>root</code>命令，将当前url的根地址指向<code>/home/web/$subdomain/</code>。通过这个方式实现了任意多个二级域名的配置，比如你想在又多了一个域名lab.scottqian.com。那么只需要在<code>/home/web</code>下面建立一个lab文件夹即可。完全不必再来更改配置。  </p>
 <p>上面那个if判断语句是用来将<code>scottqian.com</code>这样的域名重定向为<code>www.scottqian.com</code>。暂时还不能去掉这个判断，因为没有这个的话subdomain变量就是空的，到时候根目录就是<code>/home/web//</code>，显然是不对的。我就在这上面吃过亏。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2013/11/08/nginx-subdomain-config/" data-id="cio6h8kqh002k8femh14hjafh" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2013/11/08/nginx-subdomain-config/" data-id="cj182rtj5002kgx23xr0jdfjp" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
 
@@ -114,19 +112,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2013/11/10/hangzhou-photo/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2013/11/06/static-blog-start/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          杭州西湖照片2张
+          静态博客折腾记
         
       </div>
     </a>
   
   
-    <a href="/2013/11/06/static-blog-start/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2013/11/10/hangzhou-photo/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">静态博客折腾记</div>
+      <div class="article-nav-title">杭州西湖照片2张</div>
     </a>
   
 </nav>
@@ -221,7 +219,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

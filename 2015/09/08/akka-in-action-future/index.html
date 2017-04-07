@@ -6,12 +6,13 @@
   <title>Akka in action - Future | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在AKKA中，Future是一种用来接收并发操作结果的数据结构，通过Futre我们可以同步或者异步的接受Actor的返回结果。">
+<meta name="keywords" content="AKKA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Akka in action - Future">
 <meta property="og:url" content="http://qianlifeng.github.io/2015/09/08/akka-in-action-future/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="在AKKA中，Future是一种用来接收并发操作结果的数据结构，通过Futre我们可以同步或者异步的接受Actor的返回结果。">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Akka in action - Future">
 <meta name="twitter:description" content="在AKKA中，Future是一种用来接收并发操作结果的数据结构，通过Futre我们可以同步或者异步的接受Actor的返回结果。">
@@ -20,10 +21,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -54,7 +52,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -84,12 +82,12 @@
         <p>在AKKA中，Future是一种用来接收并发操作结果的数据结构，通过Futre我们可以同步或者异步的接受Actor的返回结果。<br><a id="more"></a></p>
 <p>注：本文中的例子基于</p>
 <p>#同步接收Actor返回消息  </p>
-<p>要同步的从Actor那边接收消息，可以使用<code>Patterns.ask</code>方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ActorSelection selection = system.actorSelection(<span class="string">"akka.tcp://ActorSystemA@192.168.8.136:2552/user/ActorA"</span>);</span><br><span class="line"></span><br><span class="line">Timeout timeout = <span class="keyword">new</span> Timeout(Duration.create(<span class="number">5</span>, <span class="string">"seconds"</span>));</span><br><span class="line">Future&lt;Object&gt; future = Patterns.ask(selection, <span class="string">"from b"</span>, timeout);</span><br><span class="line">String result = (String) Await.result(future, timeout.duration());</span><br></pre></td></tr></table></figure></p>
+<p>要同步的从Actor那边接收消息，可以使用<code>Patterns.ask</code>方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ActorSelection selection = system.actorSelection(<span class="string">"akka.tcp://ActorSystemA@192.168.8.136:2552/user/ActorA"</span>);</div><div class="line"></div><div class="line">Timeout timeout = <span class="keyword">new</span> Timeout(Duration.create(<span class="number">5</span>, <span class="string">"seconds"</span>));</div><div class="line">Future&lt;Object&gt; future = Patterns.ask(selection, <span class="string">"from b"</span>, timeout);</div><div class="line">String result = (String) Await.result(future, timeout.duration());</div></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/09/08/akka-in-action-future/" data-id="cio6h8kov000o8femzk7jht81" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/09/08/akka-in-action-future/" data-id="cj182rthc000ogx23409s7cgw" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AKKA/">AKKA</a></li></ul>
 
@@ -99,19 +97,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/09/28/SSH-tunnel/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/09/08/akka-in-action/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          SSH打洞大法
+          Akka in action
         
       </div>
     </a>
   
   
-    <a href="/2015/09/08/akka-in-action/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/09/28/SSH-tunnel/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Akka in action</div>
+      <div class="article-nav-title">SSH打洞大法</div>
     </a>
   
 </nav>
@@ -206,7 +204,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

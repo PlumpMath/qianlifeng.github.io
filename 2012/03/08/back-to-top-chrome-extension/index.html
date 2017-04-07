@@ -6,6 +6,7 @@
   <title>在chrome中利用“油猴”为每个网页增加“返回顶部”功能 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="今天在网上看到了“油猴”这么个东西的介绍，感觉蛮有趣，跟大家分享一下。">
+<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在chrome中利用“油猴”为每个网页增加“返回顶部”功能">
 <meta property="og:url" content="http://qianlifeng.github.io/2012/03/08/back-to-top-chrome-extension/index.html">
@@ -17,7 +18,7 @@
 <meta property="og:image" content="http://qianlifeng.github.io/Images/back-to-top-chrome-extension/4.png">
 <meta property="og:image" content="http://qianlifeng.github.io/Images/back-to-top-chrome-extension/5.png">
 <meta property="og:image" content="http://qianlifeng.github.io/Images/back-to-top-chrome-extension/6.png">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在chrome中利用“油猴”为每个网页增加“返回顶部”功能">
 <meta name="twitter:description" content="今天在网上看到了“油猴”这么个东西的介绍，感觉蛮有趣，跟大家分享一下。">
@@ -27,10 +28,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -61,7 +59,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -95,10 +93,10 @@
 <ol>
 <li>去谷歌扩展中心下载 Tampermonkey  ,这个东西可以用来管理各种用户脚本。</li>
 <li><p>安装后进入Tampermonkey的设置界面，然后创建一个新的脚本：<br> <img src="/Images/back-to-top-chrome-extension/2.png"><br> 在编辑脚本页面输入下面的一段js脚本（用于实现“返回顶部”功能）</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">// ==UserScript== </span><br><span class="line">// @name GotoTop</span><br><span class="line">// @version 0.1</span><br><span class="line">// @description 给每个网页增加返回顶部按钮</span><br><span class="line">// @match http://*</span><br><span class="line">// @match https://*</span><br><span class="line">// @copyright scott qian</span><br><span class="line">// @require http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js</span><br><span class="line">// ==/UserScript==</span><br><span class="line"></span><br><span class="line">ImportCss();</span><br><span class="line">ScriptWithJquery();</span><br><span class="line">BindHotKey();</span><br><span class="line"></span><br><span class="line">function ImportCss() &#123;</span><br><span class="line">    var jqueryScriptBlock = document.createElement(&apos;style&apos;);</span><br><span class="line">    jqueryScriptBlock.type = &apos;text/css&apos;;</span><br><span class="line">    jqueryScriptBlock.innerHTML = &quot;#gototop&#123;position:fixed;bottom:20%;right:1px;border:1px solid gray;padding:3px;width:12px;font-size:12px;cursor:pointer;border-radius: 3px;text-shadow: 1px 1px 3px #676767;&#125;&quot;;</span><br><span class="line">    document.getElementsByTagName(&apos;head&apos;)[0].appendChild(jqueryScriptBlock);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function ScriptWithJquery() &#123;</span><br><span class="line">     $(document.body).append(&quot;&lt;div id=&apos;gototop&apos; title=&apos;快捷键： alt + up alt+鼠标滚轮向上&apos;&gt; 返 回 顶 部 &lt;/div&gt;&quot;);</span><br><span class="line">     $(&apos;#gototop&apos;).click(function () &#123; $(&apos;html,body&apos;).animate(&#123; scrollTop: &apos;0px&apos; &#125;, 800); return false; &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function BindHotKey()&#123;</span><br><span class="line">    document.onkeydown = function()&#123;</span><br><span class="line">        var a = window.event.keyCode; </span><br><span class="line">        if((a == 38)&amp;&amp;(event.altKey)) </span><br><span class="line">        &#123; </span><br><span class="line">            //alt + up</span><br><span class="line">            $(&apos;html,body&apos;).animate(&#123; scrollTop: &apos;0px&apos; &#125;, 800);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    //绑定alt+鼠标向上滚轮事件</span><br><span class="line">    window.addEventListener(&apos;mousewheel&apos;, function(event)&#123;</span><br><span class="line">        if(event.wheelDelta &gt; 0 &amp;&amp; event.altKey)</span><br><span class="line">        &#123;</span><br><span class="line">            $(&apos;html,body&apos;).animate(&#123; scrollTop: &apos;0px&apos; &#125;, 800);</span><br><span class="line">            //防止滚动条向上滚动，导致多重效果</span><br><span class="line">            window.event.preventDefault();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, false);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">// ==UserScript== </div><div class="line">// @name GotoTop</div><div class="line">// @version 0.1</div><div class="line">// @description 给每个网页增加返回顶部按钮</div><div class="line">// @match http://*</div><div class="line">// @match https://*</div><div class="line">// @copyright scott qian</div><div class="line">// @require http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js</div><div class="line">// ==/UserScript==</div><div class="line"></div><div class="line">ImportCss();</div><div class="line">ScriptWithJquery();</div><div class="line">BindHotKey();</div><div class="line"></div><div class="line">function ImportCss() &#123;</div><div class="line">    var jqueryScriptBlock = document.createElement(&apos;style&apos;);</div><div class="line">    jqueryScriptBlock.type = &apos;text/css&apos;;</div><div class="line">    jqueryScriptBlock.innerHTML = &quot;#gototop&#123;position:fixed;bottom:20%;right:1px;border:1px solid gray;padding:3px;width:12px;font-size:12px;cursor:pointer;border-radius: 3px;text-shadow: 1px 1px 3px #676767;&#125;&quot;;</div><div class="line">    document.getElementsByTagName(&apos;head&apos;)[0].appendChild(jqueryScriptBlock);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">function ScriptWithJquery() &#123;</div><div class="line">     $(document.body).append(&quot;&lt;div id=&apos;gototop&apos; title=&apos;快捷键： alt + up alt+鼠标滚轮向上&apos;&gt; 返 回 顶 部 &lt;/div&gt;&quot;);</div><div class="line">     $(&apos;#gototop&apos;).click(function () &#123; $(&apos;html,body&apos;).animate(&#123; scrollTop: &apos;0px&apos; &#125;, 800); return false; &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">function BindHotKey()&#123;</div><div class="line">    document.onkeydown = function()&#123;</div><div class="line">        var a = window.event.keyCode; </div><div class="line">        if((a == 38)&amp;&amp;(event.altKey)) </div><div class="line">        &#123; </div><div class="line">            //alt + up</div><div class="line">            $(&apos;html,body&apos;).animate(&#123; scrollTop: &apos;0px&apos; &#125;, 800);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    //绑定alt+鼠标向上滚轮事件</div><div class="line">    window.addEventListener(&apos;mousewheel&apos;, function(event)&#123;</div><div class="line">        if(event.wheelDelta &gt; 0 &amp;&amp; event.altKey)</div><div class="line">        &#123;</div><div class="line">            $(&apos;html,body&apos;).animate(&#123; scrollTop: &apos;0px&apos; &#125;, 800);</div><div class="line">            //防止滚动条向上滚动，导致多重效果</div><div class="line">            window.event.preventDefault();</div><div class="line">        &#125;</div><div class="line">    &#125;, false);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p> <img src="/Images/back-to-top-chrome-extension/3.png">  </p>
 <p> 这里有一个地方需要说明一下。为了方便js的开发，我这里使用了jquery，所以需要在头部声明中声明以下一段话。这样我们就可以在其中使用jquery了。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// @require http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">// @require http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js</div></pre></td></tr></table></figure>
 </li>
 <li><p>保存该用户脚本然后随便打开一个网页，效果如下：<br> <img src="/Images/back-to-top-chrome-extension/4.png">  </p>
 </li>
@@ -108,7 +106,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2012/03/08/back-to-top-chrome-extension/" data-id="cio6h8kp0000w8femv3sfp506" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2012/03/08/back-to-top-chrome-extension/" data-id="cj182rthh000ugx23dti7h8xp" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
 
@@ -118,19 +116,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2012/05/10/change-windows-wallpaper-by-python/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2012/02/12/create-weibo-app-by-python/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          python设置windows桌面壁纸
+          使用python进行新浪微博应用开发
         
       </div>
     </a>
   
   
-    <a href="/2012/02/12/create-weibo-app-by-python/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2012/05/10/change-windows-wallpaper-by-python/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">使用python进行新浪微博应用开发</div>
+      <div class="article-nav-title">python设置windows桌面壁纸</div>
     </a>
   
 </nav>
@@ -225,7 +223,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

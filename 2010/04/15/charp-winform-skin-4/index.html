@@ -6,6 +6,7 @@
   <title>跟我学做c#皮肤美化（四） | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这篇介绍窗体的制作">
+<meta name="keywords" content="DotNet,皮肤">
 <meta property="og:type" content="article">
 <meta property="og:title" content="跟我学做c#皮肤美化（四）">
 <meta property="og:url" content="http://qianlifeng.github.io/2010/04/15/charp-winform-skin-4/index.html">
@@ -16,7 +17,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2xepwy1j20hs0b4dg1.jpg">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/5d7c1fa4gw1elx30vntxnj209g05iwej.jpg">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/5d7c1fa4gw1elx32gn7l5j20h90bhdg8.jpg">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟我学做c#皮肤美化（四）">
 <meta name="twitter:description" content="这篇介绍窗体的制作">
@@ -26,10 +27,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -60,7 +58,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -94,25 +92,25 @@
 <p><img src="http://ww4.sinaimg.cn/large/5d7c1fa4gw1elx2w3pd1bj208z08v0ss.jpg" alt=""></p>
 <p>怎么样？是不是有点心动了？下面就正式开始吧！首先在以前的项目QLFUI上新建一个窗体(不是用户控件咯)并重新命名为MainForm。如图：   </p>
 <p><img src="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2wu5xuhj20up0a20to.jpg" alt=""></p>
-<p>接着来设置几个属性,如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FormBorderStyle:None</span><br><span class="line">Size:300,300</span><br></pre></td></tr></table></figure></p>
+<p>接着来设置几个属性,如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FormBorderStyle:None</div><div class="line">Size:300,300</div></pre></td></tr></table></figure></p>
 <p>接下来就是用picturebox 和 panel来布局了。这一部分可能比较繁琐。首先总体介绍一下大概的布局。见图：</p>
 <p><img src="http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2xepwy1j20hs0b4dg1.jpg" alt=""></p>
 <p>因为我们做的窗体是圆角的，所以窗体的四个角上(红色)我们会放上四个picturebox。标题栏和状态栏(蓝色)会是两个panel。二个边框线(绿色)是两个picturebox。最后的主体部分（棕色）是一个panel。说完了大体的布局，下面就来动手做啦。一个一个来:  </p>
-<p>左上角<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Name:ptbtl</span><br><span class="line">Location:0,0</span><br><span class="line">Size:10,31</span><br></pre></td></tr></table></figure></p>
-<p>上方的标题栏<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Modifiers:Protected;</span><br><span class="line">Name:panelt</span><br><span class="line">Location:10,0</span><br><span class="line">Size:280,31</span><br></pre></td></tr></table></figure></p>
-<p>右上角<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Name:ptbtr</span><br><span class="line">Location:290,0</span><br><span class="line">Size:10,31</span><br></pre></td></tr></table></figure></p>
-<p>左侧的边框线<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Name:ptbml</span><br><span class="line">Location:0,31</span><br><span class="line">Size:2,232</span><br></pre></td></tr></table></figure></p>
-<p>主窗体部分<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Modifiers:Protected;</span><br><span class="line">BackgroundImageLayout:Stretch</span><br><span class="line">Name:panelm</span><br><span class="line">Location:2,31</span><br><span class="line">Size:296,232</span><br></pre></td></tr></table></figure></p>
-<p>右侧的边框线<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Name:ptbmr</span><br><span class="line">Location:298,31</span><br><span class="line">Size:2,232</span><br></pre></td></tr></table></figure></p>
-<p>左下角<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Name:ptbbl</span><br><span class="line">Location:0,263</span><br><span class="line">Size:10,37</span><br></pre></td></tr></table></figure></p>
-<p>下方的状态栏<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Modifiers:Protected;</span><br><span class="line">Name:panelb</span><br><span class="line">Location:10,263</span><br><span class="line">Size:280,37</span><br></pre></td></tr></table></figure></p>
-<p>右下角<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Name:ptbbr</span><br><span class="line">Location:290,263</span><br><span class="line">Size:10,37</span><br></pre></td></tr></table></figure></p>
+<p>左上角<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Name:ptbtl</div><div class="line">Location:0,0</div><div class="line">Size:10,31</div></pre></td></tr></table></figure></p>
+<p>上方的标题栏<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Modifiers:Protected;</div><div class="line">Name:panelt</div><div class="line">Location:10,0</div><div class="line">Size:280,31</div></pre></td></tr></table></figure></p>
+<p>右上角<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Name:ptbtr</div><div class="line">Location:290,0</div><div class="line">Size:10,31</div></pre></td></tr></table></figure></p>
+<p>左侧的边框线<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Name:ptbml</div><div class="line">Location:0,31</div><div class="line">Size:2,232</div></pre></td></tr></table></figure></p>
+<p>主窗体部分<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Modifiers:Protected;</div><div class="line">BackgroundImageLayout:Stretch</div><div class="line">Name:panelm</div><div class="line">Location:2,31</div><div class="line">Size:296,232</div></pre></td></tr></table></figure></p>
+<p>右侧的边框线<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Name:ptbmr</div><div class="line">Location:298,31</div><div class="line">Size:2,232</div></pre></td></tr></table></figure></p>
+<p>左下角<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Name:ptbbl</div><div class="line">Location:0,263</div><div class="line">Size:10,37</div></pre></td></tr></table></figure></p>
+<p>下方的状态栏<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Modifiers:Protected;</div><div class="line">Name:panelb</div><div class="line">Location:10,263</div><div class="line">Size:280,37</div></pre></td></tr></table></figure></p>
+<p>右下角<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Name:ptbbr</div><div class="line">Location:290,263</div><div class="line">Size:10,37</div></pre></td></tr></table></figure></p>
 <p>最后还有右上方的三个按钮可不要忘记了，注意按钮都是在panelt里面设置的而且这三个按钮都是我们前面做的按钮哦，终于派上用场啦！  </p>
-<p>最小化按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Caption:0</span><br><span class="line">Name:btmin</span><br><span class="line">Location:180,0</span><br><span class="line">Size:31,22</span><br></pre></td></tr></table></figure></p>
-<p>最大化按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Caption:0</span><br><span class="line">Name:btmax</span><br><span class="line">Location:211,0</span><br><span class="line">Size:31,22</span><br></pre></td></tr></table></figure></p>
-<p>关闭按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Caption:0</span><br><span class="line">Name:btclose</span><br><span class="line">Location:243,0</span><br><span class="line">Size:37,22</span><br></pre></td></tr></table></figure></p>
-<p>还原按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Caption:0</span><br><span class="line">Name:btres</span><br><span class="line">Location:211,-30</span><br><span class="line">Size:31,22</span><br><span class="line">``` </span><br><span class="line">最后再加上一个label作为窗体的标题</span><br></pre></td></tr></table></figure></p>
-<p>Name:lbtitle<br>Location:6,9<br>Size:35,12<br>BackColor:Transparent<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">呼，终于结束了！不知道大家有没有晕乎乎的感觉，反正我是有点儿了，呵呵。最后的布局图应该是这个样子滴：</span><br><span class="line"></span><br><span class="line">![](http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2z0h6yej208v08s0st.jpg)</span><br><span class="line"></span><br><span class="line">老规矩，界面的事情弄完了，现在开始编码了。上代码：  </span><br><span class="line"></span><br><span class="line">**2014-11-02 更新：因为附件找不到了，所以代码也看不了了，抱歉**</span><br><span class="line"> </span><br><span class="line">**变量部分：**  </span><br><span class="line"></span><br><span class="line">变量我在代码里都注明了其作用。这里只会说说为什么要这些变量。首先needMaxbt和needMinbt是指示该窗体是否需要最大化或最小化按钮的，毕竟窗体有很多种吧，比如说一个消息框就没必要用最大化按钮吧，所以我们这边也就设置的灵活一点，下面会将这两个变量封装成属性以便在设计模式下方便的选择。接下来的四个变量</span><br></pre></td></tr></table></figure></p>
+<p>最小化按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Caption:0</div><div class="line">Name:btmin</div><div class="line">Location:180,0</div><div class="line">Size:31,22</div></pre></td></tr></table></figure></p>
+<p>最大化按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Caption:0</div><div class="line">Name:btmax</div><div class="line">Location:211,0</div><div class="line">Size:31,22</div></pre></td></tr></table></figure></p>
+<p>关闭按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Caption:0</div><div class="line">Name:btclose</div><div class="line">Location:243,0</div><div class="line">Size:37,22</div></pre></td></tr></table></figure></p>
+<p>还原按钮<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Caption:0</div><div class="line">Name:btres</div><div class="line">Location:211,-30</div><div class="line">Size:31,22</div><div class="line">``` </div><div class="line">最后再加上一个label作为窗体的标题</div></pre></td></tr></table></figure></p>
+<p>Name:lbtitle<br>Location:6,9<br>Size:35,12<br>BackColor:Transparent<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">呼，终于结束了！不知道大家有没有晕乎乎的感觉，反正我是有点儿了，呵呵。最后的布局图应该是这个样子滴：</div><div class="line"></div><div class="line">![](http://ww1.sinaimg.cn/large/5d7c1fa4gw1elx2z0h6yej208v08s0st.jpg)</div><div class="line"></div><div class="line">老规矩，界面的事情弄完了，现在开始编码了。上代码：  </div><div class="line"></div><div class="line">**2014-11-02 更新：因为附件找不到了，所以代码也看不了了，抱歉**</div><div class="line"> </div><div class="line">**变量部分：**  </div><div class="line"></div><div class="line">变量我在代码里都注明了其作用。这里只会说说为什么要这些变量。首先needMaxbt和needMinbt是指示该窗体是否需要最大化或最小化按钮的，毕竟窗体有很多种吧，比如说一个消息框就没必要用最大化按钮吧，所以我们这边也就设置的灵活一点，下面会将这两个变量封装成属性以便在设计模式下方便的选择。接下来的四个变量</div></pre></td></tr></table></figure></p>
 <p>orginWidth;<br>orginHeight;<br>X;<br>Y;<br><code>``
 都是用来记录窗体的信息的，分别是窗体的宽，高，x坐标值，y坐标值。为什么要设置一些变量呢？说起来也比较郁闷，这些都是为了窗口的最大化和还原准备的。可能有人会问了最大化不就一句话嘛</code>this.WindowState= FormWindowState.Maximized;`何必还要这些个变量呢。关键郁闷就郁闷在这里啦，假如直接用这一句话最后窗体虽然也能最大化可就是右上角的一小段边框线莫名其妙的没有了，如图：</p>
 <p><img src="http://ww2.sinaimg.cn/large/5d7c1fa4gw1elx30vntxnj209g05iwej.jpg" alt=""></p>
@@ -147,7 +145,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2010/04/15/charp-winform-skin-4/" data-id="cio6h8kpf001e8femyzt985u6" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2010/04/15/charp-winform-skin-4/" data-id="cj182rthu001bgx231ccuudmz" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DotNet/">DotNet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/皮肤/">皮肤</a></li></ul>
 
@@ -157,19 +155,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2010/04/23/a-httpwebrequest-demo/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2010/04/15/charp-winform-skin-3/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          一个httpwebrequest异步下载的例子
+          跟我学做c#皮肤美化（三）
         
       </div>
     </a>
   
   
-    <a href="/2010/04/15/charp-winform-skin-3/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2010/04/23/a-httpwebrequest-demo/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">跟我学做c#皮肤美化（三）</div>
+      <div class="article-nav-title">一个httpwebrequest异步下载的例子</div>
     </a>
   
 </nav>
@@ -264,7 +262,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

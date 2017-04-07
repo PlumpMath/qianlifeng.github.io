@@ -6,12 +6,13 @@
   <title>禁用Intellij的注解自动折行 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在Intellij中，自动格式化代码的时候，方法的注解默认会被格式化到单独的一行中，看着非常不爽，遂改之">
+<meta name="keywords" content="安全">
 <meta property="og:type" content="article">
 <meta property="og:title" content="禁用Intellij的注解自动折行">
 <meta property="og:url" content="http://qianlifeng.github.io/2015/08/15/disable-method-annotation-on-intellij/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="在Intellij中，自动格式化代码的时候，方法的注解默认会被格式化到单独的一行中，看着非常不爽，遂改之">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="禁用Intellij的注解自动折行">
 <meta name="twitter:description" content="在Intellij中，自动格式化代码的时候，方法的注解默认会被格式化到单独的一行中，看着非常不爽，遂改之">
@@ -20,10 +21,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -54,7 +52,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -84,15 +82,15 @@
         <p>在Intellij中，自动格式化代码的时候，方法的注解默认会被格式化到单独的一行中，看着非常不爽，遂改之</p>
 <a id="more"></a>
 <p>原来默认格式化后的结果如下，个人以为非常难看</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/test"</span>)</span><br><span class="line"><span class="keyword">public</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function">String <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"qlf"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>修改之后的格式化效果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/test"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@ResponseBody</span> <span class="function">String <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"qlf"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/test"</span>)</div><div class="line"><span class="keyword">public</span></div><div class="line"><span class="meta">@ResponseBody</span></div><div class="line"><span class="function">String <span class="title">index</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"qlf"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>修改之后的格式化效果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/test"</span>)</div><div class="line"><span class="keyword">public</span> <span class="meta">@ResponseBody</span> <span class="function">String <span class="title">index</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"qlf"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>具体的修改位置：  </p>
 <p><strong>File</strong> -&gt; <strong>Settings</strong> -&gt; <strong>Editor</strong> -&gt; <strong>Code Style</strong> -&gt; <strong>Java</strong> -&gt; <strong>Wrapping and Braces</strong> -&gt; <strong>Method Annotations</strong> 改为 <strong>Do not warp</strong> 即可。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/08/15/disable-method-annotation-on-intellij/" data-id="cio6h8kpo001p8femzjr0dngs" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/08/15/disable-method-annotation-on-intellij/" data-id="cj182rtib001sgx23ywmuzv8f" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
 
@@ -102,19 +100,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/09/08/akka-in-action/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/07/16/ngrok/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Akka in action
+          ngrok
         
       </div>
     </a>
   
   
-    <a href="/2015/07/16/ngrok/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/09/08/akka-in-action/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">ngrok</div>
+      <div class="article-nav-title">Akka in action</div>
     </a>
   
 </nav>
@@ -209,7 +207,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

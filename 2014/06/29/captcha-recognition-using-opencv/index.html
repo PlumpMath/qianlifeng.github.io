@@ -6,6 +6,7 @@
   <title>使用OpenCV进行简单验证码识别 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="最近对计算机视觉产生了点兴趣，具体来说应该是简单的图形识别方向。本文介绍了如何使用OpenCV进行简单的验证码识别。">
+<meta name="keywords" content="验证码,OpenCV">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用OpenCV进行简单验证码识别">
 <meta property="og:url" content="http://qianlifeng.github.io/2014/06/29/captcha-recognition-using-opencv/index.html">
@@ -14,7 +15,7 @@
 <meta property="og:image" content="http://scott-tuchuang.qiniudn.com/origin.png">
 <meta property="og:image" content="http://scott-tuchuang.qiniudn.com/gray.png">
 <meta property="og:image" content="http://scott-tuchuang.qiniudn.com/captcha_threshold.png">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用OpenCV进行简单验证码识别">
 <meta name="twitter:description" content="最近对计算机视觉产生了点兴趣，具体来说应该是简单的图形识别方向。本文介绍了如何使用OpenCV进行简单的验证码识别。">
@@ -24,10 +25,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -58,7 +56,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -89,12 +87,12 @@
 <p>从头开始学习计算机视觉需要很强的数学功底，从图像预处理到图像匹配都需要用到数学知识，这对于我们这种初学者来说绝对是道很大很大很大很大…..很大的门槛（原谅我对数学敬畏!_!）。不过，不要灰心，我们还有神器<a href="http://opencv.org/" target="_blank" rel="external">OpenCV</a>。OpenCV是一套开源的计算机视觉库，他封装了许多计算机视觉处理中常用的方法。在我们这边文章中，我们主要用到了他的阈值处理，轮廓查找，KNN分类器等等。  </p>
 <p>先看成品：<br><a href="http://nbviewer.ipython.org/gist/qianlifeng/95023d6c8ce8b28518b8" target="_blank" rel="external">http://nbviewer.ipython.org/gist/qianlifeng/95023d6c8ce8b28518b8</a><br>我摘一些主要的代码片段介绍一下：  </p>
 <p>原始图像：<br><img src="http://scott-tuchuang.qiniudn.com/origin.png"></p>
-<p>所有的验证码处理一般都会先对图像进行一些预处理，包括去除噪点，灰度化，二值化，去除干扰线等等。二值化是为了降低图片的维度，从原来的RGBA变为只有0和1的一维数组。我们使用cvtColor进行灰度化处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)</span><br></pre></td></tr></table></figure></p>
+<p>所有的验证码处理一般都会先对图像进行一些预处理，包括去除噪点，灰度化，二值化，去除干扰线等等。二值化是为了降低图片的维度，从原来的RGBA变为只有0和1的一维数组。我们使用cvtColor进行灰度化处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)</div></pre></td></tr></table></figure></p>
 <p><img src="http://scott-tuchuang.qiniudn.com/gray.png">  </p>
-<p>接着去噪，简单的去噪原理如下。我们会设置一个阈值，高于这个阈值的点变为黑色，低于的变成白色。（这里使用的是名为自适应阈值的去噪方法，效果好一点）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">threshold = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY, 11, 40)</span><br></pre></td></tr></table></figure></p>
+<p>接着去噪，简单的去噪原理如下。我们会设置一个阈值，高于这个阈值的点变为黑色，低于的变成白色。（这里使用的是名为自适应阈值的去噪方法，效果好一点）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">threshold = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY, 11, 40)</div></pre></td></tr></table></figure></p>
 <p><img src="http://scott-tuchuang.qiniudn.com/captcha_threshold.png">  </p>
 <p>到这边图像预处理基本已经差不多了，剩下来就是寻找里面的图像轮廓，进行切图。  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(cnts, _) = cv2.findContours(ts.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(cnts, _) = cv2.findContours(ts.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)</div></pre></td></tr></table></figure>
 <p>这句话会找出图片给里面所有的轮廓信息，当然里面有很多无用的轮廓，比如0这个数字，他会找出两个轮廓出来。一个是0的外圈，一个是0的内圈。我们还需要一些简单的代码去除这些多余的轮廓。  </p>
 <pre><code>cmax = 100
 cmin = 20
@@ -108,7 +106,7 @@ for item in cnts:
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2014/06/29/captcha-recognition-using-opencv/" data-id="cio6h8kp2000z8femp2zdoixj" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2014/06/29/captcha-recognition-using-opencv/" data-id="cj182rthk000zgx239fvpw66j" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/验证码/">验证码</a></li></ul>
 
@@ -118,19 +116,19 @@ for item in cnts:
     
 <nav id="article-nav">
   
-    <a href="/2014/07/25/start-django-with-supervisor/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2014/06/20/my_new_choise_for_blogging/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          使用Supervisor管理程序
+          Github+Hexo+Travis打造史上最懒博客
         
       </div>
     </a>
   
   
-    <a href="/2014/06/20/my_new_choise_for_blogging/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2014/07/25/start-django-with-supervisor/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Github+Hexo+Travis打造史上最懒博客</div>
+      <div class="article-nav-title">使用Supervisor管理程序</div>
     </a>
   
 </nav>
@@ -225,7 +223,7 @@ for item in cnts:
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

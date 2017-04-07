@@ -6,12 +6,13 @@
   <title>用screen管理多个SSH远程会话 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="有VPS的同学应该会经常使用putty进行SSH远程连接吧。新开的每个SSH都是一个session，这么做有一个缺点就是如果当你退出的时候，这个session中的任务都会跟着退出。于是screen来了。">
+<meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用screen管理多个SSH远程会话">
 <meta property="og:url" content="http://qianlifeng.github.io/2013/11/24/manage-multiple-session-using-screen/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="有VPS的同学应该会经常使用putty进行SSH远程连接吧。新开的每个SSH都是一个session，这么做有一个缺点就是如果当你退出的时候，这个session中的任务都会跟着退出。于是screen来了。">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用screen管理多个SSH远程会话">
 <meta name="twitter:description" content="有VPS的同学应该会经常使用putty进行SSH远程连接吧。新开的每个SSH都是一个session，这么做有一个缺点就是如果当你退出的时候，这个session中的任务都会跟着退出。于是screen来了。">
@@ -20,10 +21,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -54,7 +52,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -84,17 +82,17 @@
         <p>有VPS的同学应该会经常使用<a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/" target="_blank" rel="external">putty</a>进行SSH远程连接吧。新开的每个SSH都是一个session，这么做有一个缺点就是如果当你退出的时候，这个session中的任务都会跟着退出。于是screen来了。  </p>
 <a id="more"></a>
 <p>简单来说，Screen是一个可以在多个进程之间多路复用一个物理终端的窗口管理器。Screen中有会话的概念，用户可以在一个screen会话中创建多个screen窗口，在每一个screen窗口中就像操作一个真实的telnet/SSH连接窗口那样。</p>
-<p>#安装screen<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install screen</span><br></pre></td></tr></table></figure></p>
-<p>#在screen中创建一个新的session<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen -S yourSessionName</span><br></pre></td></tr></table></figure></p>
+<p>#安装screen<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install screen</div></pre></td></tr></table></figure></p>
+<p>#在screen中创建一个新的session<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen -S yourSessionName</div></pre></td></tr></table></figure></p>
 <p>这样你就可以新建一个session，同时terminal自动进入到新的session环境。在这个环境里面你可以像平常一样操作各种命令，运行长时间运行的脚本等等。  </p>
-<p>#退出session（非关闭）<br>可以按ctrl + A + D。注意是按住ctrl然后A，D键。此时你又回到了普通的SSH环境，而刚才那个session仍然运行着。如果想再次进入那个session，则键入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen -r yourSessionName</span><br></pre></td></tr></table></figure></p>
+<p>#退出session（非关闭）<br>可以按ctrl + A + D。注意是按住ctrl然后A，D键。此时你又回到了普通的SSH环境，而刚才那个session仍然运行着。如果想再次进入那个session，则键入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen -r yourSessionName</div></pre></td></tr></table></figure></p>
 <p>瞧，你又还原现场了，包括你各种正在运行的脚本。</p>
-<p>#screen的其他用法请运行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen --help</span><br></pre></td></tr></table></figure></p>
+<p>#screen的其他用法请运行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen --help</div></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2013/11/24/manage-multiple-session-using-screen/" data-id="cio6h8kq5002a8femzbmzewz9" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2013/11/24/manage-multiple-session-using-screen/" data-id="cj182rtiw002dgx23j6hx8uos" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
@@ -104,19 +102,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2013/11/25/huqiu-photo/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2013/11/22/enable-remote-mysql/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          那一抹红
+          开启unbuntu上3306远程连接
         
       </div>
     </a>
   
   
-    <a href="/2013/11/22/enable-remote-mysql/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2013/11/25/huqiu-photo/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">开启unbuntu上3306远程连接</div>
+      <div class="article-nav-title">那一抹红</div>
     </a>
   
 </nav>
@@ -211,7 +209,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

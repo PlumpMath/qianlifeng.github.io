@@ -6,6 +6,7 @@
   <title>SQL Server数据的导入导出 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这两天在用新学习的python抓新浪微博首页的数据，这些数据都被存在的sql server当中。因为白天在公司和晚上在宿舍用的数据库版本不一样，所以如果在宿舍直接附加公司的数据库的话会报错。没办法，只好通过SQL server中提供的BCP导入导出的办法来同步两个地方的数据。">
+<meta name="keywords" content="数据库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL Server数据的导入导出">
 <meta property="og:url" content="http://qianlifeng.github.io/2012/02/08/sqlserver-backup-restore/index.html">
@@ -13,7 +14,7 @@
 <meta property="og:description" content="这两天在用新学习的python抓新浪微博首页的数据，这些数据都被存在的sql server当中。因为白天在公司和晚上在宿舍用的数据库版本不一样，所以如果在宿舍直接附加公司的数据库的话会报错。没办法，只好通过SQL server中提供的BCP导入导出的办法来同步两个地方的数据。">
 <meta property="og:image" content="http://qianlifeng.github.io/Images/sqlserver-backup-restore/1.png">
 <meta property="og:image" content="http://qianlifeng.github.io/Images/sqlserver-backup-restore/2.png">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL Server数据的导入导出">
 <meta name="twitter:description" content="这两天在用新学习的python抓新浪微博首页的数据，这些数据都被存在的sql server当中。因为白天在公司和晚上在宿舍用的数据库版本不一样，所以如果在宿舍直接附加公司的数据库的话会报错。没办法，只好通过SQL server中提供的BCP导入导出的办法来同步两个地方的数据。">
@@ -23,10 +24,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -57,7 +55,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -88,15 +86,15 @@
 <a id="more"></a>
 <p>这里简单记录一下如何使用BCP工具进行数据的导入导出。首先BCP是sql server自带的工具，所以只要你安装了sql server后就自带了。在cmd中输入cmd，你会发现他的一些参数说明选项。具体的参数选项大家可以在具体用到的时候再去查看，这里就不一一解释了（实际上我也用的不多 ^_^）</p>
 <p><img src="/Images/sqlserver-backup-restore/1.png">  </p>
-<p>一个最简单的导出示例。如果你有个数据库A，里面有一个表B，那么导出B数据的命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BCP A..B out c:\currency1.txt -c -u&quot;sa&quot; -p&quot;123456&quot;</span><br></pre></td></tr></table></figure></p>
+<p>一个最简单的导出示例。如果你有个数据库A，里面有一个表B，那么导出B数据的命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BCP A..B out c:\currency1.txt -c -u&quot;sa&quot; -p&quot;123456&quot;</div></pre></td></tr></table></figure></p>
 <p>注意A和B中间有两个..，如果是使用继承验证的话可以去掉-u -p选项改为-t就行了。下图是我执行的截图：<br><img src="/Images/sqlserver-backup-restore/2.png">  </p>
-<p>此时如果要导入已经导出的数据，执行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BCP A..B in c:\currency1.txt -c -U&quot;sa&quot; -P&quot;123456&quot;</span><br></pre></td></tr></table></figure></p>
+<p>此时如果要导入已经导出的数据，执行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BCP A..B in c:\currency1.txt -c -U&quot;sa&quot; -P&quot;123456&quot;</div></pre></td></tr></table></figure></p>
 <p>可以看到与导出唯一不同的地方就是out换成了in。至此，最简明sql server数据导入导出记录完毕！</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2012/02/08/sqlserver-backup-restore/" data-id="cio6h8kr5003f8femqm9pgfk5" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2012/02/08/sqlserver-backup-restore/" data-id="cj182rtjw003fgx23fbmnntx2" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
 
@@ -116,9 +114,9 @@
     </a>
   
   
-    <a href="/2012/01/09/easyvs/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2012/02/12/create-weibo-app-by-python/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">EasyVS - Visual Studio扩展</div>
+      <div class="article-nav-title">使用python进行新浪微博应用开发</div>
     </a>
   
 </nav>
@@ -213,7 +211,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

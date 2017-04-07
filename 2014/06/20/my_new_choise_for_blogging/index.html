@@ -6,12 +6,13 @@
   <title>Github+Hexo+Travis打造史上最懒博客 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="我前面写过使用Hexo发布静态博客的文章。静态博客抛弃了原本笨重的写作方式，NO数据库，NO Web程序，而且生成后的html随便放到哪个Server都能显示。如果使用了数据库还必须安装Mysql等等之类的数据库服务，以后还得数据库备份啊，还原啊什么的，想想就头疼。所以，使用静态博客对我而言看来是个不错的选择。我今天要介绍的则是将这一方式做的更加彻底一点，摆脱手动编译的麻烦，利用Github +">
+<meta name="keywords" content="随笔">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Github+Hexo+Travis打造史上最懒博客">
 <meta property="og:url" content="http://qianlifeng.github.io/2014/06/20/my_new_choise_for_blogging/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="我前面写过使用Hexo发布静态博客的文章。静态博客抛弃了原本笨重的写作方式，NO数据库，NO Web程序，而且生成后的html随便放到哪个Server都能显示。如果使用了数据库还必须安装Mysql等等之类的数据库服务，以后还得数据库备份啊，还原啊什么的，想想就头疼。所以，使用静态博客对我而言看来是个不错的选择。我今天要介绍的则是将这一方式做的更加彻底一点，摆脱手动编译的麻烦，利用Github +">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Github+Hexo+Travis打造史上最懒博客">
 <meta name="twitter:description" content="我前面写过使用Hexo发布静态博客的文章。静态博客抛弃了原本笨重的写作方式，NO数据库，NO Web程序，而且生成后的html随便放到哪个Server都能显示。如果使用了数据库还必须安装Mysql等等之类的数据库服务，以后还得数据库备份啊，还原啊什么的，想想就头疼。所以，使用静态博客对我而言看来是个不错的选择。我今天要介绍的则是将这一方式做的更加彻底一点，摆脱手动编译的麻烦，利用Github +">
@@ -20,10 +21,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -54,7 +52,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -87,7 +85,7 @@
 <h2 id="创建Gihutb仓库"><a href="#创建Gihutb仓库" class="headerlink" title="#创建Gihutb仓库"></a>#创建Gihutb仓库</h2><p>首先，你需要在Github上面创建一个新的Repository用来存放你的博客，名字有一定的要求，比如你的Github用户名是<code>qianlifeng</code>，那这个新建的Repsoitory必须叫<code>qianlifeng.github.io</code>。此时，你在新建的仓库里面放入一个index.html文件，然后访问<code>http://qianlifeng.github.io</code>就可以看到这个index.html的网页了。</p>
 <p>  除了默认的<strong>master</strong>分支，我们需要建立一个<strong>source</strong>分支专门用来存hexo放源文件。<strong>master</strong>分支则存放hexo生成之后的html文件。</p>
 <h2 id="启用Travis自动集成"><a href="#启用Travis自动集成" class="headerlink" title="#启用Travis自动集成"></a>#启用Travis自动集成</h2><p>Travis是一个持续集成（Continue Integrate）的服务，对于开源的Github项目它是免费的。你需要到他的网站使用Github账户登录，然后设置页面打开我们刚才新建的那个仓库的持续集成的开关即可。  </p>
-<p>  在<strong>source</strong>分支中新建<code>.travis.yml</code>文件用于Travis的一些配置。参加如下：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">branches:</span></span><br><span class="line"><span class="attr">only:</span></span><br><span class="line"><span class="bullet">  -</span> source</span><br><span class="line"><span class="attr">language:</span> node_js</span><br><span class="line"><span class="attr">node_js:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"0.10"</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"hexo generate"</span></span><br><span class="line"><span class="attr">after_success:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"git clone https://$GH_TOKEN@github.com/qianlifeng/qianlifeng.github.io.git git_deploy"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"rm -r git_deploy/*"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"cp -r public/* git_deploy"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"cd git_deploy"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"git config --global push.default simple"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"git config --global user.name 'qianlifeng'"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"git config --global user.email qianlf2008@163.com"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"git add -A"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"git commit -m 'update'"</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">"git push -q"</span></span><br><span class="line"><span class="attr">env:</span></span><br><span class="line"><span class="attr">  global:</span></span><br><span class="line"><span class="attr">    secure:</span> R47+<span class="number">1</span>xIT3fihAM4YTO5u/AOFrpZeYndHLTBIMU49DGST6MO65+Ppyj/VHHUsJhmDXa7w83krUfhaR+BMQ1ntd3bOZQTnUyzHspKpum9XSRldoTx8FJNJgfuoKqglS25Qi8kmP9WA6IKwycYyY+<span class="number">6</span>Xg1L2YfHvUbRHcfQlfayQFJ0=</span><br></pre></td></tr></table></figure></p>
+<p>  在<strong>source</strong>分支中新建<code>.travis.yml</code>文件用于Travis的一些配置。参加如下：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="attr">branches:</span></div><div class="line"><span class="attr">only:</span></div><div class="line"><span class="bullet">  -</span> <span class="string">source</span></div><div class="line"><span class="attr">language:</span> <span class="string">node_js</span></div><div class="line"><span class="attr">node_js:</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"0.10"</span></div><div class="line"><span class="attr">script:</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"hexo generate"</span></div><div class="line"><span class="attr">after_success:</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"git clone https://$GH_TOKEN@github.com/qianlifeng/qianlifeng.github.io.git git_deploy"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"rm -r git_deploy/*"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"cp -r public/* git_deploy"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"cd git_deploy"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"git config --global push.default simple"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"git config --global user.name 'qianlifeng'"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"git config --global user.email qianlf2008@163.com"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"git add -A"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"git commit -m 'update'"</span></div><div class="line"><span class="bullet">  -</span> <span class="string">"git push -q"</span></div><div class="line"><span class="attr">env:</span></div><div class="line"><span class="attr">  global:</span></div><div class="line"><span class="attr">    secure:</span> <span class="string">R47+1xIT3fihAM4YTO5u/AOFrpZeYndHLTBIMU49DGST6MO65+Ppyj/VHHUsJhmDXa7w83krUfhaR+BMQ1ntd3bOZQTnUyzHspKpum9XSRldoTx8FJNJgfuoKqglS25Qi8kmP9WA6IKwycYyY+6Xg1L2YfHvUbRHcfQlfayQFJ0=</span></div></pre></td></tr></table></figure></p>
 <p>  注意其中的<code>$GH_TOKEN</code>，它的值是<a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use/" target="_blank" rel="external">Github application token</a>，使用它可以避免我们直接将github密码暴露在外面用。具体怎么生成这个token，可以参考<a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use/" target="_blank" rel="external">此文章</a>。另外你需要将上面的REPO换成自己刚刚新建的即可。  </p>
 <h2 id="使用prose-io在线写作"><a href="#使用prose-io在线写作" class="headerlink" title="#使用prose.io在线写作"></a>#使用<a href="http://prose.io/" target="_blank" rel="external">prose.io</a>在线写作</h2><p>除了在github page中编辑文章，我推荐使用<a href="http://prose.io/" target="_blank" rel="external">prose.io</a>这个网站。此网站可以集成读取github里面的markdown文件，然后编辑同步，效果不错。</p>
 <p>好了，一切就绪了，可以专心写文章了。:)</p>
@@ -95,7 +93,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2014/06/20/my_new_choise_for_blogging/" data-id="cio6h8kqc002f8fem1c71a9mv" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2014/06/20/my_new_choise_for_blogging/" data-id="cj182rtj2002igx23a1gthcbd" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
 
@@ -105,19 +103,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2014/06/29/captcha-recognition-using-opencv/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2014/03/03/nodejs-crawler-start/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          使用OpenCV进行简单验证码识别
+          Nodejs写一个简单爬虫
         
       </div>
     </a>
   
   
-    <a href="/2014/03/03/nodejs-crawler-start/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2014/06/29/captcha-recognition-using-opencv/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Nodejs写一个简单爬虫</div>
+      <div class="article-nav-title">使用OpenCV进行简单验证码识别</div>
     </a>
   
 </nav>
@@ -212,7 +210,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

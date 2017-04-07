@@ -6,12 +6,13 @@
   <title>SSH打洞大法 | 猫猫猿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="SSH在手，天下我有">
+<meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SSH打洞大法">
 <meta property="og:url" content="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/index.html">
 <meta property="og:site_name" content="猫猫猿">
 <meta property="og:description" content="SSH在手，天下我有">
-<meta property="og:updated_time" content="2016-05-14T01:30:29.000Z">
+<meta property="og:updated_time" content="2017-04-07T16:57:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH打洞大法">
 <meta name="twitter:description" content="SSH在手，天下我有">
@@ -20,10 +21,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css">
-  
-
 </head>
 
 <body>
@@ -54,7 +52,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qianlifeng.github.io"></form>
       </div>
     </div>
   </div>
@@ -86,17 +84,17 @@
 <li>开发联调。别人只能访问到你的外网地址，但是你想在本地机器监测并调试</li>
 <li>内网内容资源展示</li>
 </ul>
-<p>基本流程就是别人访问外网，然后外网转发到内网，实际的内容是在内网。因为外网不能主动访问到内网，<strong>所以下面这条命令一定要从内网运行</strong>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#暴露内网的3306给remotehost的9123，这样别人访问外网的9123实际就是访问的内网的3306</span><br><span class="line">ssh -R 9123:127.0.0.1:3306 username@remotehost</span><br></pre></td></tr></table></figure></p>
+<p>基本流程就是别人访问外网，然后外网转发到内网，实际的内容是在内网。因为外网不能主动访问到内网，<strong>所以下面这条命令一定要从内网运行</strong>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#暴露内网的3306给remotehost的9123，这样别人访问外网的9123实际就是访问的内网的3306</div><div class="line">ssh -R 9123:127.0.0.1:3306 username@remotehost</div></pre></td></tr></table></figure></p>
 <h1 id="流量转发"><a href="#流量转发" class="headerlink" title="流量转发"></a>流量转发</h1><h2 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
 <li>本地不能直接连接处于内网的mysql，可以通过ssh forward上去</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这条命令会转发本地3308的流程到mysqlhost的3306端口</span><br><span class="line">ssh -L 3308:mysqlhost:3306 user@sshhost</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">这条命令会转发本地3308的流程到mysqlhost的3306端口</div><div class="line">ssh -L 3308:mysqlhost:3306 user@sshhost</div></pre></td></tr></table></figure>
 <p>还是比较好区分这两种命令的。R代表remote，L代表local，如果是-R表示remote -&gt; local，-L标志local-&gt;remote</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/" data-id="cio6h8koo000f8fempeclix66" class="article-share-link">Share</a>
+      <a data-url="http://qianlifeng.github.io/2015/09/28/SSH-tunnel/" data-id="cj182rth5000fgx23vbdy74p7" class="article-share-link">Share</a>
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
@@ -106,19 +104,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/11/17/log4jdbc-log4j2/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/09/08/akka-in-action-future/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          使用log4jdbc-log4j2记录完整的SQL执行语句
+          Akka in action - Future
         
       </div>
     </a>
   
   
-    <a href="/2015/09/08/akka-in-action-future/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/11/17/log4jdbc-log4j2/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Akka in action - Future</div>
+      <div class="article-nav-title">使用log4jdbc-log4j2记录完整的SQL执行语句</div>
     </a>
   
 </nav>
@@ -213,7 +211,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 qianlifeng<br>
+      &copy; 2017 qianlifeng<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
